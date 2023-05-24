@@ -20,9 +20,3 @@ export const isInjectManifestConfig = (
 ): config is WorkboxTypes["InjectManifest"] => {
   return typeof config !== "undefined" && typeof config.swSrc === "string";
 };
-
-export const isGenerateSWConfig = (
-  config: WorkboxTypes[keyof WorkboxTypes] | undefined
-): config is WorkboxTypes["GenerateSW"] => {
-  return !isInjectManifestConfig(config);
-};

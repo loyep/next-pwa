@@ -161,6 +161,13 @@ export interface PluginOptions {
    * exactly correct.
    */
   workboxOptions?: WorkboxTypes[keyof WorkboxTypes];
+  /**
+   * Extend the default `runtimeCaching` array when `runtimeCaching` is specified.
+   * Entries having the same `cacheName` as any entry in the default `runtimeCaching`
+   * array will override it.
+   * @default false
+   */
+  extendDefaultRuntimeCaching?: boolean;
 }
 
 export interface FallbackRoutes {

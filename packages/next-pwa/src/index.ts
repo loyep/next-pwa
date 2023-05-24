@@ -7,8 +7,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import fg from "fast-glob";
 import type { NextConfig } from "next";
 import { loadTSConfig, logger } from "utils";
-import type { Configuration, default as webpackType } from "webpack";
-import type { RuntimeCaching } from "workbox-build";
+import type { Asset, Configuration, default as webpackType } from "webpack";
 import type { GenerateSWConfig } from "workbox-webpack-plugin";
 import WorkboxPlugin from "workbox-webpack-plugin";
 
@@ -17,12 +16,9 @@ import { getDefaultDocumentPage } from "./build-fallback-worker/get-default-docu
 import { buildFallbackWorker } from "./build-fallback-worker/index.js";
 import defaultCache from "./cache.js";
 import type { SharedWorkboxOptionsKeys } from "./private-types.js";
+import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";
 import type { PluginOptions } from "./types.js";
-import {
-  isGenerateSWConfig,
-  isInjectManifestConfig,
-  overrideAfterCalledMethod,
-} from "./utils.js";
+import { isInjectManifestConfig, overrideAfterCalledMethod } from "./utils.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -78,6 +74,7 @@ const withPWAInit = (
           scope = basePath,
           customWorkerDir = "worker",
           workboxOptions = {},
+          extendDefaultRuntimeCaching = false,
         } = pluginOptions;
 
         const {
@@ -98,8 +95,7 @@ const withPWAInit = (
           (key) => workbox[key] === undefined && delete workbox[key]
         );
 
-        let importScripts: string[] = [];
-        let runtimeCaching: RuntimeCaching[] = defaultCache;
+        const importScripts: string[] = [];
 
         if (!config.plugins) {
           config.plugins = [];
@@ -113,18 +109,6 @@ const withPWAInit = (
         logger.info(
           `Compiling for ${options.isServer ? "server" : "client (static)"}...`
         );
-
-        if (isGenerateSWConfig(workboxOptions)) {
-          if (workboxOptions.runtimeCaching) {
-            logger.info(
-              "Custom runtimeCaching array found, using it instead of the default one."
-            );
-            runtimeCaching = workboxOptions.runtimeCaching;
-          }
-          if (workboxOptions.importScripts) {
-            importScripts = workboxOptions.importScripts;
-          }
-        }
 
         const _scope = path.posix.join(scope, "/");
 
@@ -312,13 +296,7 @@ const withPWAInit = (
             additionalManifestEntries: dev ? [] : manifestEntries,
             exclude: [
               ...buildExcludes,
-              ({
-                asset,
-              }: {
-                asset: {
-                  name: string;
-                };
-              }) => {
+              ({ asset }: { asset: Asset }) => {
                 if (
                   asset.name.startsWith("server/") ||
                   asset.name.match(
@@ -388,7 +366,21 @@ const withPWAInit = (
               clientsClaim = true,
               cleanupOutdatedCaches = true,
               ignoreURLParametersMatching = [],
+              importScripts: userSpecifiedImportScripts,
+              runtimeCaching: userSpecifiedRuntimeCaching,
             } = workboxOptions;
+
+            let runtimeCaching = resolveRuntimeCaching(
+              userSpecifiedRuntimeCaching,
+              extendDefaultRuntimeCaching
+            );
+
+            if (userSpecifiedImportScripts) {
+              for (const script of userSpecifiedImportScripts) {
+                importScripts.push(script);
+              }
+            }
+
             let shutWorkboxAfterCalledMessageUp = false;
 
             if (dev) {

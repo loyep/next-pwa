@@ -160,6 +160,21 @@ const defaultCache: RuntimeCaching[] = [
   {
     urlPattern: ({ request, url: { pathname }, sameOrigin }) =>
       request.headers.get("RSC") === "1" &&
+      request.headers.get("Next-Router-Prefetch") === "1" &&
+      sameOrigin &&
+      !pathname.startsWith("/api/"),
+    handler: "NetworkFirst",
+    options: {
+      cacheName: "pages-rsc-prefetch",
+      expiration: {
+        maxEntries: 32,
+        maxAgeSeconds: 24 * 60 * 60, // 24 hours
+      },
+    },
+  },
+  {
+    urlPattern: ({ request, url: { pathname }, sameOrigin }) =>
+      request.headers.get("RSC") === "1" &&
       sameOrigin &&
       !pathname.startsWith("/api/"),
     handler: "NetworkFirst",
@@ -169,9 +184,6 @@ const defaultCache: RuntimeCaching[] = [
         maxEntries: 32,
         maxAgeSeconds: 24 * 60 * 60, // 24 hours
       },
-      // matchOptions: {
-      //   ignoreVary: true,
-      // },
     },
   },
   {
