@@ -1,14 +1,17 @@
 name: Bug report
-description: Create a bug report for `@ducanh2912/next-pwa`.
-title: "[Bug]: "
-labels: bug
+description: Create a bug report for `@ducanh2912/next-sw`.
+title: "[BUG - next-sw]: "
+labels: ["bug", "next-sw", "triage"]
 assignees:
   - DuCanhGH
 body:
+  - type: markdown
+    attributes:
+      value: Note that `@ducanh2912/next-sw` is NOT yet stable and recommended for use.
   - type: textarea
     attributes:
       label: Provide environment information
-      description: Please provide the version of `next` and `@ducanh2912/next-pwa` that you are currently using.
+      description: Please provide the version of `next` and `@ducanh2912/next-sw` that you are currently using.
     validations:
       required: true
   - type: input
