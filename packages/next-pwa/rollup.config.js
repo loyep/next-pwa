@@ -5,6 +5,7 @@
  *   "input" | "output" | "external" | "plugins"
  * >} FileEntry
  */
+import alias from "@rollup/plugin-alias";
 import json from "@rollup/plugin-json";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
@@ -20,12 +21,12 @@ const files = [
     input: "src/index.ts",
     output: [
       {
-        file: "dist/ducanh2912-next-pwa.cjs",
+        file: "dist/index.cjs",
         format: "cjs",
         exports: "named",
       },
       {
-        file: "dist/ducanh2912-next-pwa.module.js",
+        file: "dist/index.module.js",
         format: "esm",
       },
     ],
@@ -66,11 +67,17 @@ const files = [
 const declarations = [
   {
     input: "dist/dts/index.d.ts",
-    output: [{ format: "es", file: "dist/index.d.ts" }],
+    output: [
+      { format: "es", file: "dist/index.module.d.ts" },
+      { format: "cjs", file: "dist/index.d.cts" },
+    ],
   },
   {
     input: "dist/dts/sw-entry.d.ts",
-    output: [{ format: "es", file: "dist/sw-entry.d.ts" }],
+    output: [
+      { format: "es", file: "dist/sw-entry.module.d.ts" },
+      { format: "cjs", file: "dist/sw-entry.d.cts" },
+    ],
   },
 ];
 
@@ -85,15 +92,15 @@ for (const { input, output, external, plugins } of files) {
       input,
       output,
       external,
-      watch: {
-        chokidar: {
-          usePolling: false,
-        },
-      },
       plugins: [
         nodeResolve({
           exportConditions: ["node"],
           preferBuiltins: true,
+        }),
+        // ensure compatibility by removing `node:` protocol (this MUST
+        // exclude "node: protocol"-only core modules such as `node:test`).
+        alias({
+          entries: [{ find: /node:(?!test)(.*)$/, replacement: "$1" }],
         }),
         typescript({
           noForceEmit: true,
@@ -117,11 +124,6 @@ for (const { input, output, external, plugins } of declarations) {
       input,
       output,
       external,
-      watch: {
-        chokidar: {
-          usePolling: false,
-        },
-      },
       plugins: [dts(), ...[plugins ?? []]],
     })
   );

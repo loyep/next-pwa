@@ -20,12 +20,12 @@ const files = [
     input: "src/index.ts",
     output: [
       {
-        file: "dist/next-sw.cjs",
+        file: "dist/index.cjs",
         format: "cjs",
         exports: "named",
       },
       {
-        file: "dist/next-sw.module.js",
+        file: "dist/index.module.js",
         format: "esm",
       },
     ],
@@ -58,7 +58,10 @@ const files = [
 const declarations = [
   {
     input: "dist/dts/index.d.ts",
-    output: [{ format: "es", file: "dist/index.d.ts" }],
+    output: [
+      { format: "es", file: "dist/index.module.d.ts" },
+      { format: "cjs", file: "dist/index.d.cts" },
+    ],
   },
 ];
 

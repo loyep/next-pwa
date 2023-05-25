@@ -519,6 +519,9 @@ importers:
         specifier: 6.5.4
         version: 6.5.4
     devDependencies:
+      '@rollup/plugin-alias':
+        specifier: 5.0.0
+        version: 5.0.0(rollup@3.23.0)
       '@rollup/plugin-json':
         specifier: 6.0.0
         version: 6.0.0(rollup@3.23.0)
@@ -2377,6 +2380,19 @@ packages:
     dependencies:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
+    dev: true
+
+  /@rollup/plugin-alias@5.0.0(rollup@3.23.0):
+    resolution: {integrity: sha512-l9hY5chSCjuFRPsnRm16twWBiSApl2uYFLsepQYwtBuAxNMQ/1dJqADld40P0Jkqm65GRTLy/AC6hnpVebtLsA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.23.0
+      slash: 4.0.0
     dev: true
 
   /@rollup/plugin-babel@5.3.1(@babel/core@7.20.5)(rollup@2.79.1):

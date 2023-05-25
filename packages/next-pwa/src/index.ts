@@ -7,16 +7,16 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import fg from "fast-glob";
 import type { NextConfig } from "next";
 import { loadTSConfig, logger } from "utils";
-import type { Asset, Configuration, default as webpackType } from "webpack";
-import type { GenerateSWConfig } from "workbox-webpack-plugin";
+import type { Configuration, default as WebpackType } from "webpack";
+import type { RuntimeCaching } from "workbox-build";
 import WorkboxPlugin from "workbox-webpack-plugin";
 
 import { buildCustomWorker } from "./build-custom-worker.js";
 import { getDefaultDocumentPage } from "./build-fallback-worker/get-default-document-page.js";
 import { buildFallbackWorker } from "./build-fallback-worker/index.js";
 import defaultCache from "./cache.js";
-import type { SharedWorkboxOptionsKeys } from "./private-types.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";
+import { resolveWorkboxCommon } from "./resolve-workbox-common.js";
 import type { PluginOptions } from "./types.js";
 import { isInjectManifestConfig, overrideAfterCalledMethod } from "./utils.js";
 
@@ -25,16 +25,16 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const getRevision = (file: fs.PathOrFileDescriptor) =>
   crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex");
 
-const withPWAInit = (
-  pluginOptions: PluginOptions = {}
-): ((_?: NextConfig) => NextConfig) => {
+type WithPWA = (_?: NextConfig) => NextConfig;
+
+const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
   return (nextConfig = {}) => ({
     ...nextConfig,
     ...({
       webpack(config: Configuration, options) {
         const isAppDirEnabled = !!nextConfig.experimental?.appDir;
 
-        const webpack: typeof webpackType = options.webpack;
+        const webpack: typeof WebpackType = options.webpack;
         const {
           buildId,
           dev,
@@ -288,65 +288,17 @@ const withPWAInit = (
             }
           }
 
-          const workboxCommon: Pick<
-            GenerateSWConfig,
-            SharedWorkboxOptionsKeys
-          > = {
-            swDest: path.join(_dest, sw),
-            additionalManifestEntries: dev ? [] : manifestEntries,
-            exclude: [
-              ...buildExcludes,
-              ({ asset }: { asset: Asset }) => {
-                if (
-                  asset.name.startsWith("server/") ||
-                  asset.name.match(
-                    /^((app-|^)build-manifest\.json|react-loadable-manifest\.json)$/
-                  )
-                ) {
-                  return true;
-                }
-                if (dev && !asset.name.startsWith("static/runtime/")) {
-                  return true;
-                }
-                return false;
-              },
-            ],
-            modifyURLPrefix: {
-              ...modifyURLPrefix,
-              "/_next/../public/": "/",
-            },
-            manifestTransforms: [
-              ...manifestTransforms,
-              async (manifestEntries, compilation) => {
-                const manifest = manifestEntries.map((m) => {
-                  m.url = m.url.replace(
-                    "/_next//static/image",
-                    "/_next/static/image"
-                  );
-                  m.url = m.url.replace(
-                    "/_next//static/media",
-                    "/_next/static/media"
-                  );
-                  if (m.revision === null) {
-                    let key = m.url;
-                    if (
-                      config.output &&
-                      config.output.publicPath &&
-                      typeof config.output.publicPath === "string" &&
-                      key.startsWith(config.output.publicPath)
-                    ) {
-                      key = m.url.substring(config.output.publicPath.length);
-                    }
-                    const asset = (compilation as any).assetsInfo.get(key);
-                    m.revision = asset ? asset.contenthash || buildId : buildId;
-                  }
-                  m.url = m.url.replace(/\[/g, "%5B").replace(/\]/g, "%5D");
-                  return m;
-                });
-                return { manifest, warnings: [] };
-              },
-            ],
-          };
+          const workboxCommon = resolveWorkboxCommon({
+            dest: _dest,
+            sw,
+            dev,
+            buildId,
+            buildExcludes,
+            manifestEntries,
+            manifestTransforms,
+            modifyURLPrefix,
+            publicPath: config.output?.publicPath,
+          });
 
           if (isInjectManifestConfig(workboxOptions)) {
             const swSrc = path.join(options.dir, workboxOptions.swSrc);
@@ -370,10 +322,7 @@ const withPWAInit = (
               runtimeCaching: userSpecifiedRuntimeCaching,
             } = workboxOptions;
 
-            let runtimeCaching = resolveRuntimeCaching(
-              userSpecifiedRuntimeCaching,
-              extendDefaultRuntimeCaching
-            );
+            let runtimeCaching: RuntimeCaching[];
 
             if (userSpecifiedImportScripts) {
               for (const script of userSpecifiedImportScripts) {
@@ -381,7 +330,7 @@ const withPWAInit = (
               }
             }
 
-            let shutWorkboxAfterCalledMessageUp = false;
+            let shutWorkboxAfterCalledUp = false;
 
             if (dev) {
               logger.info(
@@ -397,7 +346,12 @@ const withPWAInit = (
                   },
                 },
               ];
-              shutWorkboxAfterCalledMessageUp = true;
+              shutWorkboxAfterCalledUp = true;
+            } else {
+              runtimeCaching = resolveRuntimeCaching(
+                userSpecifiedRuntimeCaching,
+                extendDefaultRuntimeCaching
+              );
             }
 
             if (dynamicStartUrl) {
@@ -460,7 +414,7 @@ const withPWAInit = (
               runtimeCaching,
             });
 
-            if (shutWorkboxAfterCalledMessageUp) {
+            if (shutWorkboxAfterCalledUp) {
               overrideAfterCalledMethod(workboxPlugin);
             }
 
