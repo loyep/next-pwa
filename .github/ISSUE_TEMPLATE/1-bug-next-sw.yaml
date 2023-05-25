@@ -1,4 +1,4 @@
-name: Bug report
+name: Bug report for `next-sw`
 description: Create a bug report for `@ducanh2912/next-sw`.
 title: "[BUG - next-sw]: "
 labels: ["bug", "next-sw", "triage"]

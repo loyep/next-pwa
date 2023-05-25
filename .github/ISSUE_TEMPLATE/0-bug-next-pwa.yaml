@@ -1,4 +1,4 @@
-name: Bug report
+name: Bug report for `next-pwa`
 description: Create a bug report for `@ducanh2912/next-pwa`.
 title: "[BUG - next-pwa]: "
 labels: ["bug", "next-pwa", "triage"]
