@@ -15,7 +15,7 @@ interface LogoProps {
 }
 
 export const Logo = ({
-  hideNextLogo,
+  hideNextLogo = false,
   nextLogoWidth,
   nextLogoHeight,
   nextLogoClassName,
@@ -35,7 +35,7 @@ export const Logo = ({
       ...style,
     }}
   >
-    {hideNextLogo && (
+    {!hideNextLogo && (
       <NextSvg
         width={nextLogoWidth}
         height={nextLogoHeight}

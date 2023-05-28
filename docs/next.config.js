@@ -3,23 +3,13 @@
  * @typedef {import("next").NextConfig} NextConfig
  * @typedef {((config?: NextConfig | undefined) => NextConfig) | ((config: NextConfig) => NextConfig)} NextConfigPlugin
  */
-import withPWAInit from "@ducanh2912/next-pwa";
-import withNextraInit from "nextra";
+const withPWAInit = require("@ducanh2912/next-pwa").default;
+const withContentlayer = require("next-contentlayer").withContentlayer;
 
 const withPWA = withPWAInit({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   cacheOnFrontEndNav: true,
-});
-
-const withNextra = withNextraInit({
-  theme: "nextra-theme-docs",
-  themeConfig: "./theme.config.tsx",
-  staticImage: true,
-  flexsearch: {
-    codeblocks: false,
-  },
-  defaultShowCopyCode: true,
 });
 
 /** @type {NextConfig} */
@@ -43,7 +33,7 @@ const nextConfig = {
 };
 
 /** @type {NextConfigPlugin[]} */
-const plugins = [withPWA, withNextra];
+const plugins = [withPWA, withContentlayer];
 
 /**
  * @type {(
@@ -54,4 +44,4 @@ const plugins = [withPWA, withNextra];
 const nextComposePlugins = () =>
   plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
-export default nextComposePlugins;
+module.exports = nextComposePlugins;
