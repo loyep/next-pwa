@@ -36,8 +36,7 @@ export default {
       </span>
     </div>
   ),
-  docsRepositoryBase:
-    "https://github.com/DuCanhGH/next-pwa/tree/master/docs/src/pages",
+  docsRepositoryBase: "https://github.com/DuCanhGH/next-pwa/blob/master/docs",
   project: {
     link: "https://github.com/DuCanhGH/next-pwa",
   },
