@@ -63,7 +63,14 @@ export const GET = async (req: NextRequest) => {
             gap: "0.5rem",
           }}
         >
-          <Logo nextLogoHeight="18px" fontSize="24px" lineHeight="32px" />
+          <Logo
+            nextLogoHeight="18px"
+            nextLogoStyle={{
+              filter: "invert(1)",
+            }}
+            fontSize="24px"
+            lineHeight="32px"
+          />
         </div>
         {title ? (
           <h1

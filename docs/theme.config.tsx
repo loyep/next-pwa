@@ -14,7 +14,7 @@ const notoSansMono = localFont({
 const nextraConfig: DocsThemeConfig = {
   logo: (
     <Logo
-      nextLogoHeight="16px"
+      hideNextLogo
       fontSize="19.2px"
       lineHeight="25.6px"
       className={notoSansMono.className}
@@ -44,11 +44,11 @@ const nextraConfig: DocsThemeConfig = {
         <meta httpEquiv="Content-Language" content="en" />
         <meta
           name="description"
-          content="Make beautiful websites with Next.js & MDX."
+          content="Make performant websites with Next.js & PWA."
         />
         <meta
           name="og:description"
-          content="Make beautiful websites with Next.js & MDX."
+          content="Make performant websites with Next.js & PWA."
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={socialCard} />

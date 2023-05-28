@@ -3,8 +3,11 @@ import type { CSSProperties } from "react";
 import { NextSvg } from "./NextSvg.js";
 
 interface LogoProps {
+  hideNextLogo?: boolean;
   nextLogoWidth?: string;
   nextLogoHeight?: string;
+  nextLogoClassName?: string;
+  nextLogoStyle?: CSSProperties;
   fontSize: string;
   lineHeight: string;
   style?: CSSProperties;
@@ -12,8 +15,11 @@ interface LogoProps {
 }
 
 export const Logo = ({
+  hideNextLogo,
   nextLogoWidth,
   nextLogoHeight,
+  nextLogoClassName,
+  nextLogoStyle,
   fontSize,
   lineHeight,
   style,
@@ -29,16 +35,16 @@ export const Logo = ({
       ...style,
     }}
   >
-    <NextSvg
-      width={nextLogoWidth}
-      height={nextLogoHeight}
-      style={{
-        filter: "invert(100%)",
-      }}
-    />
+    {hideNextLogo && (
+      <NextSvg
+        width={nextLogoWidth}
+        height={nextLogoHeight}
+        className={nextLogoClassName}
+        style={nextLogoStyle}
+      />
+    )}
     <span
       style={{
-        color: "white",
         fontSize,
         lineHeight,
         textTransform: "uppercase",
