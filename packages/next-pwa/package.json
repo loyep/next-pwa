@@ -51,7 +51,7 @@
   ],
   "scripts": {
     "dev": "rimraf dist && rollup -c -w",
-    "build": "rimraf dist && npm run lint && cross-env NODE_ENV=production rollup -c --compact",
+    "build": "rimraf dist && cross-env NODE_ENV=production rollup -c --compact",
     "lint": "eslint src --cache --cache-location ./node_modules/.cache/eslint --ext ts,tsx,js,jsx,cjs,mjs",
     "typecheck": "tsc"
   },

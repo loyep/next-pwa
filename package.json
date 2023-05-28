@@ -9,9 +9,10 @@
     "!examples/**/.next"
   ],
   "scripts": {
-    "build": "cross-env FORCE_COLOR=1 turbo run build --filter=!@next-pwa-example/*",
+    "build": "cross-env FORCE_COLOR=1 turbo run build --filter=!docs --filter=!@next-pwa-example/*",
+    "build:docs": "cross-env FORCE_COLOR=1 turbo run build --filter=docs",
     "deps": "node ncu.js",
-    "dev": "cross-env FORCE_COLOR=1 turbo run dev --parallel --filter=!@next-pwa-example/*",
+    "dev": "cross-env FORCE_COLOR=1 turbo run dev --parallel --filter=!docs --filter=!@next-pwa-example/*",
     "examples:build": "cross-env FORCE_COLOR=1 turbo run build --filter=@next-pwa-example/*",
     "examples:dev": "cross-env FORCE_COLOR=1 turbo run dev --parallel --filter=@next-pwa-example/*",
     "examples:lint": "cross-env FORCE_COLOR=1 turbo run lint --parallel --filter=@next-pwa-example/*",
