@@ -17,6 +17,7 @@ module.exports = {
     project: [
       "tsconfig.json",
       "tsconfig.eslint.json",
+      "docs/tsconfig.json",
       "packages/*/tsconfig.json",
       "examples/*/tsconfig.json",
     ],

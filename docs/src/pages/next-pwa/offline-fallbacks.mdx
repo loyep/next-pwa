@@ -1,0 +1,43 @@
+# Offline fallbacks
+
+With this feature, when fetching (from both cache and network) fails, a precached resource is served rather than an error.
+
+To get started, simply add a `/_offline.tsx` file to `pages/` or a `/~offline/page.tsx` file to `app/`. You are all set!
+When the user is offline, all pages that are not cached will fallback to `/_offline`/`/~offline`.
+
+**[Use this example to see it in action](https://github.com/DuCanhGH/next-pwa/tree/master/examples/offline-fallback-v2)**
+
+To also add a fallback for other resources, change your `next.config.js` like so:
+
+```js
+import withPWAInit from "@ducanh2912/next-pwa";
+
+const withPWA = withPWAInit({
+  // your other options,
+  fallbacks: {
+    // failed page requests fallback to this.
+    document: "/~offline",
+    // this is for /_next/.../.json files.
+    data: "/fallback.json",
+    // this is for images.
+    image: "/fallback.webp",
+    // this is for audio files.
+    audio: "/fallback.mp3",
+    // this is for video files.
+    video: "/fallback.mp4",
+    // this is for fonts.
+    font: "/fallback-font.woff2",
+  },
+});
+
+export default withPWA({
+  // your Next config
+});
+```
+
+`next-pwa` helps you precache those resources on first load, then inject a fallback handler to `handlerDidError` plugin to all
+`runtimeCaching` configs, so that precached resources are served when fetching fails.
+
+You can also setup `precacheFallback.fallbackURL` in your [runtimeCaching array](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-RuntimeCaching)
+to implement a similar functionality. The difference is that the above method is based on the resource type, whereas this method is based on matched URL pattern. If this config
+is set in the `runtimeCaching` config entry, resource-type-based fallback will be disabled automatically for this particular URL pattern to avoid conflicts.

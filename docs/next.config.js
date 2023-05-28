@@ -13,11 +13,22 @@ const withPWA = withPWAInit({
 
 const withNextra = withNextraInit({
   theme: "nextra-theme-docs",
-  themeConfig: "./theme.config.jsx",
+  themeConfig: "./theme.config.tsx",
+  staticImage: true,
+  flexsearch: {
+    codeblocks: false,
+  },
+  defaultShowCopyCode: true,
 });
 
 /** @type {NextConfig} */
 const nextConfig = {
+  experimental: {
+    appDir: true,
+    extensionAlias: {
+      ".js": [".js", ".ts", ".tsx"],
+    },
+  },
   reactStrictMode: true,
   async redirects() {
     return [

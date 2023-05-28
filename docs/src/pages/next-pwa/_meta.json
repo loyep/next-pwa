@@ -1,4 +1,6 @@
 {
   "getting-started": "Getting started",
-  "configuring": "Configuring"
+  "configuring": "Configuring",
+  "tips": "Tips",
+  "offline-fallbacks": "Offline fallbacks"
 }

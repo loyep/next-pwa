@@ -1,10 +1,16 @@
+import { Callout } from "nextra/components";
+
 # Getting started
 
 ## Install
 
-> If you are new to `React` or `Next.js`, you may want to checkout [learn React](https://react.dev/learn),
-> [learn Next.js](https://nextjs.org/learn/basics/create-nextjs-app) and [Next.js documentation](https://nextjs.org/docs) first.
-> Then start from [a simple example](https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic).
+<Callout>
+  If you are new to `React` or `Next.js`, you may want to checkout [learn
+  React](https://react.dev/learn), [learn
+  Next.js](https://nextjs.org/learn/basics/create-nextjs-app) and [Next.js
+  documentation](https://nextjs.org/docs) first, and then start from [a simple
+  example](https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic).
+</Callout>
 
 ```bash
 npm i @ducanh2912/next-pwa
@@ -44,18 +50,24 @@ export default withPWA({
 });
 ```
 
+<Callout>
+  **Note**: This plugin is written in Typescript. JSDoc is supported, and it is
+  recommended to add `// @ts-check` to the top of your `next.config.js` file to
+  leverage type checking as well. This is especially useful when you use
+  `PluginOptions.workboxOptions`, as you may unknowningly mix
+  InjectManifest-specific and GenerateSW-specific options up.
+</Callout>
+
 After running `next build`, this will generate two files in your `public` directory: `workbox-*.js` and `sw.js`, which will
 automatically be served statically.
 
-If you are using Next.js v9+, then skip the section below and move onto step 2.
+### Step 1.5: Next.js < 9
 
-Otherwise, you'll need to pick one of the two options below before continuing to step 2.
+If you are using Next.js >= 9, then skip the section below.
 
-> **NOTE**: This plugin is written in Typescript. JSDoc is supported, and it is recommended to add `// @ts-check` to the
-> top of your `next.config.js` file to leverage type checking as well. This is especially useful when you use
-> `PluginOptions.workboxOptions`, as you may unknowningly mix InjectManifest-specific and GenerateSW-specific options up.
+Otherwise, you'll need to pick one of the two options below before continuing.
 
-### Option 1: Hosting static files
+#### Option 1: Hosting static files
 
 Copy files to your static file hosting server, so that they are accessible from the following paths:
 `https://yourdomain.com/sw.js` and `https://yourdomain.com/workbox-*.js`.
@@ -63,10 +75,13 @@ Copy files to your static file hosting server, so that they are accessible from 
 An example is using Firebase hosting service to host those files statically. You can automate the copying step with scripts
 in your deployment workflow.
 
-> For security reasons, you must host these files directly from your domain. If the content is delivered using a redirect,
-> the browser will refuse to run the service worker.
+<Callout type="warning">
+  For security reasons, you must host these files directly from your domain. If
+  the content is delivered using a redirect, the browser will refuse to run the
+  service worker.
+</Callout>
 
-### Option 2: Using a custom server
+#### Option 2: Using a custom server
 
 Example `server.js`
 
@@ -102,9 +117,13 @@ app.prepare().then(() => {
 });
 ```
 
-> **NOTE**: it is recommended to upgrade your Next.js version instead. Usually, Next.js will provide codemods needed to migrate
-> between major versions (see [Next.js codemods](https://nextjs.org/docs/advanced-features/codemods)). Its releases are often
-> packed with a lot of awesome features, and you shouldn't miss out on them :)
+<Callout>
+  **Note**: it is recommended to upgrade your Next.js version instead. Usually,
+  Next.js will provide codemods needed to migrate between major versions (see
+  [Next.js codemods](https://nextjs.org/docs/advanced-features/codemods)). Its
+  releases are often packed with a lot of awesome features, and you shouldn't
+  miss out on them.
+</Callout>
 
 ### Step 2: Add a manifest.json file
 
@@ -181,15 +200,49 @@ Add the following code to your `_app.tsx`'s `<Head />`:
   <meta property="og:site_name" content="My awesome PWA app" />
   <meta property="og:url" content="https://yourdomain.com" />
   <meta property="og:image" content="/icons/og.png" />
-  {/* Apple splashscreen images
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_2048.png" sizes="2048x2732" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_1668.png" sizes="1668x2224" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_1536.png" sizes="1536x2048" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_1125.png" sizes="1125x2436" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_1242.png" sizes="1242x2208" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_750.png" sizes="750x1334" />
-  <link rel="apple-touch-startup-image" href="/images/apple_splash_640.png" sizes="640x1136" />
-  */}
+</head>
+```
+
+and these if you want to add a startup image for Apple devices.
+
+```tsx
+<head>
+  {/* the above code */}
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_2048.png"
+    sizes="2048x2732"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_1668.png"
+    sizes="1668x2224"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_1536.png"
+    sizes="1536x2048"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_1125.png"
+    sizes="1125x2436"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_1242.png"
+    sizes="1242x2208"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_750.png"
+    sizes="750x1334"
+  />
+  <link
+    rel="apple-touch-startup-image"
+    href="/images/apple_splash_640.png"
+    sizes="640x1136"
+  />
 </head>
 ```
 
@@ -239,48 +292,3 @@ export const metadata: Metadata = {
   },
 };
 ```
-
-## Configuring
-
-See [Configuring](./configuring)
-
-## Offline fallbacks
-
-With this feature, when fetching (from both cache and network) fails, a precached resource is served rather than an error.
-
-To get started, simply add a `/_offline.tsx` file to `pages/` or a `/~offline/page.tsx` file to `app/`. You are all set!
-When the user is offline, all pages which are not cached will fallback to `/_offline`.
-
-**[Use this example to see it in action](https://github.com/DuCanhGH/next-pwa/tree/master/examples/offline-fallback-v2)**
-
-`next-pwa` helps you precache those resources on first load, then inject a fallback handler to `handlerDidError` plugin to all
-`runtimeCaching` configs, so that precached resources are served when fetching fails.
-
-You can also setup `precacheFallback.fallbackURL` in your [runtimeCaching array](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-RuntimeCaching)
-to implement a similar functionality. The difference is that the above method is based on the resource type, whereas this method is based on matched URL pattern. If this config
-is set in the `runtimeCaching` config entry, resource-type-based fallback will be disabled automatically for this particular URL pattern to avoid conflicts.
-
-## Tips
-
-- [You may want to ask user to reload when a new service worker is installed](https://github.com/DuCanhGH/next-pwa/tree/master/examples/lifecycle/pages/index.tsx#L20-L41)
-
-- When you are debugging the service worker, remember to constantly clean the application cache to reduce some flaky errors.
-
-- If you are redirecting the user to another route, please note that [Workbox by default only caches responses with 200 HTTP
-  status](https://developer.chrome.com/docs/workbox/modules/workbox-cacheable-response#what_are_the_defaults), if you really want to cache redirected page for the route, you can specify it in `runtimeCaching` by setting `options.cacheableResponse.statuses` to `[200, 302]`.
-
-- When debugging issues, sometimes you may want to format your generated `sw.js` file to figure out what's really going on.
-  In development mode it is not minified though, so it is kinda readable.
-
-- You can force `next-pwa` to generate the SW in production mode by setting `workboxOptions.mode` in your `withPWAInit` config
-  to "production" in `next.config.js`. By default, `next-pwa` generates the SW in development mode during development (`next dev`)
-  and in production mode during production (`next build` and `next start`), but you may still want to force it to build in production
-  mode even during development because of one of these reasons:
-
-  - Reduced logging noise as the production build doesn't include logging.
-  - Improved performance as the production build is better optimized.
-
-  However, if you just want to disable worker box's logging while still using the development build during development,
-  [simply put `self.__WB_DISABLE_DEV_LOGS = true` in your `worker/index.ts` (create one if you don't have it)](https://github.com/DuCanhGH/next-pwa/tree/master/examples/custom-worker/worker/index.ts#L7-L10).
-
-- Sometimes you have to use the `userAgent` string to determine your user's platform, and [ua-parser-js](https://www.npmjs.com/package/ua-parser-js) is a good library for that.
