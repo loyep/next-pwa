@@ -1,5 +1,5 @@
-name: Feedback for the documentation
-description: Create a feedback for `next-pwa`/`next-sw`'s documentation.
+name: Documentation feedback
+description: Create a feedback for the documentation.
 title: "[DOCS]: "
 labels: ["docs", "triage"]
 assignees:
