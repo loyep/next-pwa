@@ -3,13 +3,13 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 import { Navbar } from "@/components/Navbar/index.js";
-import { docsDomain as DOCS_DOMAIN } from "@/shared/constants.js";
+import { DOCS_DOMAIN } from "@/shared/constants.js";
 import type { LayoutComponent } from "@/shared/types.js";
 
 import { MetaThemeColor } from "./MetaThemeColor.js";
 import { RootClientLogic } from "./RootClientLogic.js";
 
-export const dynamic = "error";
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   metadataBase: new URL(DOCS_DOMAIN),
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout: LayoutComponent = ({ children }) => (
-  <html lang="en" data-theme="light" suppressHydrationWarning>
+  <html lang="en" dir="ltr" data-theme="light" suppressHydrationWarning>
     <head>
       <script
         id="get-initial-color-scheme"

@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { ImageResponse } from "next/server";
 
 import { Logo } from "@/components/Logo.js";
-import { docsDomain } from "@/shared/constants.js";
+import { DOCS_DOMAIN } from "@/shared/constants.js";
 
 export const runtime = "edge";
 
@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest) => {
           <></>
         )}
         <h3 tw="text-lg font-bold leading-7 sm:text-xl sm:tracking-tight">
-          {docsDomain}
+          {DOCS_DOMAIN}
         </h3>
       </div>
     ),

@@ -1,10 +1,14 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { clsx } from "@/utils/clsx.js";
 
-export interface TextProps extends ComponentPropsWithoutRef<"p"> {
+export interface TextProps
+  extends DetailedHTMLProps<
+    HTMLAttributes<HTMLParagraphElement>,
+    HTMLParagraphElement
+  > {
   variant?: "default" | "error";
 }
 

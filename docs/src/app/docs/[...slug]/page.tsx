@@ -1,10 +1,12 @@
 import { allDocs } from "contentlayer/generated";
 import { getMDXComponent } from "next-contentlayer/hooks";
 
+import { GITHUB_REPO_URL } from "@/shared/constants.js";
 import { mdxComponents } from "@/shared/mdxComponents.js";
 import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
 
-export const revalidate = false;
+export const revalidate = false,
+  dynamicParams = false;
 
 export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));
@@ -38,7 +40,7 @@ const PostLayout: PageComponent = async ({ params }) => {
           </p>
           <div className="mt-8 border-t pt-8 sticky bottom-0 flex flex-col items-start gap-2 pb-8 dark:border-neutral-800 contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400">
             <a
-              href="#"
+              href={`${GITHUB_REPO_URL}/issues/new/choose`}
               target="_blank"
               rel="noreferrer"
               className="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
@@ -47,8 +49,8 @@ const PostLayout: PageComponent = async ({ params }) => {
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
             <a
+              href={`${GITHUB_REPO_URL}/tree/master/docs/content/${post._raw.sourceFilePath}`}
               className="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
-              href="#"
             >
               Edit this page
             </a>
