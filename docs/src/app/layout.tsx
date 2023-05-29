@@ -9,7 +9,8 @@ import type { LayoutComponent } from "@/shared/types.js";
 import { MetaThemeColor } from "./MetaThemeColor.js";
 import { RootClientLogic } from "./RootClientLogic.js";
 
-export const dynamic = "force-static";
+export const dynamic = "force-static",
+  revalidate = false;
 
 export const metadata: Metadata = {
   metadataBase: new URL(DOCS_DOMAIN),

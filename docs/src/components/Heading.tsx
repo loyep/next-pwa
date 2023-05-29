@@ -4,8 +4,6 @@ import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { clsx } from "@/utils/clsx.js";
-import { getNodeText } from "@/utils/getNodeText.js";
-import { sluggifyTitle } from "@/utils/sluggifyTitle.js";
 
 export interface HeadingProps
   extends DetailedHTMLProps<
@@ -44,14 +42,7 @@ const mapTypeToComponent: Record<
 
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
   (
-    {
-      children,
-      id = sluggifyTitle(getNodeText(children)),
-      variant = "default",
-      className,
-      type = "title",
-      ...rest
-    },
+    { children, id, variant = "default", className, type = "title", ...rest },
     ref
   ) => {
     const mappedComponent = mapTypeToComponent[type];
@@ -71,14 +62,18 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
         {...rest}
       >
         {children}
-        <span className="absolute -mt-20" id={id} />
-        <a
-          href={`#${id}`}
-          className="ml-2 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline"
-          aria-label="Permalink for this section"
-        >
-          #
-        </a>
+        {id && (
+          <>
+            <span className="absolute -mt-20" id={id} />
+            <a
+              href={`#${id}`}
+              className="ml-2 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline"
+              aria-label="Permalink for this section"
+            >
+              #
+            </a>
+          </>
+        )}
       </Component>
     );
   }
