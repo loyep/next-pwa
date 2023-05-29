@@ -1,10 +1,10 @@
 import type { Root } from "mdast";
 import { mdxToMarkdown } from "mdast-util-mdx";
 import { toMarkdown } from "mdast-util-to-markdown";
-import { toc } from "mdast-util-toc";
 import { bundleMDX } from "mdx-bundler";
 
 import { rehypePlugins, remarkPlugins } from "./contentlayer.constants.js";
+import { toc } from "./md-plugins/toc/index.js";
 
 export const generateToc = async (markdownContent: string) => {
   let headings = "";

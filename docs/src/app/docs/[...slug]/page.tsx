@@ -6,9 +6,7 @@ import { GITHUB_REPO_URL } from "@/shared/constants.js";
 import { mdxComponents } from "@/shared/mdxComponents.js";
 import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
 import { capitalizeFirstLetters } from "@/utils/capitalizeFirstLetters.js";
-import { clsx } from "@/utils/clsx";
-
-export const dynamicParams = false;
+import { clsx } from "@/utils/clsx.js";
 
 export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));

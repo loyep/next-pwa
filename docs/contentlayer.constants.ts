@@ -1,7 +1,8 @@
 import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import rehypeSlug from "rehype-slug";
 import type { PluggableList } from "unified";
+
+import rehypeSlug from "./md-plugins/sluggify.js";
 
 export const rehypePlugins: PluggableList = [
   [
