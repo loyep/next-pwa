@@ -20,9 +20,29 @@ const filterLegacyRef = <T,>(ref: LegacyRef<T> | undefined) =>
 export const mdxComponents: MDXComponents = {
   Callout,
   a: ({ className, href, ref, ...rest }) => {
-    const resolvedClassName = twMerge("text-blue-500 underline", className);
-    const isSameLink = href && (href.startsWith("/") || href.startsWith("#"));
-    if (isSameLink) {
+    // Hash URLs
+    if (href && href.startsWith("#")) {
+      return (
+        <a
+          href={href}
+          className={twMerge(
+            "text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
+            "contrast-more:text-gray-800 contrast-more:dark:text-gray-50",
+            className
+          )}
+          ref={ref}
+          {...rest}
+        />
+      );
+    }
+
+    const resolvedClassName = twMerge(
+      "text-blue-500 underline",
+      "contrast-more:text-blue-800",
+      className
+    );
+    // Same origin
+    if (href && href.startsWith("/")) {
       return (
         <Link
           href={href}
@@ -74,16 +94,13 @@ export const mdxComponents: MDXComponents = {
   ),
   ul: ({ className, ...rest }) => (
     <ul
-      className={twMerge(
-        "mt-6 list-disc first:mt-0 ltr:ml-6 rtl:mr-6",
-        className
-      )}
+      className={twMerge("list-disc first:mt-0 ltr:ml-6 rtl:mr-6", className)}
       {...rest}
     />
   ),
   li: ({ className, ...rest }) => (
     <li
-      className={twMerge("my-2 [&>ul]:pl-4", TEXT_COLOR, className)}
+      className={twMerge("my-2 [&>ul]:pl-1 break-words", TEXT_COLOR, className)}
       {...rest}
     />
   ),

@@ -50,6 +50,7 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
     return (
       <Component
         ref={ref}
+        id={id}
         className={twMerge(
           "group break-words relative",
           clsx({
@@ -63,16 +64,13 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
       >
         {children}
         {id && (
-          <>
-            <span className="absolute -mt-20" id={id} />
-            <a
-              href={`#${id}`}
-              className="ml-2 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline"
-              aria-label="Permalink for this section"
-            >
-              #
-            </a>
-          </>
+          <a
+            href={`#${id}`}
+            className="ml-2 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline"
+            aria-label="Permalink for this section"
+          >
+            #
+          </a>
         )}
       </Component>
     );

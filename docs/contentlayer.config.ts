@@ -1,6 +1,7 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
-import rehypeHighlight from "rehype-highlight";
-import rehypeSlug from "rehype-slug";
+
+import { rehypePlugins, remarkPlugins } from "./contentlayer.constants.js";
+import { generateToc } from "./contentlayer.utils.js";
 
 const Docs = defineDocumentType(() => ({
   name: "Docs",
@@ -18,6 +19,10 @@ const Docs = defineDocumentType(() => ({
       type: "string",
       resolve: (doc) => `/docs/${doc._raw.flattenedPath}`,
     },
+    headings: {
+      type: "string",
+      resolve: (doc) => generateToc(doc.body.raw),
+    },
   },
 }));
 
@@ -25,6 +30,7 @@ export default makeSource({
   contentDirPath: "content",
   documentTypes: [Docs],
   mdx: {
-    rehypePlugins: [rehypeHighlight, rehypeSlug],
+    rehypePlugins,
+    remarkPlugins,
   },
 });

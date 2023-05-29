@@ -6,6 +6,7 @@ import { GITHUB_REPO_URL } from "@/shared/constants.js";
 import { mdxComponents } from "@/shared/mdxComponents.js";
 import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
 import { capitalizeFirstLetters } from "@/utils/capitalizeFirstLetters.js";
+import { clsx } from "@/utils/clsx";
 
 export const dynamicParams = false;
 
@@ -34,6 +35,12 @@ export const generateMetadata: GenerateMetadata = ({ params }) => {
   };
 };
 
+const navFooterTextClassName = clsx(
+  "text-xs font-medium",
+  "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
+  "contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
+);
+
 const PostLayout: PageComponent = async ({ params }) => {
   const slug = params.slug.join("/");
   const post = allDocs.find((post) => post._raw.flattenedPath === slug);
@@ -42,33 +49,47 @@ const PostLayout: PageComponent = async ({ params }) => {
     notFound();
   }
 
+  const TableOfContents = getMDXComponent(post.headings);
+
   const Content = getMDXComponent(post.body.code);
 
   return (
     <>
       <nav
-        className="order-last hidden min-w-[300px] shrink-0 xl:block print:hidden px-4"
-        aria-label="table of contents"
+        className="order-last hidden w-[300px] shrink-0 xl:block print:hidden px-4"
+        aria-label="Table of contents"
       >
-        <div className="sticky top-16 overflow-y-auto pr-4 pt-6 text-sm hyphens-auto max-h-full ltr:-mr-4 rtl:-ml-4">
+        <div className="sticky flex flex-col max-h-[calc(100vh-100px)] top-16 pr-4 pt-6 text-sm hyphens-auto ltr:-mr-4 rtl:-ml-4">
           <p className="mb-4 font-semibold tracking-tight dark:text-white text-black">
             On This Page
           </p>
-          <div className="mt-8 border-t pt-8 sticky bottom-0 flex flex-col items-start gap-2 pb-8 dark:border-neutral-800 contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400">
+          <div className="overflow-y-auto w-full self-stretch">
+            <TableOfContents components={mdxComponents} />
+          </div>
+          <div
+            className={clsx(
+              "mt-8 border-t pt-8 sticky bottom-0 flex flex-col items-start gap-2 pb-8",
+              "dark:border-neutral-800",
+              "contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400"
+            )}
+          >
             <a
               href={`${GITHUB_REPO_URL}/issues/new/choose`}
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
+              className={navFooterTextClassName}
             >
               Question? Give us feedback →
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
             <a
               href={`${GITHUB_REPO_URL}/tree/master/docs/content/${post._raw.sourceFilePath}`}
-              className="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
+              target="_blank"
+              rel="noreferrer"
+              className={navFooterTextClassName}
             >
-              Edit this page
+              Edit this page →
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>
         </div>
