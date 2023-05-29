@@ -4,6 +4,8 @@ import { getMDXComponent } from "next-contentlayer/hooks";
 import { mdxComponents } from "@/shared/mdxComponents.js";
 import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
 
+export const revalidate = false;
+
 export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));
 

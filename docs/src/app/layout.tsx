@@ -9,15 +9,38 @@ import type { LayoutComponent } from "@/shared/types.js";
 import { MetaThemeColor } from "./MetaThemeColor.js";
 import { RootClientLogic } from "./RootClientLogic.js";
 
+export const dynamic = "error";
+
 export const metadata: Metadata = {
   metadataBase: new URL(DOCS_DOMAIN),
+  alternates: {
+    canonical: "./",
+  },
+  referrer: "no-referrer",
   title: {
     default: "Next PWA",
     template: "%s - Next PWA",
   },
   description: "Make performant websites with Next.js & PWA.",
+  applicationName: "Next PWA",
+  authors: [{ name: "DuCanhGH", url: "https://github.com/DuCanhGH/" }],
+  keywords:
+    "react, pwa, service-worker, progressive-web-app, nextjs, next.js, workbox",
+  openGraph: {
+    type: "website",
+    title: {
+      default: "Next PWA",
+      template: "%s - Next PWA",
+    },
+    description: "Make performant websites with Next.js & PWA.",
+  },
   twitter: {
     card: "summary_large_image",
+    title: {
+      default: "Next PWA",
+      template: "%s - Next PWA",
+    },
+    description: "Make performant websites with Next.js & PWA.",
   },
 };
 
