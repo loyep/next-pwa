@@ -6,6 +6,7 @@ import type { LegacyRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { Callout } from "@/components/Callout.js";
+import { Code } from "@/components/Code.js";
 import { Heading } from "@/components/Heading.js";
 import { Text } from "@/components/Text.js";
 import { clsx } from "@/utils/clsx.js";
@@ -63,7 +64,13 @@ export const mdxComponents: MDXComponents = {
       />
     );
   },
-  p: ({ ref, ...rest }) => <Text ref={filterLegacyRef(ref)} {...rest} />,
+  p: ({ className, ref, ...rest }) => (
+    <Text
+      ref={filterLegacyRef(ref)}
+      className={clsx("mt-6", className)}
+      {...rest}
+    />
+  ),
   h1: ({ ref, ...rest }) => (
     <Heading type="display" ref={filterLegacyRef(ref)} {...rest} />
   ),
@@ -81,17 +88,7 @@ export const mdxComponents: MDXComponents = {
   h4: ({ ref, ...rest }) => (
     <Heading type="subtitle" ref={filterLegacyRef(ref)} {...rest} />
   ),
-  code: ({ className, ...rest }) => (
-    <code
-      className={twMerge(
-        "my-6 rounded-md break-words py-0.5 px-[.25em] text-[.9em]",
-        "border-black border-opacity-[0.04] border dark:border-white/10",
-        className
-      )}
-      dir="ltr"
-      {...rest}
-    />
-  ),
+  code: ({ ref, ...rest }) => <Code ref={filterLegacyRef(ref)} {...rest} />,
   ul: ({ className, ...rest }) => (
     <ul
       className={twMerge("list-disc first:mt-0 ltr:ml-6 rtl:mr-6", className)}
@@ -100,7 +97,11 @@ export const mdxComponents: MDXComponents = {
   ),
   li: ({ className, ...rest }) => (
     <li
-      className={twMerge("my-2 [&>ul]:pl-1 break-words", TEXT_COLOR, className)}
+      className={twMerge(
+        "my-4 [&>ul]:pl-1 [&>*]:!my-0 break-words",
+        TEXT_COLOR,
+        className
+      )}
       {...rest}
     />
   ),

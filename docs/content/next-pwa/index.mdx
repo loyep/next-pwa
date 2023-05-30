@@ -1,0 +1,31 @@
+---
+title: Introduction
+type: Docs
+---
+
+# Introduction
+
+Welcome to the `next-pwa` documentation!
+
+## What is `next-pwa`?
+
+`next-pwa` is a plugin for Next.js that allows you to create a progressive web app with it.
+
+With it, building a PWA is simply painless, just drop `withPWA` into your `next.config.js` and you are already good to go!
+
+It is also really configurable as it uses `workbox` under the hood to build the service worker.
+
+## How to install `next-pwa`?
+
+See [Getting started](/docs/next-pwa/getting-started). It should have abundant information on how to set the plugin up, including additional information for
+older versions of Next.js and tips!
+
+## And how to configure it?
+
+See [Configuring](/docs/next-pwa/configuring). All available options are listed there!
+
+## Does it support offline mode?
+
+Yes! Offline mode is supported out of the box. Assets such as `.js` files, `.css` files, images are automatically cached as they are requested (some are even
+precached!). Pages are also cached as you visits them. If you are offline before they are cached,you won't be disappointed still [should you have offline
+fallbacks enabled](/docs/next-pwa/offline-fallbacks).

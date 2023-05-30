@@ -40,7 +40,7 @@ const PostLayout: PageComponent = async ({ params }) => {
   return (
     <>
       <nav
-        className="order-last hidden w-[300px] shrink-0 xl:block print:hidden px-4"
+        className="order-last hidden w-[350px] shrink-0 xl:block print:hidden px-4"
         aria-label="Table of contents"
       >
         <div className="sticky flex flex-col max-h-[calc(100vh-100px)] top-16 pr-4 pt-6 text-sm hyphens-auto ltr:-mr-4 rtl:-ml-4">
@@ -78,8 +78,8 @@ const PostLayout: PageComponent = async ({ params }) => {
           </div>
         </div>
       </nav>
-      <article className="py-8 min-w-0 w-fit">
-        <main className="min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+      <article className="py-8 min-w-0 w-full">
+        <main className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
           <Content components={mdxComponents} />
         </main>
       </article>
