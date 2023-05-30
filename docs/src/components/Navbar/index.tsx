@@ -13,6 +13,7 @@ import { NavLink } from "./Link/index.js";
 
 const notoSansMono = localFont({
   src: "../../shared/notoSansMono.ttf",
+  style: "normal",
   display: "swap",
 });
 
@@ -29,13 +30,11 @@ export const Navbar: FC = () => (
           <NavMobileBurger />
         </div>
         <div className="flex flex-1 items-center justify-center sm:flex-none sm:items-stretch sm:justify-start">
-          <NavLink href="/home" aria-label="Go to home">
+          <NavLink href="/" aria-label="Go to home">
             <Logo
-              nextLogoHeight="16px"
+              containerClassName={notoSansMono.className}
+              nextLogoHeight={16}
               nextLogoClassName="dark:invert"
-              fontSize="19.2px"
-              lineHeight="25.6px"
-              className={notoSansMono.className}
             />
           </NavLink>
         </div>

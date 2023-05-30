@@ -36,12 +36,11 @@ export const generateOGImage = async (
           }}
         >
           <Logo
-            nextLogoHeight="18px"
+            nextLogoHeight={18}
             nextLogoStyle={{
               filter: "invert(1)",
             }}
-            fontSize="24px"
-            lineHeight="32px"
+            noMoveTextUp
           />
         </div>
         {providedTitle ? (

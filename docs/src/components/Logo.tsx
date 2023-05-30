@@ -3,55 +3,49 @@ import type { CSSProperties } from "react";
 import { NextSvg } from "./NextSvg.js";
 
 interface LogoProps {
-  hideNextLogo?: boolean;
-  nextLogoWidth?: string;
-  nextLogoHeight?: string;
+  containerClassName?: string;
+  nextLogoHeight?: number;
   nextLogoClassName?: string;
   nextLogoStyle?: CSSProperties;
-  fontSize: string;
-  lineHeight: string;
-  style?: CSSProperties;
-  className?: string;
+  textStyle?: CSSProperties;
+  noMoveTextUp?: true;
 }
 
 export const Logo = ({
-  hideNextLogo = false,
-  nextLogoWidth,
-  nextLogoHeight,
+  containerClassName,
+  nextLogoHeight = 20,
   nextLogoClassName,
   nextLogoStyle,
-  fontSize,
-  lineHeight,
-  style,
-  className,
+  textStyle,
+  noMoveTextUp,
 }: LogoProps) => (
   <div
-    className={className}
     style={{
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       gap: "0.5rem",
-      ...style,
     }}
+    className={containerClassName}
   >
-    {!hideNextLogo && (
-      <NextSvg
-        width={nextLogoWidth}
-        height={nextLogoHeight}
-        className={nextLogoClassName}
-        style={nextLogoStyle}
-      />
-    )}
-    <span
+    <NextSvg
+      height={nextLogoHeight}
+      className={nextLogoClassName}
+      style={nextLogoStyle}
+    />
+    <p
       style={{
-        fontSize,
-        lineHeight,
+        fontSize: nextLogoHeight * 1.32,
         textTransform: "uppercase",
         letterSpacing: "0.1em",
+        padding: 0,
+        ...(!noMoveTextUp && {
+          marginTop: "-1px",
+        }),
+        ...textStyle,
       }}
     >
       PWA
-    </span>
+    </p>
   </div>
 );
