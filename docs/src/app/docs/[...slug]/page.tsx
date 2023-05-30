@@ -8,6 +8,10 @@ import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
 import { capitalizeFirstLetters } from "@/utils/capitalizeFirstLetters.js";
 import { clsx } from "@/utils/clsx.js";
 
+export const dynamic = "force-static",
+  dynamicParams = false,
+  revalidate = false;
+
 export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));
 
