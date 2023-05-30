@@ -27,6 +27,6 @@
     "@types/semver": "7.5.0",
     "rollup": "3.23.0",
     "type-fest": "3.11.0",
-    "typescript": "5.2.0-dev.20230524"
+    "typescript": "5.2.0-dev.20230530"
   }
 }

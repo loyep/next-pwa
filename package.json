@@ -28,14 +28,14 @@
     "@changesets/cli": "2.26.1",
     "@ducanh2912/next-pwa": "workspace:*",
     "@ducanh2912/next-sw": "workspace:*",
-    "@types/node": "20.2.3",
+    "@types/node": "20.2.5",
     "@types/shell-quote": "1.7.1",
-    "@typescript-eslint/eslint-plugin": "5.59.7",
-    "@typescript-eslint/parser": "5.59.7",
+    "@typescript-eslint/eslint-plugin": "5.59.8",
+    "@typescript-eslint/parser": "5.59.8",
     "cross-env": "7.0.3",
     "eslint": "8.41.0",
     "eslint-config-prettier": "8.8.0",
-    "eslint-plugin-jsdoc": "44.2.5",
+    "eslint-plugin-jsdoc": "45.0.0",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "fast-glob": "3.2.12",
     "husky": "8.0.3",
@@ -46,8 +46,8 @@
     "shell-quote": "1.8.1",
     "tslib": "2.5.2",
     "turbo": "1.9.9",
-    "typescript": "5.2.0-dev.20230524",
-    "webpack": "5.84.0"
+    "typescript": "5.2.0-dev.20230530",
+    "webpack": "5.84.1"
   },
   "packageManager": "pnpm@8.3.0"
 }

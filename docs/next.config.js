@@ -14,6 +14,7 @@ const withPWA = withPWAInit({
 
 /** @type {NextConfig} */
 const nextConfig = {
+  output: "export",
   experimental: {
     appDir: true,
     extensionAlias: {
@@ -21,15 +22,6 @@ const nextConfig = {
     },
   },
   reactStrictMode: true,
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/home",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 /** @type {NextConfigPlugin[]} */

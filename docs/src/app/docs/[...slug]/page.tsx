@@ -5,12 +5,7 @@ import { getMDXComponent } from "next-contentlayer/hooks";
 import { GITHUB_REPO_URL } from "@/shared/constants.js";
 import { mdxComponents } from "@/shared/mdxComponents.js";
 import type { GenerateMetadata, PageComponent } from "@/shared/types.js";
-import { capitalizeFirstLetters } from "@/utils/capitalizeFirstLetters.js";
 import { clsx } from "@/utils/clsx.js";
-
-export const dynamic = "force-static",
-  dynamicParams = false,
-  revalidate = false;
 
 export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));
@@ -19,21 +14,8 @@ export const generateMetadata: GenerateMetadata = ({ params }) => {
   const post = allDocs.find(
     (post) => post._raw.flattenedPath === params.slug.join("/")
   );
-  const title =
-    post?.title &&
-    capitalizeFirstLetters(
-      post.title.length > 20 ? `${post.title.slice(0, 20)}...` : post.title
-    );
   return {
     title: post?.title,
-    openGraph: {
-      title: post?.title,
-      images: `/og?title=${title}`,
-    },
-    twitter: {
-      title: post?.title,
-      images: `/og?title=${title}`,
-    },
   };
 };
 
@@ -96,8 +78,8 @@ const PostLayout: PageComponent = async ({ params }) => {
           </div>
         </div>
       </nav>
-      <article className="py-8 min-w-0 w-full">
-        <main className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+      <article className="py-8 min-w-0 w-fit">
+        <main className="min-w-0 max-w-6xl px-6 pt-4 md:px-12">
           <Content components={mdxComponents} />
         </main>
       </article>

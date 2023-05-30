@@ -56,16 +56,16 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@swc/core": "1.3.59",
+    "@swc/core": "1.3.61",
     "clean-webpack-plugin": "4.0.0",
     "fast-glob": "3.2.12",
     "semver": "7.5.1",
     "swc-loader": "0.2.3",
     "terser-webpack-plugin": "5.3.9",
-    "workbox-build": "6.5.4",
-    "workbox-core": "6.5.4",
-    "workbox-webpack-plugin": "6.5.4",
-    "workbox-window": "6.5.4"
+    "workbox-build": "6.6.0",
+    "workbox-core": "6.6.0",
+    "workbox-webpack-plugin": "6.6.0",
+    "workbox-window": "6.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "5.0.0",
@@ -73,18 +73,18 @@
     "@rollup/plugin-node-resolve": "15.0.2",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.1",
-    "@types/node": "20.2.3",
+    "@types/node": "20.2.5",
     "@types/semver": "7.5.0",
     "chalk": "5.2.0",
-    "next": "13.4.3",
+    "next": "13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rollup": "3.23.0",
     "rollup-plugin-dts": "5.3.0",
     "type-fest": "3.11.0",
-    "typescript": "5.2.0-dev.20230524",
+    "typescript": "5.2.0-dev.20230530",
     "utils": "workspace:*",
-    "webpack": "5.84.0"
+    "webpack": "5.84.1"
   },
   "peerDependencies": {
     "next": ">=9.1.0",

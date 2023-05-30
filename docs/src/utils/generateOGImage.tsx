@@ -1,25 +1,23 @@
-import type { NextRequest } from "next/server";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { ImageResponse } from "next/server";
 
 import { Logo } from "@/components/Logo.js";
 import { DOCS_DOMAIN } from "@/shared/constants.js";
-import { capitalizeFirstLetters } from "@/utils/capitalizeFirstLetters.js";
 
-export const runtime = "edge";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const GET = async (req: NextRequest) => {
-  const notoSansMono = await fetch(
-    new URL("../../shared/notoSansMono.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
-  const { searchParams } = new URL(req.url);
-
-  const providedTitle = searchParams.get("title") || "";
-
-  const title = capitalizeFirstLetters(
-    providedTitle.length > 50
-      ? `${providedTitle.slice(0, 50)}...`
-      : providedTitle
+export const generateOGImage = async (
+  size: {
+    width: number;
+    height: number;
+  },
+  providedTitle = ""
+) => {
+  const notoSansMono = await fs.readFile(
+    path.join(__dirname, "../shared/notoSansMono.ttf")
   );
 
   return new ImageResponse(
@@ -46,14 +44,14 @@ export const GET = async (req: NextRequest) => {
             lineHeight="32px"
           />
         </div>
-        {title ? (
+        {providedTitle ? (
           <h1
             tw="w-full text-6xl font-bold leading-[60px] sm:text-7xl sm:tracking-tight"
             style={{
               wordBreak: "break-word",
             }}
           >
-            {title}
+            {providedTitle}
           </h1>
         ) : (
           <></>
@@ -64,8 +62,7 @@ export const GET = async (req: NextRequest) => {
       </div>
     ),
     {
-      width: 1200,
-      height: 600,
+      ...size,
       fonts: [
         {
           name: "Noto Sans Mono",
