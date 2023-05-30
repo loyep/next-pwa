@@ -76,11 +76,6 @@ for (const { input, output, external, plugins } of files) {
       input,
       output,
       external,
-      watch: {
-        chokidar: {
-          usePolling: false,
-        },
-      },
       plugins: [
         nodeResolve({
           exportConditions: ["node"],
@@ -107,11 +102,6 @@ for (const { input, output, external, plugins } of declarations) {
       input,
       output,
       external,
-      watch: {
-        chokidar: {
-          usePolling: false,
-        },
-      },
       plugins: [dts(), ...[plugins ?? []]],
     })
   );

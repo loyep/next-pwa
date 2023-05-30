@@ -33,9 +33,10 @@
     "serviceworker"
   ],
   "scripts": {
-    "dev": "rimraf dist && rollup -c -w",
-    "build": "rimraf dist && cross-env NODE_ENV=production rollup -c --compact",
-    "lint": "eslint src --cache --cache-location ./node_modules/.cache/eslint --ext ts,tsx,js,jsx,cjs,mjs",
+    "dev": "pnpm run roll --watch",
+    "build": "rimraf dist && cross-env NODE_ENV=production pnpm run roll --compact",
+    "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs",
+    "roll": "rollup --config",
     "typecheck": "tsc"
   },
   "dependencies": {

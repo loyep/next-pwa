@@ -10,6 +10,7 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "turbo",
     "prettier",
   ],
   parserOptions: {
@@ -35,5 +36,11 @@ module.exports = {
     "no-extra-boolean-cast": "off",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
+    "turbo/no-undeclared-env-vars": [
+      "error",
+      {
+        allowList: ["^__PWA_FALLBACK_(.*)__+$"],
+      },
+    ],
   },
 };

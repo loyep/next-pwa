@@ -30,11 +30,6 @@ export default files.map(({ input, output, external, plugins }) =>
     input,
     output,
     external,
-    watch: {
-      chokidar: {
-        usePolling: false,
-      },
-    },
     plugins: [
       nodeResolve({
         exportConditions: ["node"],
