@@ -1,9 +1,9 @@
 // Source (MIT): https://github.com/syntax-tree/mdast-util-toc
 import type { List } from "mdast";
 
-import { contents } from "./contents.js";
-import { search } from "./search.js";
-import { toExpression } from "./toExpression.js";
+import { contents } from "./tocContents.js";
+import { search } from "./tocSearch.js";
+import { toExpression } from "./tocToExpression.js";
 import type { Node, Options } from "./types.js";
 
 /**

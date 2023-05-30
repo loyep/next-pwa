@@ -4,7 +4,7 @@ import { toMarkdown } from "mdast-util-to-markdown";
 import { bundleMDX } from "mdx-bundler";
 
 import { rehypePlugins, remarkPlugins } from "./contentlayer.constants.js";
-import { toc } from "./md-plugins/toc/index.js";
+import { toc } from "./md-plugins/headings/toc.js";
 
 export const generateToc = async (markdownContent: string) => {
   let headings = "";
@@ -19,8 +19,6 @@ export const generateToc = async (markdownContent: string) => {
         ...remarkPlugins,
         () => {
           return (node: Root) => {
-            // Both mdast-util-toc and rehype-slug uses github-slugger, so we can trust
-            // this.
             const result = toc(node);
 
             if (!result.map) {

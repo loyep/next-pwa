@@ -2,7 +2,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import type { PluggableList } from "unified";
 
-import rehypeSlug from "./md-plugins/sluggify.js";
+import rehypeSlug from "./md-plugins/headings/sluggify.js";
 
 export const rehypePlugins: PluggableList = [
   [

@@ -1,16 +1,16 @@
 import Slugger from "github-slugger";
 import type { Heading } from "mdast";
-import { toString } from "mdast-util-to-string";
 import { convert } from "unist-util-is";
 import { visit } from "unist-util-visit";
 
-import { toExpression } from "./toExpression.js";
+import { toExpression } from "./tocToExpression.js";
 import type {
   Node,
   SearchEntry,
   SearchOptions,
   SearchResult,
 } from "./types.js";
+import { getNodeAsString } from "./utils.js";
 
 const slugs = new Slugger();
 
@@ -39,7 +39,7 @@ export const search = (
   // Visit all headings in `root`.  We `slug` all headings (to account for
   // duplicates), but only create a TOC from top-level headings (by default).
   visit(root, "heading", (node, position, parent) => {
-    const value = toString(node, { includeImageAlt: false });
+    const value = getNodeAsString(node);
     const id: string =
       // @ts-expect-error `hProperties` from <https://github.com/syntax-tree/mdast-util-to-hast>
       node.data && node.data.hProperties && node.data.hProperties.id;
@@ -78,9 +78,8 @@ export const search = (
 
   return {
     index: index === undefined ? -1 : index,
-    // <sindresorhus/eslint-plugin-unicorn#980>
-    // @ts-expect-error Looks like a parent.
-    endIndex: index === undefined ? -1 : endIndex || root.children.length,
+    endIndex:
+      index === undefined ? -1 : endIndex || (root as any).children.length,
     map,
   };
 };

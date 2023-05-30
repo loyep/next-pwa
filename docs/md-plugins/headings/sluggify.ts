@@ -3,9 +3,10 @@ import Slugger from "github-slugger";
 import type { Root } from "hast";
 import { hasProperty } from "hast-util-has-property";
 import { headingRank } from "hast-util-heading-rank";
-import { toString } from "hast-util-to-string";
 import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
+
+import { getNodeAsString } from "./utils.js";
 
 const slugs = new Slugger();
 
@@ -18,7 +19,7 @@ const rehypeSlug: Plugin<any[], Root> = () => {
 
     visit(tree, "element", (node) => {
       if (headingRank(node) && node.properties && !hasProperty(node, "id")) {
-        node.properties.id = slugs.slug(toString(node));
+        node.properties.id = slugs.slug(getNodeAsString(node));
       }
     });
   };
