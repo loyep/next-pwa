@@ -22,7 +22,7 @@ export const mdxComponents: MDXComponents = {
   Callout,
   a: ({ href, className, ref, ...rest }) => {
     // Hash URLs
-    if (href && href.startsWith("#")) {
+    if (href?.startsWith("#")) {
       return (
         <a
           href={href}
@@ -37,7 +37,7 @@ export const mdxComponents: MDXComponents = {
     }
 
     // Same origin
-    if (href && href.startsWith("/")) {
+    if (href?.startsWith("/")) {
       return (
         <LinkUnderline
           href={href}
@@ -47,6 +47,7 @@ export const mdxComponents: MDXComponents = {
         />
       );
     }
+
     return (
       <AnchorLinkUnderline
         href={href}

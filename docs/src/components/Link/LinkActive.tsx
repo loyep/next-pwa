@@ -8,6 +8,11 @@ interface LinkActiveProps extends ComponentPropsWithoutRef<typeof Link> {
   hoverClassName: string;
 }
 
+/**
+ * `next/link` with support for active and hover classnames.
+ * @param props
+ * @returns
+ */
 export const LinkActive: FC<LinkActiveProps> = ({
   href,
   activeClassName,

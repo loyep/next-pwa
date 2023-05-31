@@ -45,9 +45,11 @@ export const buildDocsTree = (docs: Docs[]): DocsTree[] => {
     docUrls.push(doc.url);
   }
 
+  // map a segment to its id, title, url, and child segments.
   const map: BuildMap = {};
 
   for (const doc of docUrls) {
+    // we split the path then add every segment to the map (if they do not exist)
     const splitted = doc.split("/").slice(1);
     let currentPath = `/${splitted[0]}`;
 
@@ -85,6 +87,7 @@ export const buildDocsTree = (docs: Docs[]): DocsTree[] => {
     }
   }
 
+  // build the docs tree from the map
   const result: DocsTree[] = [];
 
   // We don't need `/docs` in the tree, so we do it like this.

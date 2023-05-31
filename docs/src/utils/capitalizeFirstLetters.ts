@@ -9,6 +9,7 @@ export const capitalizeFirstLetters = (text: string) => {
   try {
     return text.replace(/(?<=(?:^|[.?!])\W*)[a-z]/g, (i) => i.toUpperCase());
   } catch {
+    // Safari doesn't support the above RegExp.
     let returnVal = "";
     for (let i = 0; i < text.length; i++) {
       const curCharUpper = text[i].toUpperCase();

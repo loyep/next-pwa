@@ -12,6 +12,9 @@ export interface TextProps
   variant?: "default" | "error";
 }
 
+/**
+ * Simple Text component that supports dark mode.
+ */
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
   ({ variant = "default", className, ...rest }, ref) => (
     <p

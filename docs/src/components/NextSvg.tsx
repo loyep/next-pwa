@@ -1,5 +1,10 @@
 import type { SVGProps } from "react";
 
+/**
+ * Next.js's logo.
+ * @param props
+ * @returns
+ */
 export const NextSvg = (props: Omit<SVGProps<SVGElement>, "ref">) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

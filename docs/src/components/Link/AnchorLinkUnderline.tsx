@@ -10,7 +10,7 @@ type LinkProps = Omit<
 >;
 
 /**
- * next/link, but with underline.
+ * `<a />`, but with underline.
  */
 export const AnchorLinkUnderline = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, ...rest }, ref) => (

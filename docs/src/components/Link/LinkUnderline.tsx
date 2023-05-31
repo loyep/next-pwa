@@ -7,7 +7,7 @@ import { linkUnderlineClassName } from "./classNames.js";
 type LinkProps = ComponentPropsWithoutRef<typeof NextLink>;
 
 /**
- * next/link, but with underline.
+ * `next/link`, but with underline.
  */
 export const LinkUnderline = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, ...rest }, ref) => (

@@ -1,3 +1,4 @@
+// Source (MIT): https://github.com/lukeed/clsx
 export type ClassDictionary = Record<string, any>;
 export type ClassArray = ClassValue[];
 export type ClassValue =

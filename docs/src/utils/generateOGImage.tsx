@@ -9,6 +9,12 @@ import { DOCS_DOMAIN } from "@/shared/constants.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+/**
+ * Generate a `@vercel/og` ImageResponse for OG images with title.
+ * @param size
+ * @param providedTitle
+ * @returns
+ */
 export const generateOGImage = async (
   size: {
     width: number;
