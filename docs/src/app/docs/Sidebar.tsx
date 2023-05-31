@@ -39,16 +39,9 @@ const SidebarContent = ({ node }: { node: DocsTree }) => {
 };
 
 export const Sidebar = () => (
-  <div
-    className={clsx(
-      "z-10 flex flex-col fixed w-full print:hidden",
-      "md:top-16 md:sticky md:shrink-0 md:w-64 md:self-start"
-    )}
-  >
-    <SidebarClient>
-      {docsTree.map((node) => (
-        <SidebarContent key={node.id} node={node} />
-      ))}
-    </SidebarClient>
-  </div>
+  <SidebarClient>
+    {docsTree.map((node) => (
+      <SidebarContent key={node.id} node={node} />
+    ))}
+  </SidebarClient>
 );

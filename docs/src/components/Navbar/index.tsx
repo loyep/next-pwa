@@ -24,7 +24,7 @@ export interface MainLinkProps {
 
 export const Navbar: FC = () => (
   <nav className="transition-colors_opa sticky top-0 z-[9223372036854775806] h-fit max-h-screen border-b-[0.25px] border-neutral-300 bg-white duration-100 dark:border-gray-700 dark:bg-black">
-    <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
+    <div className="mx-auto h-[var(--navbar-height)] max-w-7xl px-2 md:px-6 lg:px-8">
       <div className="relative flex h-16 items-center justify-between">
         <div className="absolute inset-y-0 left-0 flex items-center gap-[5px] md:hidden">
           <NavMobileBurger />

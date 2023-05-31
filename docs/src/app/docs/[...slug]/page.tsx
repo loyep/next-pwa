@@ -76,10 +76,10 @@ const PostLayout: PageComponent = async ({ params }) => {
           </div>
         </div>
       </nav>
-      <article className="py-8 min-w-0 w-full">
-        <main className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+      <article className="md:py-8 min-w-0 w-full">
+        <div className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
           <Content components={mdxComponents} />
-        </main>
+        </div>
       </article>
     </>
   );
