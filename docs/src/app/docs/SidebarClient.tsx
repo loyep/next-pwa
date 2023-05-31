@@ -81,24 +81,26 @@ export const SidebarTextBox = ({
 
   return (
     <>
-      <TextBox href={href} {...rest}>
+      <TextBox
+        href={href}
+        onClick={() => hasChildTree && setIsChildOpened((_state) => !_state)}
+        {...rest}
+      >
         {children}
         {hasChildTree && (
           <IconChevronRight
             className={clsx(
               "text-gray-500 dark:text-neutral-400",
-              "hover:bg-gray-300 hover:text-gray-900 dark:hover:bg-neutral-600 dark:hover:text-gray-50",
               "transition-all duration-100 rounded-sm",
               isChildOpened && "rotate-90"
             )}
             width={20}
             height={20}
             aria-hidden
-            onClick={() => setIsChildOpened((_state) => !_state)}
           />
         )}
       </TextBox>
-      {isChildOpened && childTreeReactNode}
+      {hasChildTree && isChildOpened && childTreeReactNode}
     </>
   );
 };

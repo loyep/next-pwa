@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 import { clsx } from "@/utils/clsx.js";
 
@@ -14,12 +14,16 @@ const activeTextBoxClassName =
 export interface TextBoxProps {
   href: string | undefined;
   children: ReactNode;
+  onClick?: (e: MouseEvent) => void;
 }
 
-export const TextBox = ({ href, children }: TextBoxProps) => {
+export const TextBox = ({ href, onClick, children }: TextBoxProps) => {
   if (!href) {
     return (
-      <button className={clsx(baseTextBoxClassName, hoverTextBoxClassName)}>
+      <button
+        onClick={onClick}
+        className={clsx(baseTextBoxClassName, hoverTextBoxClassName)}
+      >
         {children}
       </button>
     );
@@ -27,6 +31,7 @@ export const TextBox = ({ href, children }: TextBoxProps) => {
   return (
     <LinkActive
       href={href}
+      onClick={onClick}
       activeClassName={clsx(baseTextBoxClassName, activeTextBoxClassName)}
       hoverClassName={clsx(baseTextBoxClassName, hoverTextBoxClassName)}
     >
