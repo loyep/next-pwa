@@ -24,12 +24,12 @@ export interface MainLinkProps {
 
 export const Navbar: FC = () => (
   <nav className="transition-colors_opa sticky top-0 z-[9223372036854775806] h-fit max-h-screen border-b-[0.25px] border-neutral-300 bg-white duration-100 dark:border-gray-700 dark:bg-black">
-    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
       <div className="relative flex h-16 items-center justify-between">
-        <div className="absolute inset-y-0 left-0 flex items-center gap-[5px] sm:hidden">
+        <div className="absolute inset-y-0 left-0 flex items-center gap-[5px] md:hidden">
           <NavMobileBurger />
         </div>
-        <div className="flex flex-1 items-center justify-center sm:flex-none sm:items-stretch sm:justify-start">
+        <div className="flex flex-1 items-center justify-center md:flex-none md:items-stretch md:justify-start">
           <NavLink href="/" aria-label="Go to home">
             <Logo
               containerClassName={notoSansMono.className}
@@ -38,9 +38,9 @@ export const Navbar: FC = () => (
             />
           </NavLink>
         </div>
-        <div className="absolute inset-y-0 right-0 flex h-full w-fit flex-row items-center gap-[5px] sm:static sm:w-full">
-          <div className="hidden h-full grow items-center overflow-x-hidden pr-2 sm:ml-6 sm:flex sm:pr-0">
-            <div className="overflow-x-overlay hidden h-full grow flex-row-reverse items-center gap-[5px] overflow-x-auto sm:flex">
+        <div className="absolute inset-y-0 right-0 flex h-full w-fit flex-row items-center gap-[5px] md:static md:w-full">
+          <div className="hidden h-full grow items-center overflow-x-hidden pr-2 md:ml-6 md:flex md:pr-0">
+            <div className="overflow-x-overlay hidden h-full grow flex-row-reverse items-center gap-[5px] overflow-x-auto md:flex">
               <div className="flex max-h-full flex-row gap-[inherit]">
                 <NavLinks type="desktop" />
               </div>
@@ -59,7 +59,7 @@ export const Navbar: FC = () => (
             <span className="sr-only">GitHub</span>
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
-          <NavToggleSchemeButton className="hidden sm:flex" />
+          <NavToggleSchemeButton className="hidden md:flex" />
         </div>
       </div>
     </div>

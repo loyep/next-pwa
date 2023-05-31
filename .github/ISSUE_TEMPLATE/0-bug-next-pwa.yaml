@@ -1,6 +1,6 @@
 name: Bug report for `next-pwa`
 description: Create a bug report for `@ducanh2912/next-pwa`.
-title: "[BUG - next-pwa]: "
+title: "[Bug - next-pwa]: "
 labels: ["bug", "next-pwa", "triage"]
 assignees:
   - DuCanhGH

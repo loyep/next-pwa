@@ -18,7 +18,7 @@ export const NavMobileMenu = () => {
   }, [setShowMobileLinks, pathname]);
   return (
     <div
-      className={clsx("sm:hidden", {
+      className={clsx("md:hidden", {
         hidden: !showMobileLinks,
       })}
       id="mobile-menu"

@@ -17,7 +17,10 @@ export const NavLinks: FC<NavLinksProps> = ({ type }) => {
         <NavLink
           key={`navlink-${type}-screen-${label}`}
           href={link}
-          isActive={!!pathname && pathname.startsWith(link)}
+          isActive={
+            !!pathname &&
+            (link === "/" ? pathname === link : pathname.startsWith(link))
+          }
         >
           {label}
         </NavLink>

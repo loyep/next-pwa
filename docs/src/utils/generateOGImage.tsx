@@ -45,7 +45,7 @@ export const generateOGImage = async (
         </div>
         {providedTitle ? (
           <h1
-            tw="w-full text-6xl font-bold leading-[60px] sm:text-7xl sm:tracking-tight"
+            tw="w-full text-6xl font-bold leading-[60px] md:text-7xl md:tracking-tight"
             style={{
               wordBreak: "break-word",
             }}
@@ -55,7 +55,7 @@ export const generateOGImage = async (
         ) : (
           <></>
         )}
-        <h3 tw="text-lg font-bold leading-7 sm:text-xl sm:tracking-tight">
+        <h3 tw="text-lg font-bold leading-7 md:text-xl md:tracking-tight">
           {DOCS_DOMAIN}
         </h3>
       </div>

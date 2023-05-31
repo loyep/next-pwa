@@ -2,6 +2,19 @@ import { TextBox } from "@/components/TextBox";
 import { type DocsTree, docsTree } from "@/utils/buildDocsTree.js";
 import { clsx } from "@/utils/clsx.js";
 
+import { SidebarClient } from "./SidebarClient.js";
+
+const sidebarButtonClass = clsx(
+  "z-20 w-full h-fit flex flex-row gap-2 items-center justify-start px-4 pt-4 md:hidden",
+  "bg-gray-100 duration-100 dark:bg-neutral-900 text-black dark:text-white "
+);
+
+const sidebarBaseClass = clsx(
+  "overflow-y-auto overflow-x-hidden px-4 pb-4 md:pt-4 grow md:h-[calc(100vh-100px)]",
+  "transform-gpu transition-all duration-100 ease-in-out",
+  "bg-gray-100 dark:bg-neutral-900"
+);
+
 const SidebarContent = ({ node }: { node: DocsTree }) => {
   return (
     <li className="flex flex-col pt-2">
@@ -28,9 +41,19 @@ const SidebarContent = ({ node }: { node: DocsTree }) => {
 };
 
 export const Sidebar = () => (
-  <div className="overflow-y-auto overflow-x-hidden p-4 grow md:h-[calc(100vh-100px)]">
-    {docsTree.map((node) => (
-      <SidebarContent key={node.id} node={node} />
-    ))}
+  <div
+    className={clsx(
+      "z-10 flex flex-col fixed w-full print:hidden",
+      "md:top-16 md:sticky md:shrink-0 md:w-64 md:self-start"
+    )}
+  >
+    <SidebarClient
+      sidebarButtonClass={sidebarButtonClass}
+      sidebarBaseClass={sidebarBaseClass}
+    >
+      {docsTree.map((node) => (
+        <SidebarContent key={node.id} node={node} />
+      ))}
+    </SidebarClient>
   </div>
 );

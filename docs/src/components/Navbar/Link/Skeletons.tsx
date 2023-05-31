@@ -34,7 +34,7 @@ export const NavLinkSkeletons: FC<NavLinkSkeletonsProps> = ({
     {Array.from({ length: skeletonsLength }, (_, idx) => (
       <div
         className={twMerge(
-          "flex animate-pulse items-center rounded-md bg-gray-300 px-3 py-2 text-base font-medium dark:bg-slate-700 sm:justify-center sm:text-sm",
+          "flex animate-pulse items-center rounded-md bg-gray-300 px-3 py-2 text-base font-medium dark:bg-slate-700 md:justify-center md:text-sm",
           skeletonClassName
         )}
         key={`${skeletonsKeyBase}-${idx}`}

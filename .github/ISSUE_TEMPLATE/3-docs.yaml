@@ -1,6 +1,6 @@
 name: Documentation feedback
 description: Create a feedback for the documentation.
-title: "[DOCS]: "
+title: "[Docs]: "
 labels: ["docs", "triage"]
 assignees:
   - DuCanhGH

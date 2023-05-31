@@ -18,9 +18,8 @@ type BuildMap = Record<
   }
 >;
 
-const fallbackTitle = (title: string | undefined, url: string) => {
-  return title ?? url.slice(url.lastIndexOf("/") + 1);
-};
+const fallbackTitle = (title: string | undefined, url: string) =>
+  title ?? url.slice(url.lastIndexOf("/") + 1);
 
 const buildChildren = (docPath: string, buildMap: BuildMap) => {
   const result: DocsTree[] = [];

@@ -1,13 +1,14 @@
 import "highlight.js/styles/github-dark.css";
 
 import type { MDXComponents } from "mdx/types";
-import Link from "next/link";
 import type { LegacyRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { Callout } from "@/components/Callout.js";
 import { Code } from "@/components/Code.js";
 import { Heading } from "@/components/Heading.js";
+import { AnchorLinkUnderline } from "@/components/Link/AnchorLinkUnderline.js";
+import { LinkUnderline } from "@/components/Link/LinkUnderline.js";
 import { Text } from "@/components/Text.js";
 import { clsx } from "@/utils/clsx.js";
 
@@ -20,7 +21,7 @@ const filterLegacyRef = <T,>(ref: LegacyRef<T> | undefined) =>
 
 export const mdxComponents: MDXComponents = {
   Callout,
-  a: ({ className, href, ref, ...rest }) => {
+  a: ({ href, className, ref, ...rest }) => {
     // Hash URLs
     if (href && href.startsWith("#")) {
       return (
@@ -37,29 +38,24 @@ export const mdxComponents: MDXComponents = {
       );
     }
 
-    const resolvedClassName = twMerge(
-      "text-blue-500 underline",
-      "contrast-more:text-blue-800",
-      className
-    );
     // Same origin
     if (href && href.startsWith("/")) {
       return (
-        <Link
+        <LinkUnderline
           href={href}
-          className={resolvedClassName}
+          className={className}
           ref={filterLegacyRef(ref)}
           {...rest}
         />
       );
     }
     return (
-      <a
+      <AnchorLinkUnderline
         href={href}
-        className={resolvedClassName}
+        className={className}
         target="_blank"
         rel="noopener noreferrer"
-        ref={ref}
+        ref={filterLegacyRef(ref)}
         {...rest}
       />
     );

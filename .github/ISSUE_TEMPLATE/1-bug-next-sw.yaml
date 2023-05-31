@@ -1,6 +1,6 @@
 name: Bug report for `next-sw`
 description: Create a bug report for `@ducanh2912/next-sw`.
-title: "[BUG - next-sw]: "
+title: "[Bug - next-sw]: "
 labels: ["bug", "next-sw", "triage"]
 assignees:
   - DuCanhGH
