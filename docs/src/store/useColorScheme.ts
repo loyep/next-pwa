@@ -10,12 +10,12 @@ export interface ColorSchemeStoreInterface {
 
 export const useColorScheme = create<ColorSchemeStoreInterface>((set, get) => ({
   colorScheme: null,
-  setColorScheme: (val) => {
+  setColorScheme(val) {
     set({ colorScheme: val });
     document.documentElement.dataset.theme = val;
     localStorage.setItem("theme", val);
   },
-  toggleColorScheme: (value) => {
+  toggleColorScheme(value) {
     const nextColorScheme =
       value || (get().colorScheme === "dark" ? "light" : "dark");
     get().setColorScheme(nextColorScheme);
