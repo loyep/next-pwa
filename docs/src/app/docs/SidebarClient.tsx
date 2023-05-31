@@ -1,9 +1,10 @@
 "use client";
 import { IconChevronRight } from "@tabler/icons-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useRef, useState } from "react";
 
-import { TextBox, type TextBoxProps } from "@/components/TextBox.js";
+import { ActiveBox } from "@/components/ActiveBox.js";
 import { clsx } from "@/utils/clsx.js";
 
 interface SidebarClientProps {
@@ -11,14 +12,16 @@ interface SidebarClientProps {
 }
 
 const sidebarButtonClass = clsx(
-  "z-20 w-full h-fit flex flex-row gap-2 items-center justify-start p-4 md:hidden",
-  "bg-gray-100 duration-100 dark:bg-neutral-900 text-black dark:text-white "
+  "z-20 w-full h-fit flex flex-row gap-2 items-center justify-start px-4 py-3 md:hidden",
+  "bg-gray-100 duration-100 dark:bg-neutral-900 text-black dark:text-white",
+  "border-b border-neutral-200/70 dark:border-neutral-400/10"
 );
 
 const sidebarBaseClass = clsx(
   "overflow-y-auto overflow-x-hidden px-4 pb-4 md:pt-4 grow md:h-[calc(100vh-100px)]",
   "transform-gpu transition-all duration-150 ease-out",
-  "bg-gray-100 dark:bg-neutral-900"
+  "bg-gray-100 dark:bg-neutral-900",
+  "border-b border-neutral-200/70 dark:border-neutral-400/10"
 );
 
 export const SidebarClient = ({ children }: SidebarClientProps) => {
@@ -61,14 +64,15 @@ export const SidebarClient = ({ children }: SidebarClientProps) => {
   );
 };
 
-interface SidebarTextBoxProps extends TextBoxProps {
+interface SidebarTextBoxProps {
   hasChildTree: boolean;
   childTreeReactNode: ReactNode;
+  href: string | undefined;
+  children: ReactNode;
 }
 
 export const SidebarTextBox = ({
   href,
-  children,
   hasChildTree,
   childTreeReactNode,
   ...rest
@@ -79,27 +83,43 @@ export const SidebarTextBox = ({
     !!href && pathname.startsWith(href)
   );
 
+  const toggleChildOpened = () =>
+    hasChildTree && setIsChildOpened((_state) => !_state);
+
   return (
     <>
-      <TextBox
-        href={href}
-        onClick={() => hasChildTree && setIsChildOpened((_state) => !_state)}
-        {...rest}
-      >
-        {children}
-        {hasChildTree && (
-          <IconChevronRight
-            className={clsx(
-              "text-gray-500 dark:text-neutral-400",
-              "transition-all duration-100 rounded-sm",
-              isChildOpened && "rotate-90"
-            )}
-            width={20}
-            height={20}
-            aria-hidden
+      <ActiveBox href={href} className="flex flex-row items-center">
+        {href ? (
+          <Link
+            onClick={toggleChildOpened}
+            href={href}
+            className="pl-2 py-1.5 w-full"
+            {...rest}
+          />
+        ) : (
+          <button
+            onClick={toggleChildOpened}
+            className="pl-2 py-1.5 w-full"
+            {...rest}
           />
         )}
-      </TextBox>
+        {hasChildTree && (
+          <button className="h-full pr-2 py-1.5">
+            <IconChevronRight
+              onClick={toggleChildOpened}
+              className={clsx(
+                "text-gray-500 dark:text-neutral-300",
+                "transition-all duration-100 rounded-sm",
+                "hover:bg-gray-300 hover:text-gray-900 dark:hover:bg-neutral-600 dark:hover:text-gray-50",
+                isChildOpened && "rotate-90"
+              )}
+              width={20}
+              height={20}
+              aria-hidden
+            />
+          </button>
+        )}
+      </ActiveBox>
       {hasChildTree && isChildOpened && childTreeReactNode}
     </>
   );
