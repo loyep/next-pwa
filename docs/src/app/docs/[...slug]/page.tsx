@@ -21,8 +21,7 @@ export const generateMetadata: GenerateMetadata = ({ params }) => {
 
 const navFooterTextClassName = clsx(
   "text-xs font-medium",
-  "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
-  "contrast-more:text-gray-800 contrast-more:dark:text-gray-50"
+  "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
 );
 
 const PostLayout: PageComponent = async ({ params }) => {
@@ -53,8 +52,7 @@ const PostLayout: PageComponent = async ({ params }) => {
           <div
             className={clsx(
               "mt-8 border-t pt-8 sticky bottom-0 flex flex-col items-start gap-2 pb-8",
-              "dark:border-neutral-800",
-              "contrast-more:border-t contrast-more:border-neutral-400 contrast-more:shadow-none contrast-more:dark:border-neutral-400"
+              "dark:border-neutral-800"
             )}
           >
             <a

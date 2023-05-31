@@ -27,11 +27,13 @@ export const Logo = ({
       gap: "0.5rem",
     }}
     className={containerClassName}
+    aria-label="Next PWA"
   >
     <NextSvg
       height={nextLogoHeight}
       className={nextLogoClassName}
       style={nextLogoStyle}
+      aria-hidden
     />
     <p
       style={{

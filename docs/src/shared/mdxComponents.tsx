@@ -13,8 +13,7 @@ import { Text } from "@/components/Text.js";
 import { clsx } from "@/utils/clsx.js";
 
 const TEXT_COLOR = "text-black dark:text-white";
-const TEXT_BORDER =
-  "border-b border-neutral-200/70 contrast-more:border-neutral-400 dark:border-neutral-400/10 contrast-more:dark:border-neutral-400";
+const TEXT_BORDER = "border-b border-neutral-200/70 dark:border-neutral-400/10";
 
 const filterLegacyRef = <T,>(ref: LegacyRef<T> | undefined) =>
   typeof ref === "string" ? undefined : ref;
@@ -29,7 +28,6 @@ export const mdxComponents: MDXComponents = {
           href={href}
           className={twMerge(
             "text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
-            "contrast-more:text-gray-800 contrast-more:dark:text-gray-50",
             className
           )}
           ref={ref}

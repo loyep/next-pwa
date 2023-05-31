@@ -1,22 +1,37 @@
 "use client";
 import { IconChevronRight } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
+import { TextBox, type TextBoxProps } from "@/components/TextBox.js";
 import { clsx } from "@/utils/clsx.js";
 
 interface SidebarClientProps {
   children: ReactNode;
-  sidebarBaseClass: string;
-  sidebarButtonClass: string;
 }
 
-const SidebarClientMain = ({
-  children,
-  sidebarBaseClass,
-  sidebarButtonClass,
-}: SidebarClientProps) => {
+const sidebarButtonClass = clsx(
+  "z-20 w-full h-fit flex flex-row gap-2 items-center justify-start p-4 md:hidden",
+  "bg-gray-100 duration-100 dark:bg-neutral-900 text-black dark:text-white "
+);
+
+const sidebarBaseClass = clsx(
+  "overflow-y-auto overflow-x-hidden px-4 pb-4 md:pt-4 grow md:h-[calc(100vh-100px)]",
+  "transform-gpu transition-all duration-150 ease-out",
+  "bg-gray-100 dark:bg-neutral-900"
+);
+
+export const SidebarClient = ({ children }: SidebarClientProps) => {
+  const pathname = usePathname();
+  const pathnameRef = useRef<string>();
+
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
+
+  if (pathnameRef?.current !== pathname) {
+    pathnameRef.current = pathname;
+    setIsMobileExpanded(false);
+  }
+
   return (
     <>
       <button
@@ -46,7 +61,44 @@ const SidebarClientMain = ({
   );
 };
 
-export const SidebarClient = (props: SidebarClientProps) => {
+interface SidebarTextBoxProps extends TextBoxProps {
+  hasChildTree: boolean;
+  childTreeReactNode: ReactNode;
+}
+
+export const SidebarTextBox = ({
+  href,
+  children,
+  hasChildTree,
+  childTreeReactNode,
+  ...rest
+}: SidebarTextBoxProps) => {
   const pathname = usePathname();
-  return <SidebarClientMain key={pathname} {...props} />;
+
+  const [isChildOpened, setIsChildOpened] = useState(
+    !!href && pathname.startsWith(href)
+  );
+
+  return (
+    <>
+      <TextBox href={href} {...rest}>
+        {children}
+        {hasChildTree && (
+          <IconChevronRight
+            className={clsx(
+              "text-gray-500 dark:text-neutral-400",
+              "hover:bg-gray-300 hover:text-gray-900 dark:hover:bg-neutral-600 dark:hover:text-gray-50",
+              "transition-all duration-100 rounded-sm",
+              isChildOpened && "rotate-90"
+            )}
+            width={20}
+            height={20}
+            aria-hidden
+            onClick={() => setIsChildOpened((_state) => !_state)}
+          />
+        )}
+      </TextBox>
+      {isChildOpened && childTreeReactNode}
+    </>
+  );
 };
