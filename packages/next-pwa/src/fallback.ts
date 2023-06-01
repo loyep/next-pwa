@@ -15,7 +15,7 @@ self.fallback = async (request) => {
     });
   }
   if (
-    destination &&
+    destination === "" &&
     process.env.__PWA_FALLBACK_DATA__ &&
     url.match(/\/_next\/data\/.+\/.+\.json$/i)
   ) {
