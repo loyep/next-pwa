@@ -11,9 +11,8 @@ export const generateStaticParams = async () =>
   allDocs.map((post) => ({ slug: post._raw.flattenedPath.split("/") }));
 
 export const generateMetadata: GenerateMetadata = ({ params }) => {
-  const post = allDocs.find(
-    (post) => post._raw.flattenedPath === params.slug.join("/")
-  );
+  const pagePath = params.slug?.join("/") ?? "";
+  const post = allDocs.find((post) => post._raw.flattenedPath === pagePath);
   return {
     title: post?.title,
   };
@@ -25,8 +24,8 @@ const navFooterTextClassName = clsx(
 );
 
 const PostLayout: PageComponent = async ({ params }) => {
-  const slug = params.slug.join("/");
-  const post = allDocs.find((post) => post._raw.flattenedPath === slug);
+  const pagePath = params.slug?.join("/") ?? "";
+  const post = allDocs.find((post) => post._raw.flattenedPath === pagePath);
 
   if (!post) {
     notFound();

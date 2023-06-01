@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "Next PWA",
     template: "%s - Next PWA",
   },
-  description: "Make performant websites with Next.js & PWA.",
+  description: "Make performant web apps with Next.js & PWA.",
   applicationName: "Next PWA",
   authors: [{ name: "DuCanhGH", url: "https://github.com/DuCanhGH/" }],
   keywords:
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
       default: "Next PWA",
       template: "%s - Next PWA",
     },
-    description: "Make performant websites with Next.js & PWA.",
+    description: "Make performant web apps with Next.js & PWA.",
   },
   twitter: {
     card: "summary_large_image",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
       default: "Next PWA",
       template: "%s - Next PWA",
     },
-    description: "Make performant websites with Next.js & PWA.",
+    description: "Make performant web apps with Next.js & PWA.",
   },
 };
 

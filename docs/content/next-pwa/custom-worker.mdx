@@ -1,0 +1,25 @@
+---
+title: Custom worker
+type: Docs
+---
+
+# Custom worker
+
+`next-pwa` will automatically detect `worker/index.{js,ts}`, and bundle the file into `dest` as `worker-*.js` using `webpack`.
+It's also automatically injected into the generated `sw.js`. In this way, you get the benefit of code splitting automatically.
+You can share logic between your web app and this worker (path aliases do work). You can even import npm packages there!
+
+This is where you can write your custom worker logic.
+
+For example, to disable `workbox`'s logging, you can simply add `self.__WB_DISABLE_DEV_LOGS = true` to it.
+
+You can change the directory of your custom worker file by adding `customWorkerDir` (this path is relative to `baseDir`):
+
+```js
+const withPWA = require("@ducanh2912/next-pwa").default({
+  customWorkerDir: "serviceworker",
+  // ...
+});
+```
+
+In this example, `next-pwa` will look for `serviceworker/index.ts`.

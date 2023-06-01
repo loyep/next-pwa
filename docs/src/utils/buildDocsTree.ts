@@ -1,6 +1,16 @@
 import { allDocs, type Docs } from "contentlayer/generated";
 import { v4 as uuidv4 } from "uuid";
 
+const treePriority: Record<string, string[]> = {
+  "/docs": ["next-pwa", "next-sw"],
+  "/docs/next-pwa": [
+    "getting-started",
+    "configuring",
+    "custom-worker",
+    "offline-fallbacks",
+  ],
+};
+
 export interface DocsTree {
   id: string;
   title: string;
@@ -8,22 +18,23 @@ export interface DocsTree {
   children: DocsTree[];
 }
 
-type BuildMap = Record<
-  string,
-  {
-    id: string;
-    childId: string[];
-    url: string | undefined;
-    title: string;
-  }
->;
+interface BuildMapValue {
+  id: string;
+  // we use a Set to avoid duplications (due to the use of `treePriority`)
+  childId: Set<string>;
+  url: string | undefined;
+  title: string;
+}
 
 const fallbackTitle = (title: string | undefined, url: string) =>
   title ?? url.slice(url.lastIndexOf("/") + 1);
 
-const buildChildren = (docPath: string, buildMap: BuildMap) => {
+const buildChildren = (
+  docPath: string,
+  buildMap: Record<string, BuildMapValue>
+) => {
   const result: DocsTree[] = [];
-  for (const childPath of buildMap[docPath].childId) {
+  buildMap[docPath].childId.forEach((childPath) => {
     const childDocPath = `${docPath}/${childPath}`;
     const { id, title, url } = buildMap[childDocPath];
     result.push({
@@ -32,7 +43,7 @@ const buildChildren = (docPath: string, buildMap: BuildMap) => {
       url,
       children: buildChildren(childDocPath, buildMap),
     });
-  }
+  });
   return result;
 };
 
@@ -46,18 +57,17 @@ export const buildDocsTree = (docs: Docs[]): DocsTree[] => {
   }
 
   // map a segment to its id, title, url, and child segments.
-  const map: BuildMap = {};
+  const map: Record<string, BuildMapValue> = {};
 
   for (const doc of docUrls) {
     // we split the path then add every segment to the map (if they do not exist)
-    const splitted = doc.split("/").slice(1);
-    let currentPath = `/${splitted[0]}`;
+    const splitted = doc.split("/");
+    // splitted[0] is ""
+    let currentPath = `/${splitted[1]}`;
 
-    for (let i = 1; i < splitted.length; ++i) {
+    for (let i = 2; i < splitted.length; ++i) {
       const currentSegment = splitted[i];
       const parentPath = currentPath;
-
-      currentPath += `/${currentSegment}`;
 
       if (!map[parentPath]) {
         const parentOnDocs = mapUrlToDoc[parentPath];
@@ -66,14 +76,16 @@ export const buildDocsTree = (docs: Docs[]): DocsTree[] => {
           id: uuidv4(),
           title: fallbackTitle(parentOnDocs?.title, parentPath),
           url: parentOnDocs?.url,
-          childId: [],
+          childId: new Set(treePriority[parentPath] ?? []),
         };
       }
+
+      currentPath += `/${currentSegment}`;
 
       if (!map[currentPath]) {
         const id = uuidv4();
 
-        map[parentPath].childId.push(currentSegment);
+        map[parentPath].childId.add(currentSegment);
 
         const currentOnDocs = mapUrlToDoc[currentPath];
 
@@ -81,28 +93,24 @@ export const buildDocsTree = (docs: Docs[]): DocsTree[] => {
           id,
           title: fallbackTitle(currentOnDocs?.title, currentPath),
           url: currentOnDocs?.url,
-          childId: [],
+          childId: new Set(treePriority[currentPath] ?? []),
         };
       }
     }
   }
 
-  // build the docs tree from the map
-  const result: DocsTree[] = [];
+  const rootPath = "/docs";
+  const rootMap = map[rootPath];
 
-  // We don't need `/docs` in the tree, so we do it like this.
-  for (const doc of map["/docs"].childId) {
-    const docPath = `/docs/${doc}`;
-    const { id, title, url } = map[docPath];
-    result.push({
-      id,
-      title,
-      url,
-      children: buildChildren(docPath, map),
-    });
-  }
-
-  return result;
+  return [
+    {
+      id: rootMap.id,
+      title: rootMap.title,
+      url: rootMap.url,
+      children: [],
+    },
+    ...buildChildren(rootPath, map),
+  ];
 };
 
 export const docsTree = buildDocsTree(allDocs);

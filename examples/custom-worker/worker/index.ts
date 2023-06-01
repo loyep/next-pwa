@@ -4,7 +4,7 @@ import { util } from "@shared/utils/index.ts";
 declare const self: ServiceWorkerGlobalScope;
 
 // To disable all workbox logging during development, you can set self.__WB_DISABLE_DEV_LOGS to true
-// https://developers.google.com/web/tools/workbox/guides/configure-workbox#disable_logging
+// https://developer.chrome.com/docs/workbox/troubleshooting-and-logging/#turn-off-logging-in-development-builds-in-any-workflow
 //
 // self.__WB_DISABLE_DEV_LOGS = true
 

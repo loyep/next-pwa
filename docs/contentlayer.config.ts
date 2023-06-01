@@ -17,7 +17,8 @@ const Docs = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: "string",
-      resolve: (doc) => `/docs/${doc._raw.flattenedPath}`,
+      resolve: ({ _raw: { flattenedPath } }) =>
+        `/docs${flattenedPath === "" ? "" : `/${flattenedPath}`}`,
     },
     headings: {
       type: "string",

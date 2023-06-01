@@ -27,13 +27,19 @@ const FEATURES_LIST: Feature[] = [
   },
   {
     icon: "💯",
-    label: "Performant",
+    label: "Fast",
     description: "Make your website loads as fast as is possible.",
   },
   {
     icon: "🔌",
     label: "Offline",
     description: "Proper offline support. For both App and Pages Router.",
+  },
+  {
+    icon: "🚀",
+    label: "Developer experience",
+    description:
+      "Built-in Typescript definitions and JSDoc to enable the best DX.",
   },
 ];
 
@@ -48,12 +54,12 @@ const Page = () => (
     >
       <div className="w-full flex flex-col gap-5 px-5 py-40 items-center justify-center">
         <h1 className="font-extrabold tracking-tight my-2 text-5xl">
-          <Balancer>Make performant websites with Next.js & PWA.</Balancer>
+          <Balancer>Make performant web apps with Next.js & PWA.</Balancer>
         </h1>
         <h2 className="font-medium tracking-tight my-2 text-2xl opacity-80">
           <Balancer>
-            Next PWA enables you to create PWAs with Next.js. No configuration
-            needed, yet so configurable.
+            <Code>next-pwa</Code> enables you to create PWAs with Next.js. No
+            configuration needed, yet so configurable.
           </Balancer>
         </h2>
         <Link
@@ -72,7 +78,7 @@ const Page = () => (
           https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic
         </Code>
       </div>
-      <div className="p-24 w-full">
+      <div className="p-4 md:p-24 w-full">
         <div className="grid w-full text-left lg:mb-0 lg:grid-cols-4">
           {FEATURES_LIST.map((feature, idx) => (
             <div
@@ -91,11 +97,6 @@ const Page = () => (
             </div>
           ))}
         </div>
-      </div>
-      <div className="text-center px-5 py-10">
-        <h2 className="font-medium tracking-tight my-2 text-2xl">
-          Turn your website into a PWA. For a better user experience.
-        </h2>
       </div>
     </div>
   </BalancerProvider>
