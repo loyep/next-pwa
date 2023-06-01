@@ -54,9 +54,9 @@ export default withPWA({
 ```
 
 <Callout>
-  **Note**: This plugin is written in Typescript. JSDoc is supported, and it is
+  **Note**: This plugin is written in Typescript and JSDoc is supported. It is
   recommended to add `// @ts-check` to the top of your `next.config.js` file to
-  leverage type checking as well. This is especially useful when you use
+  leverage type checking. This is especially useful when you use
   `PluginOptions.workboxOptions`, as you may unknowningly mix
   InjectManifest-specific and GenerateSW-specific options up.
 </Callout>
@@ -130,7 +130,7 @@ app.prepare().then(() => {
 
 ### Step 2: Add a manifest.json file
 
-Create a `manifest.json` file in your `public` folder (or `app` if you are using the `app` directory):
+Create a `manifest.json` file in your `public` folder:
 
 ```json
 {
@@ -267,11 +267,13 @@ export const metadata: Metadata = {
     template: APP_TITLE_TEMPLATE,
   },
   description: APP_DESCRIPTION,
+  manifest: "/manifest.json",
   themeColor: "#FFFFFF",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
   },
   formatDetection: {
     telephone: false,
@@ -309,14 +311,13 @@ export const metadata: Metadata = {
 - When debugging issues, sometimes you may want to format your generated `sw.js` file to figure out what's really going on. In development mode it is not minified
   though, so it is readable to an extent.
 
-- You can force `next-pwa` to generate the SW in production mode by setting `workboxOptions.mode` in your `withPWAInit` config to "production" in `next.config.js`.
-  By default, `next-pwa` generates the SW in development mode during development (`next dev`) and in production mode during production (`next build` and `next start`),
+- You can force `next-pwa` to generate the SW in production mode by setting `workboxOptions.mode` to `"production"`.
+  By default, `next-pwa` generates the SW in development mode for `next dev` and in production mode for `next build` and `next start`,
   but you may still want to force it to build in production mode even during development because of one of these reasons:
 
   - Reduced logging noise as the production build doesn't include logging.
   - Improved performance as the production build is better optimized.
 
-  However, if you just want to disable worker box's logging while still using the development build during development, simply put `self.__WB_DISABLE_DEV_LOGS = true`
-  in your [`worker/index.ts`](/docs/next-pwa/custom-worker).
+  However, if you just want to disable `workbox`'s logging, simply add `self.__WB_DISABLE_DEV_LOGS = true` to your [`worker/index.ts`](/docs/next-pwa/custom-worker).
 
 - If you want to get your user's `userAgent` string, use [ua-parser-js](https://www.npmjs.com/package/ua-parser-js)!

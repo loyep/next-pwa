@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   },
   description: "Make performant web apps with Next.js & PWA.",
   applicationName: "Next PWA",
+  manifest: "/manifest.webmanifest",
   authors: [{ name: "DuCanhGH", url: "https://github.com/DuCanhGH/" }],
   keywords:
     "react, pwa, service-worker, progressive-web-app, nextjs, next.js, workbox",
