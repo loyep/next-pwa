@@ -1,6 +1,5 @@
 "use client";
 import { usePathname } from "next/navigation";
-import type { FC } from "react";
 
 import { LINKS } from "../../constants.js";
 import { NavLink } from "../../Link/index.js";
@@ -9,7 +8,7 @@ export interface NavLinksProps {
   type: "desktop" | "mobile";
 }
 
-export const NavLinks: FC<NavLinksProps> = ({ type }) => {
+export const NavLinks = ({ type }: NavLinksProps) => {
   const pathname = usePathname();
   return (
     <>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ComponentPropsWithoutRef, FC } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
 interface LinkActiveProps extends ComponentPropsWithoutRef<typeof Link> {
   activeClassName: string;
@@ -13,12 +13,12 @@ interface LinkActiveProps extends ComponentPropsWithoutRef<typeof Link> {
  * @param props
  * @returns
  */
-export const LinkActive: FC<LinkActiveProps> = ({
+export const LinkActive = ({
   href,
   activeClassName,
   hoverClassName,
   ...rest
-}) => {
+}: LinkActiveProps) => {
   const pathname = usePathname();
   const isActive = href === pathname;
 

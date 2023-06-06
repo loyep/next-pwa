@@ -1,23 +1,33 @@
-# next-pwa - i18n example
+# next-pwa - next-i18n
 
 [TOC]
 
-This example demonstrates how to use `next-pwa` to turn a `Next.js`-based web app into a PWA easily.
-
-It uses `express` to build a custom server and [`next-i18next`](https://github.com/isaachinman/next-i18next) as a i18n solution.
-
-> `i18next-express-middleware` is not compatible with `fastify` right now unfortunately.
-
-Because service worker must be served without any redirection, make sure its route is excluded from the i18n middleware. See `index.js` for an example.
+This example demonstrates how to use [`next-i18next`](https://github.com/i18next/next-i18next) with `next-pwa`.
 
 ## Usage
 
-[![Open in Gitpod](https://img.shields.io/badge/Open%20In-Gitpod.io-%231966D2?style=for-the-badge&logo=gitpod)](https://gitpod.io/#https://github.com/DuCanhGH/next-pwa/)
+[![Open in Gitpod and run](https://img.shields.io/badge/Open%20In-Gitpod.io-%231966D2?style=for-the-badge&logo=gitpod)](https://gitpod.io/#https://github.com/DuCanhGH/next-pwa/)
 
 ```bash
 cd examples/next-i18next
 pnpm build
 pnpm start
+```
+
+or
+
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+
+```bash
+npx create-next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/next-i18next next-i18next-app
+```
+
+```bash
+yarn create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/next-i18next next-i18next-app
+```
+
+```bash
+pnpm create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/next-i18next next-i18next-app
 ```
 
 Then try out following paths:
@@ -26,4 +36,11 @@ Then try out following paths:
 https://localhost:3000/
 https://localhost:3000/en
 https://localhost:3000/zh
+```
+
+## Recommended `.gitignore`
+
+```gitignore
+**/public/precache.*.js
+**/public/sw.js
 ```
