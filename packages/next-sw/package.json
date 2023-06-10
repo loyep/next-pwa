@@ -49,16 +49,16 @@
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.1",
-    "@types/node": "20.2.5",
+    "@types/node": "20.2.6",
     "chalk": "5.2.0",
     "next": "13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "rollup": "3.23.1",
+    "rollup": "3.24.1",
     "rollup-plugin-dts": "5.3.0",
-    "typescript": "5.2.0-dev.20230606",
+    "typescript": "5.2.0-dev.20230610",
     "utils": "workspace:*",
-    "webpack": "5.85.1"
+    "webpack": "5.86.0"
   },
   "peerDependencies": {
     "next": ">=9.1.0"

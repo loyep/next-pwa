@@ -28,6 +28,6 @@ To develop locally:
    ```
 1. When you are ready to push, make a fork and then run:
    ```
-   git remote set-url origin https://github.com/YOURNAME/next-pwa
-   git push
+   git remote set-url origin https://github.com/YOUR_NAME/next-pwa
+   git push -u origin MY_BRANCH_NAME
    ```
