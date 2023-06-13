@@ -14,6 +14,7 @@ jobs:
   test:
     name: ⬣, 🔎, 🔨 Test before releasing
     uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
   publish:
     name: 🚀 Release packages
     needs: [test]
