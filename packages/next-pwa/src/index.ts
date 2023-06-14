@@ -56,7 +56,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
           nextConfig?.typescript?.tsconfigPath
         );
 
-        // For workbox configurations:
+        // For Workbox configurations:
         // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-webpack-plugin.GenerateSW
         const {
           disable = false,

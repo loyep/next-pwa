@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import type { DetailedHTMLProps, ElementType, HTMLAttributes } from "react";
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
@@ -41,38 +40,36 @@ const mapTypeToComponent: Record<
 };
 
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-  (
-    { children, id, variant = "default", className, type = "title", ...rest },
-    ref
-  ) => {
+  ({ id, variant = "default", className, type = "title", ...rest }, ref) => {
     const mappedComponent = mapTypeToComponent[type];
     const Component = mappedComponent.element;
     return (
-      <Component
-        ref={ref}
-        id={id}
+      <span
         className={twMerge(
-          "group break-words relative",
-          clsx({
-            "text-black dark:text-white": variant === "default",
-            "text-red-500 dark:text-red-400": variant === "error",
-          }),
+          "group flex flex-row",
           mappedComponent.className,
           className
         )}
-        {...rest}
       >
-        {children}
+        <Component
+          ref={ref}
+          id={id}
+          className={clsx("break-words", {
+            "text-black dark:text-white": variant === "default",
+            "text-red-500 dark:text-red-400": variant === "error",
+          })}
+          {...rest}
+        />
         {id && (
           <a
             href={`#${id}`}
-            className="ml-2 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline"
+            className="ml-2 hidden text-slate-400 dark:text-slate-600 group-hover:inline group-active:inline group-focus:inline"
             aria-label="Permalink for this section"
           >
             #
           </a>
         )}
-      </Component>
+      </span>
     );
   }
 );

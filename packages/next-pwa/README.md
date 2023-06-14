@@ -5,45 +5,39 @@ This plugin is powered by [Workbox](https://developer.chrome.com/docs/workbox/) 
 [![Build Size](https://img.shields.io/bundlephobia/minzip/@ducanh2912/next-pwa?label=Bundle%20size&style=flat&color=success)](https://bundlephobia.com/result?p=@ducanh2912/next-pwa)
 [![Version](https://img.shields.io/npm/v/@ducanh2912/next-pwa?style=flat&color=success)](https://www.npmjs.com/package/@ducanh2912/next-pwa)
 
-👋 Share your awesome PWA project 👉 [here](https://github.com/shadowwalker/next-pwa/discussions/206)
+## Features
 
-**Features**
-
-- 0️⃣ Zero-config for registering and generating service worker out of the box
-- ✨ Optimized precaching and runtime caching
-- 💯 Maximal Lighthouse score
-- 🎈 Easy-to-understand examples
-- 📴 Offline support with fallbacks ([example](/examples/offline-fallback-v2))
-- 📦 Uses [Workbox](https://developer.chrome.com/docs/workbox/) and [workbox-window](https://developer.chrome.com/docs/workbox/modules/workbox-window) v6
-- 🍪 Works with cookies out of the box
-- 🔉 Default range requests for audios and videos
-- ☕ No custom server needed for Next.js 9+ ([example](/examples/basic))
-- 🔧 Handle PWA lifecycle events (opt-in - [example](/examples/lifecycle))
-- 📐 Custom worker to run extra code with code splitting and **Typescript** support ([example](/examples/custom-worker))
-- 📜 [Public environment variables](https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser) are available in custom workers
-- 🐞 Debug service worker in development mode without caching
-- 🌏 Internationalization support (a.k.a i18n) with `next-i18next` ([example](/examples/next-i18next))
-- 🛠 Configurable by [Workbox's options](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin) for [GenerateSW](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/#generatesw-plugin) and [InjectManifest](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/#injectmanifest-plugin)
-- ⚡ Supports [blitz.js](https://blitzjs.com/) (simply add `blitz.config.js`)
-- 🚀 Spin up a [GitPod](https://gitpod.io/#https://github.com/DuCanhGH/next-pwa/) and try out examples in rocket speed (or use `create-next-app` to create a brand new Next.js app with them (for example, run `pnpm create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic` to create a new Next.js app using the `basic` example))
-
-> **NOTE 1** - `next-pwa` version 2.0.0+ should only work with `Next.js` 9.1+, and static files should only be served through the `public` directory.
->
-> **NOTE 2** - If you encounter the error `TypeError: Cannot read property **'javascript' of undefined**` during build, [please consider upgrading to Webpack 5 in `next.config.js`](https://github.com/shadowwalker/next-pwa/issues/198#issuecomment-817205700).
->
-> **NOTE 3** - `@ducanh2912/next-pwa` currently doesn't support Turbopack, but I will start working on it as soon as we get our hands on Turbopack. It may not use Workbox anymore depending on [Workbox's maintain status](https://github.com/GoogleChrome/workbox/issues/3149), however.
+- 0️⃣ No configuration needed, but is configurable using `Workbox`'s options and our own options.
+- ✨ Optimized precaching and runtime caching.
+- 💯 Maximal Lighthouse score.
+- 🎈 Easy-to-understand examples.
+- 📴 Offline support [(you can also provide fallbacks for when fetching fails)](/examples/offline-fallback-v2).
+- 🔉 Default range requests for audios and videos.
+- 📐 [Custom worker to run your own code (also supports path aliases, Typescript and code splitting!).](/examples/custom-worker)
+- 📜 [Public environment variables](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables) are available in custom workers.
+- 🐞 Debug service worker in development mode.
+- 🌏 [Internationalization support with `next-i18next`.](/examples/next-i18next)
+- ⚡ Supports [blitz.js](https://blitzjs.com/) (simply add `blitz.config.js`) and [GitPod](https://gitpod.io/#https://github.com/DuCanhGH/next-pwa/).
 
 ---
 
-[![Open in Gitpod](https://img.shields.io/badge/Open%20In-Gitpod.io-%231966D2?style=for-the-badge&logo=gitpod)](https://gitpod.io/#https://github.com/DuCanhGH/next-pwa/)
+## Getting Started
 
-## Setup
+Visit https://ducanh-next-pwa.vercel.app/docs/next-pwa/getting-started to get started with `next-pwa`.
 
-See [how to setup `next-pwa`](https://ducanh-next-pwa.vercel.app/docs/next-pwa/getting-started)
+## Documentation
 
-## Tips
+Visit https://ducanh-next-pwa.vercel.app/docs/next-pwa to see the documentation.
 
-See [our tips on using `next-pwa`](https://ducanh-next-pwa.vercel.app/docs/next-pwa/tips)
+## Community
+
+You can ask questions, suggest features, and share your projects on [Github Discussions](https://github.com/DuCanhGH/next-pwa/discussions).
+
+Please follow our [Code of Conduct](/CODE_OF_CONDUCT.md) when you communicate with other people.
+
+## Contributing
+
+Please see [our contributing guide](/CONTRIBUTING.md).
 
 ## Reference
 
