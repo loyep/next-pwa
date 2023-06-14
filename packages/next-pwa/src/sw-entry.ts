@@ -4,6 +4,7 @@ declare const __PWA_START_URL__: URL | RequestInfo;
 declare const __PWA_SW__: string;
 declare const __PWA_ENABLE_REGISTER__: boolean;
 declare const __PWA_CACHE_ON_FRONT_END_NAV__: boolean;
+declare const __PWA_AGGRFEN_CACHE__: boolean;
 declare const __PWA_RELOAD_ON_ONLINE__: boolean;
 declare const __PWA_SCOPE__: string;
 declare global {
@@ -69,40 +70,88 @@ if (
   }
 
   if (__PWA_CACHE_ON_FRONT_END_NAV__ || __PWA_START_URL__) {
-    const cacheOnFrontEndNav = (url?: string | URL | null | undefined) => {
+    const cacheOnFrontEndNav = async (
+      url?: string | URL | null | undefined
+    ) => {
       if (!window.navigator.onLine || !url) {
-        return;
+        return undefined;
       }
-      if (__PWA_CACHE_ON_FRONT_END_NAV__ && url !== __PWA_START_URL__) {
-        return caches.open("pages").then((cache) =>
-          cache.match(url, { ignoreSearch: true }).then((res) => {
-            if (!res) {
-              return cache.add(url);
-            }
-            return Promise.resolve();
-          })
-        );
-      } else if (__PWA_START_URL__ && url === __PWA_START_URL__) {
-        return fetch(__PWA_START_URL__).then(async (response) => {
-          if (!response.redirected) {
-            return caches
-              .open("start-url")
-              .then((cache) => cache.put(__PWA_START_URL__, response));
-          }
-          return Promise.resolve();
+
+      if (__PWA_START_URL__ && url === __PWA_START_URL__) {
+        const res = await fetch(__PWA_START_URL__);
+        if (!res.redirected) {
+          const startUrlCache = await caches.open("start-url");
+          return startUrlCache.put(__PWA_START_URL__, res);
+        }
+        return undefined;
+      }
+
+      if (__PWA_CACHE_ON_FRONT_END_NAV__) {
+        const pagesCache = await caches.open("pages");
+        const pageResponse = await pagesCache.match(url, {
+          ignoreSearch: true,
         });
+        if (!pageResponse) {
+          const page = await fetch(url);
+          if (page.ok) {
+            const pageClone = page.clone();
+            pagesCache.put(url, pageClone);
+            if (
+              __PWA_AGGRFEN_CACHE__ &&
+              page.headers.get("Content-Type")?.includes("text/html")
+            ) {
+              try {
+                const html = await page.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                const links = doc.querySelectorAll<HTMLLinkElement>(
+                  "link[rel='stylesheet']"
+                );
+                const scripts =
+                  doc.querySelectorAll<HTMLScriptElement>("script[src]");
+
+                const fetchPromises: Promise<void>[] = [];
+                const stylesheetCache = await caches.open(
+                  "static-style-assets"
+                );
+                const nextStaticJSCache = await caches.open(
+                  "next-static-js-assets"
+                );
+                const staticJSCache = await caches.open("static-js-assets");
+
+                links.forEach((link) =>
+                  fetchPromises.push(stylesheetCache.add(link.href))
+                );
+
+                scripts.forEach((script) => {
+                  fetchPromises.push(
+                    (/\/_next\/static.+\.js$/i.test(script.src)
+                      ? nextStaticJSCache
+                      : staticJSCache
+                    ).add(script.src)
+                  );
+                });
+
+                return await Promise.all(fetchPromises);
+              } catch {
+                // Do nothing
+              }
+            }
+          }
+        }
       }
-      return;
+
+      return undefined;
     };
 
     const pushState = history.pushState;
-    history.pushState = (...args: Parameters<typeof history.pushState>) => {
+    history.pushState = (...args) => {
       pushState.apply(history, args);
       cacheOnFrontEndNav(args[2]);
     };
 
     const replaceState = history.replaceState;
-    history.replaceState = (...args: Parameters<typeof history.pushState>) => {
+    history.replaceState = (...args) => {
       replaceState.apply(history, args);
       cacheOnFrontEndNav(args[2]);
     };

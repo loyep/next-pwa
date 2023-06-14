@@ -70,6 +70,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
           buildExcludes = [],
           fallbacks = {},
           cacheOnFrontEndNav = false,
+          aggressiveFrontEndNavCaching = false,
           reloadOnOnline = true,
           scope = basePath,
           customWorkerDir = "worker",
@@ -124,6 +125,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
             __PWA_ENABLE_REGISTER__: `${Boolean(register)}`,
             __PWA_START_URL__: dynamicStartUrl ? `'${basePath}'` : undefined,
             __PWA_CACHE_ON_FRONT_END_NAV__: `${Boolean(cacheOnFrontEndNav)}`,
+            __PWA_AGGRFEN_CACHE__: `${Boolean(aggressiveFrontEndNavCaching)}`,
             __PWA_RELOAD_ON_ONLINE__: `${Boolean(reloadOnOnline)}`,
           })
         );

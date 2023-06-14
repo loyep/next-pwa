@@ -128,11 +128,17 @@ export interface PluginOptions {
   fallbacks?: FallbackRoutes;
   /**
    * Enable additional route caching when users navigate through pages with
-   * `next/link` in frontend. This improves user experience in some cases but it
+   * `next/link`. This improves user experience in some cases but it
    * also adds some overhead because of additional network calls.
    * @default false
    */
   cacheOnFrontEndNav?: boolean;
+  /**
+   * Cache every `<link rel="stylesheet" />` and `<script />` on frontend navigation.
+   * Requires `cacheOnFrontEndNav` to be enabled.
+   * @default false
+   */
+  aggressiveFrontEndNavCaching?: boolean;
   /**
    * URL scope for PWA. Defaults to `basePath` in `next.config.js`. Set to
    * `/foo` so that paths under `/foo` are PWA while others are not.
