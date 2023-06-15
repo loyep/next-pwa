@@ -66,7 +66,7 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
               }
 
               return await Promise.all(fetchPromises);
-            } catch (e) {
+            } catch {
               // Do nothing
             }
           }

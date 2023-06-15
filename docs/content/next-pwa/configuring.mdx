@@ -79,6 +79,10 @@ export default withPWA({
 
 - `extendDefaultRuntimeCaching` — Extend the default `runtimeCaching` array. Only effective when `runtimeCaching` is specified.
 
+### Experimental
+
+- `aggressiveFrontEndNavCaching` — Cache every `<link rel="stylesheet" />` and `<script />` on frontend navigation. Requires `cacheOnFrontEndNav` to be enabled.
+
 ## Other options
 
 `next-pwa` uses `workbox-webpack-plugin`, other options can be found in [workbox-webpack-plugin's documentation](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin)

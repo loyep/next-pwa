@@ -134,6 +134,7 @@ export interface PluginOptions {
    */
   cacheOnFrontEndNav?: boolean;
   /**
+   * EXPERIMENTAL.
    * Cache every `<link rel="stylesheet" />` and `<script />` on frontend navigation.
    * Requires `cacheOnFrontEndNav` to be enabled.
    * @default false
