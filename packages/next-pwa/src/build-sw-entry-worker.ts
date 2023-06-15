@@ -92,5 +92,5 @@ export const buildSWEntryWorker = ({
     }
   });
 
-  return name;
+  return `/${name}`;
 };
