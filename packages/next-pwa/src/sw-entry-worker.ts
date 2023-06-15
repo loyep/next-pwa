@@ -25,13 +25,6 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
           ) {
             try {
               const html = await page.text();
-              const parser = new DOMParser();
-              const doc = parser.parseFromString(html, "text/html");
-              const links = doc.querySelectorAll<HTMLLinkElement>(
-                "link[rel='stylesheet']"
-              );
-              const scripts =
-                doc.querySelectorAll<HTMLScriptElement>("script[src]");
 
               const fetchPromises: Promise<void>[] = [];
               const stylesheetCache = await caches.open("static-style-assets");
@@ -40,28 +33,40 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
               );
               const staticJSCache = await caches.open("static-js-assets");
 
-              links.forEach((link) => {
-                stylesheetCache.match(link.href).then((res) => {
-                  if (!res) {
-                    fetchPromises.push(stylesheetCache.add(link.href));
-                  }
-                });
-              });
+              for (const [fullLink, link] of html.matchAll(
+                /<link.*?href=['"](.*?)['"].*?>/g
+              )) {
+                if (/rel=['"]stylesheet['"]/.test(fullLink)) {
+                  fetchPromises.push(
+                    stylesheetCache.match(link).then((res) => {
+                      if (!res) {
+                        return stylesheetCache.add(link);
+                      }
+                      return Promise.resolve();
+                    })
+                  );
+                }
+              }
 
-              scripts.forEach((script) => {
-                const scriptCache = /\/_next\/static.+\.js$/i.test(script.src)
+              for (const [, script] of html.matchAll(
+                /<script.*?src=['"](.*?)['"].*?>/g
+              )) {
+                const scriptCache = /\/_next\/static.+\.js$/i.test(script)
                   ? nextStaticJSCache
                   : staticJSCache;
 
-                scriptCache.match(script.src).then((res) => {
-                  if (!res) {
-                    fetchPromises.push(scriptCache.add(script.src));
-                  }
-                });
-              });
+                fetchPromises.push(
+                  scriptCache.match(script).then((res) => {
+                    if (!res) {
+                      return scriptCache.add(script);
+                    }
+                    return Promise.resolve();
+                  })
+                );
+              }
 
               return await Promise.all(fetchPromises);
-            } catch {
+            } catch (e) {
               // Do nothing
             }
           }
