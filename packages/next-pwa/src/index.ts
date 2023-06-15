@@ -14,6 +14,7 @@ import WorkboxPlugin from "workbox-webpack-plugin";
 import { buildCustomWorker } from "./build-custom-worker.js";
 import { getDefaultDocumentPage } from "./build-fallback-worker/get-default-document-page.js";
 import { buildFallbackWorker } from "./build-fallback-worker/index.js";
+import { buildSWEntryWorker } from "./build-sw-entry-worker.js";
 import defaultCache from "./cache.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";
 import { resolveWorkboxCommon } from "./resolve-workbox-common.js";
@@ -158,6 +159,19 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
 
         if (!options.isServer) {
           const _dest = path.join(options.dir, dest);
+
+          if (cacheOnFrontEndNav) {
+            config.plugins.push(
+              new webpack.DefinePlugin({
+                __PWA_SW_ENTRY_WORKER__: `'${buildSWEntryWorker({
+                  id: buildId,
+                  destDir: _dest,
+                  minify: !dev,
+                })}'`,
+              })
+            );
+          }
+
           const customWorkerScriptName = buildCustomWorker({
             id: buildId,
             baseDir: options.dir,

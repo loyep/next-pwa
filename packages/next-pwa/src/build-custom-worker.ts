@@ -50,16 +50,14 @@ export const buildCustomWorker = ({
 
   if (customWorkerEntries.length === 0) return;
 
+  const customWorkerEntry = customWorkerEntries[0];
+
   if (customWorkerEntries.length > 1) {
-    logger.warn(
-      `WARNING: More than one custom worker found (${customWorkerEntries.join(
-        ","
-      )}), a custom worker will not be built.`
+    logger.info(
+      `More than one custom worker found, ${customWorkerEntry} will be used.`
     );
-    return;
   }
 
-  const customWorkerEntry = customWorkerEntries[0];
   logger.info(`Custom worker found: ${customWorkerEntry}`);
   logger.info(`Building custom worker: ${path.join(destDir, name)}...`);
 

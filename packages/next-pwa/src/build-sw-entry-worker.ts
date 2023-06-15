@@ -7,44 +7,31 @@ import TerserPlugin from "terser-webpack-plugin";
 import { logger } from "utils";
 import webpack from "webpack";
 
-import swcRc from "../.swcrc.json";
-import type { FallbackRoutes } from "../types.js";
-import { getFallbackEnvs } from "./get-fallback-envs.js";
+import swcRc from "./.swcrc.json";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const require = createRequire(import.meta.url);
 
-export const buildFallbackWorker = ({
+export const buildSWEntryWorker = ({
   id,
-  fallbacks,
   destDir,
   minify,
 }: {
   id: string;
-  fallbacks: FallbackRoutes;
-  baseDir: string;
   destDir: string;
   minify: boolean;
-  pageExtensions: string[];
-  isAppDirEnabled: boolean;
 }) => {
-  const envs = getFallbackEnvs({
-    fallbacks,
-    id,
-  });
-  if (!envs) return;
-
-  const name = `fallback-${id}.js`;
-  const fallbackJs = path.join(__dirname, `fallback.js`);
+  const name = `sw-entry-worker-${id}.js`;
+  const swEntryWorkerEntry = path.join(__dirname, `sw-entry-worker.js`);
 
   webpack({
     mode: minify ? "production" : "development",
     target: "webworker",
     entry: {
-      main: fallbackJs,
+      main: swEntryWorkerEntry,
     },
     resolve: {
-      extensions: [".js"],
+      extensions: [".ts", ".js"],
       fallback: {
         module: false,
         dgram: false,
@@ -86,11 +73,10 @@ export const buildFallbackWorker = ({
     plugins: [
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: [
-          path.join(destDir, "fallback-*.js"),
-          path.join(destDir, "fallback-*.js.map"),
+          path.join(destDir, "sw-entry-worker-*.js"),
+          path.join(destDir, "sw-entry-worker-*.js.map"),
         ],
       }),
-      new webpack.EnvironmentPlugin(envs),
     ],
     optimization: minify
       ? {
@@ -100,11 +86,11 @@ export const buildFallbackWorker = ({
       : undefined,
   }).run((error, status) => {
     if (error || status?.hasErrors()) {
-      logger.error("Failed to build fallback worker.");
+      logger.error(`Failed to build sw-entry's worker.`);
       logger.error(status?.toString({ colors: true }));
       process.exit(-1);
     }
   });
 
-  return { name, precaches: Object.values(envs).filter((v) => !!v) };
+  return name;
 };

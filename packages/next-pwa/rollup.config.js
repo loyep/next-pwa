@@ -61,6 +61,13 @@ const files = [
     },
     external: ["workbox-window"],
   },
+  {
+    input: "src/sw-entry-worker.ts",
+    output: {
+      file: "dist/sw-entry-worker.js",
+      format: "esm",
+    },
+  },
 ];
 
 /** @type {FileEntry[]} */

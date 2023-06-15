@@ -1,5 +1,7 @@
 import { Workbox } from "workbox-window";
 
+import type { MessageType } from "./sw-entry-worker.js";
+
 declare const __PWA_START_URL__: URL | RequestInfo;
 declare const __PWA_SW__: string;
 declare const __PWA_ENABLE_REGISTER__: boolean;
@@ -7,6 +9,7 @@ declare const __PWA_CACHE_ON_FRONT_END_NAV__: boolean;
 declare const __PWA_AGGRFEN_CACHE__: boolean;
 declare const __PWA_RELOAD_ON_ONLINE__: boolean;
 declare const __PWA_SCOPE__: string;
+declare const __PWA_SW_ENTRY_WORKER__: string | undefined;
 declare global {
   interface Window {
     workbox: Workbox;
@@ -28,6 +31,12 @@ if (
           );
       }
     });
+  }
+
+  let swEntryWorker: Worker | undefined;
+
+  if (__PWA_SW_ENTRY_WORKER__) {
+    swEntryWorker = new Worker(__PWA_SW_ENTRY_WORKER__);
   }
 
   window.workbox = new Workbox(window.location.origin + __PWA_SW__, {
@@ -87,58 +96,11 @@ if (
       }
 
       if (__PWA_CACHE_ON_FRONT_END_NAV__) {
-        const pagesCache = await caches.open("pages");
-        const pageResponse = await pagesCache.match(url, {
-          ignoreSearch: true,
-        });
-        if (!pageResponse) {
-          const page = await fetch(url);
-          if (page.ok) {
-            const pageClone = page.clone();
-            pagesCache.put(url, pageClone);
-            if (
-              __PWA_AGGRFEN_CACHE__ &&
-              page.headers.get("Content-Type")?.includes("text/html")
-            ) {
-              try {
-                const html = await page.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
-                const links = doc.querySelectorAll<HTMLLinkElement>(
-                  "link[rel='stylesheet']"
-                );
-                const scripts =
-                  doc.querySelectorAll<HTMLScriptElement>("script[src]");
-
-                const fetchPromises: Promise<void>[] = [];
-                const stylesheetCache = await caches.open(
-                  "static-style-assets"
-                );
-                const nextStaticJSCache = await caches.open(
-                  "next-static-js-assets"
-                );
-                const staticJSCache = await caches.open("static-js-assets");
-
-                links.forEach((link) =>
-                  fetchPromises.push(stylesheetCache.add(link.href))
-                );
-
-                scripts.forEach((script) => {
-                  fetchPromises.push(
-                    (/\/_next\/static.+\.js$/i.test(script.src)
-                      ? nextStaticJSCache
-                      : staticJSCache
-                    ).add(script.src)
-                  );
-                });
-
-                return await Promise.all(fetchPromises);
-              } catch {
-                // Do nothing
-              }
-            }
-          }
-        }
+        swEntryWorker?.postMessage({
+          type: "__FRONTEND_NAV_CACHE__",
+          shouldCacheAggressively: __PWA_AGGRFEN_CACHE__,
+          url,
+        } as MessageType);
       }
 
       return undefined;
