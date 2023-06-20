@@ -58,6 +58,12 @@ const RootLayout: LayoutComponent = ({ children }) => (
     </head>
     <body>
       <div id="root-container">
+        <a
+          className="z-[100] dark:text-white text-black underline absolute -top-full focus:top-0"
+          href="#main-content"
+        >
+          Skip to main content
+        </a>
         <RootClientLogic />
         <Navbar />
         <main id="main-content">{children}</main>

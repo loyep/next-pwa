@@ -91,7 +91,7 @@ const Page = () => (
               <h2 className="mb-3 text-2xl font-semibold">
                 {feature.icon} {feature.label}
               </h2>
-              <p className="m-0 max-w-[30ch] text-sm opacity-50">
+              <p className="m-0 max-w-[30ch] text-sm opacity-80">
                 {feature.description}
               </p>
             </div>

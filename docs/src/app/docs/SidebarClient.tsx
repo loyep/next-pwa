@@ -69,7 +69,7 @@ export const SidebarClient = ({ children }: SidebarClientProps) => {
             "absolute md:[position:unset] max-md:[transform:translate(0,-100%)]"
         )}
       >
-        {children}
+        <ul>{children}</ul>
       </aside>
     </div>
   );
@@ -115,7 +115,10 @@ export const SidebarTextBox = ({
           />
         )}
         {hasChildTree && (
-          <button className="h-full pr-2 py-1.5">
+          <button
+            className="h-full pr-2 py-1.5"
+            aria-label={`${isChildOpened ? "Collapse" : "Expand"} section`}
+          >
             <IconChevronRight
               onClick={toggleChildOpened}
               className={clsx(

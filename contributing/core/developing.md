@@ -17,7 +17,7 @@ To develop locally:
    ```bash
    pnpm install
    ```
-1. Start developing and watch for code changes (this is not working with Turborepo right now, needs help fixing!):
+1. Start developing and watch for code changes:
    ```bash
    pnpm dev
    ```
