@@ -81,14 +81,14 @@ const files = [
 /** @type {FileEntry[]} */
 const declarations = [
   {
-    input: "dist/dts/index.d.ts",
+    input: "dist/dts/src/index.d.ts",
     output: [
       { format: "es", file: "dist/index.module.d.ts" },
       { format: "cjs", file: "dist/index.d.cts" },
     ],
   },
   {
-    input: "dist/dts/sw-entry.d.ts",
+    input: "dist/dts/src/sw-entry.d.ts",
     output: [
       { format: "es", file: "dist/sw-entry.module.d.ts" },
       { format: "cjs", file: "dist/sw-entry.d.cts" },
