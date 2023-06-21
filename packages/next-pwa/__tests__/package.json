@@ -1,0 +1,10 @@
+{
+  "name": "next-pwa-tests",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@types/react": "18.2.11",
+    "@types/react-dom": "18.2.4",
+    "tests-utils": "workspace:*"
+  }
+}

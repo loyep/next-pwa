@@ -13,6 +13,7 @@
     "lint": {
       "outputs": []
     },
+    "test": {},
     "typecheck": {
       "outputs": []
     }

@@ -1,4 +1,4 @@
-import { createDescribe } from "../../utils/create-describe";
+import { createDescribe } from "tests-utils";
 
 createDescribe(
   "e2e app-dir",

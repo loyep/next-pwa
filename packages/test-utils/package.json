@@ -1,0 +1,10 @@
+{
+  "name": "tests-utils",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./dist/*": "./src/*"
+  },
+  "main": "./src/index.ts"
+}

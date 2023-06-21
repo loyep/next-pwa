@@ -66,7 +66,7 @@ export abstract class NextInstance {
     }
 
     this._dependencies = {
-      next: require("next/package.json").version,
+      next: "latest",
       react: "latest",
       "react-dom": "latest",
       typescript: "latest",
@@ -89,7 +89,7 @@ export abstract class NextInstance {
       )
     );
 
-    const origRepoDir = path.join(__dirname, "../..");
+    const origRepoDir = path.join(__dirname, "../../..");
 
     const copyRepoPromise: Promise<any>[] = [];
 
