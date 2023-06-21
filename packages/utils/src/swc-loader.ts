@@ -60,15 +60,22 @@ export function swcLoader(this: any, source: string, inputSourceMap: string) {
   const sync = programmaticOptions.sync;
   const parseMap = programmaticOptions.parseMap;
 
-  let swc: Compiler;
-  try {
-    // avoid installing @swc/core
-    swc = require("next/dist/build/swc");
-  } catch {
-    logger.info(
-      "Using @swc/core to compile next-pwa's features. Please install it if you haven't."
+  let swc: Compiler | undefined;
+
+  for (const swcSource of ["next/dist/build/swc", "@swc/core"]) {
+    try {
+      swc = require(swcSource);
+      break;
+    } catch {
+      // Do nothing, this swc source might not be available
+    }
+  }
+
+  if (!swc) {
+    logger.error(
+      "Failed to resolve swc. Please install @swc/core if you haven't."
     );
-    swc = require("@swc/core");
+    process.exit(1);
   }
 
   // Remove loader related options
