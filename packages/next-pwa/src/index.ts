@@ -26,14 +26,14 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const getRevision = (file: fs.PathOrFileDescriptor) =>
   crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex");
 
-type WithPWA = (_?: NextConfig) => NextConfig;
-
-const withPWAInit = (pluginOptions: PluginOptions = {}): WithPWA => {
+const withPWAInit = (
+  pluginOptions: PluginOptions = {}
+): ((nextConfig?: NextConfig) => NextConfig) => {
   return (nextConfig = {}) => ({
     ...nextConfig,
     ...({
       webpack(config: Configuration, options) {
-        const isAppDirEnabled = !!nextConfig.experimental?.appDir;
+        const isAppDirEnabled = nextConfig.experimental?.appDir ?? true;
 
         const webpack: typeof WebpackType = options.webpack;
         const {
