@@ -53,6 +53,72 @@ export default withPWA({
 });
 ```
 
+If your deployment platform requires your production image's size to not exceed a certain limit, you can also do this:
+
+```js
+const {
+  PHASE_DEVELOPMENT_SERVER,
+  PHASE_PRODUCTION_BUILD,
+} = require("next/constants");
+
+/** @type {import("next").NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+/**
+ * @type {(
+ *     phase: string,
+ *     { defaultConfig }: { defaultConfig: NextConfig },
+ * ) => NextConfig}
+ */
+module.exports = (phase) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+    const withPWA = require("@ducanh2912/next-pwa").default({
+      dest: "public",
+      cacheOnFrontEndNav: true,
+      aggressiveFrontEndNavCaching: true,
+    });
+    return withPWA(nextConfig);
+  }
+  return nextConfig;
+};
+```
+
+or if you are using ESM:
+
+```js
+import {
+  PHASE_DEVELOPMENT_SERVER,
+  PHASE_PRODUCTION_BUILD,
+} from "next/constants.js";
+
+/** @type {import("next").NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+/**
+ * @type {(
+ *     phase: string,
+ *     { defaultConfig }: { defaultConfig: NextConfig },
+ * ) => NextConfig}
+ */
+const nextPluginsCompose = async (phase) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+    const withPWA = (await import("@ducanh2912/next-pwa")).default({
+      dest: "public",
+      cacheOnFrontEndNav: true,
+      aggressiveFrontEndNavCaching: true,
+    });
+    return withPWA(nextConfig);
+  }
+  return nextConfig;
+};
+
+export default nextPluginsCompose;
+```
+
 <Callout>
   **Note**: This plugin is written in Typescript and JSDoc is supported. It is
   recommended to add `// @ts-check` to the top of your `next.config.js` file to
