@@ -7,12 +7,13 @@
  */
 import json from "@rollup/plugin-json";
 import nodeResolve from "@rollup/plugin-node-resolve";
-import terser from "@rollup/plugin-terser";
+import swc from "@rollup/plugin-swc";
 import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
 import dts from "rollup-plugin-dts";
 
 const isDev = process.env.NODE_ENV !== "production";
+const shouldEmitDeclaration = !isDev;
 
 /** @type {FileEntry[]} */
 const files = [
@@ -62,17 +63,6 @@ const files = [
   },
 ];
 
-/** @type {FileEntry[]} */
-const declarations = [
-  {
-    input: "dist/dts/index.d.ts",
-    output: [
-      { format: "es", file: "dist/index.module.d.ts" },
-      { format: "cjs", file: "dist/index.d.cts" },
-    ],
-  },
-];
-
 /**
  * @type {import("rollup").RollupOptions[]}
  */
@@ -87,32 +77,67 @@ for (const { input, output, external, plugins } of files) {
       plugins: [
         nodeResolve({
           exportConditions: ["node"],
-        }),
-        typescript({
-          noForceEmit: true,
-          noEmitOnError: !isDev,
-          outDir: "dist",
-          declaration: true,
-          declarationDir: "dts",
-          noEmit: false,
+          extensions: [".js", ".ts"],
         }),
         json(),
-        ...[process.env.NODE_ENV === "production" ? [terser()] : []],
+        shouldEmitDeclaration &&
+          typescript({
+            noForceEmit: true,
+            outDir: "dist",
+            declaration: true,
+            declarationDir: "dts",
+            noEmit: false,
+          }),
+        swc({
+          swc: {
+            module: {
+              type: "nodenext",
+              lazy: true,
+              importInterop: "swc",
+            },
+            jsc: {
+              parser: {
+                syntax: "typescript",
+                tsx: false,
+                dynamicImport: true,
+                decorators: false,
+              },
+              transform: {
+                react: undefined,
+              },
+              target: "esnext",
+              loose: false,
+            },
+            minify: true,
+          },
+        }),
         ...[plugins ?? []],
       ],
     })
   );
 }
 
-for (const { input, output, external, plugins } of declarations) {
-  rollupEntries.push(
-    defineConfig({
-      input,
-      output,
-      external,
-      plugins: [dts(), ...[plugins ?? []]],
-    })
-  );
+if (shouldEmitDeclaration) {
+  /** @type {FileEntry[]} */
+  const declarations = [
+    {
+      input: "dist/dts/index.d.ts",
+      output: [
+        { format: "es", file: "dist/index.module.d.ts" },
+        { format: "cjs", file: "dist/index.d.cts" },
+      ],
+    },
+  ];
+  for (const { input, output, external, plugins } of declarations) {
+    rollupEntries.push(
+      defineConfig({
+        input,
+        output,
+        external,
+        plugins: [dts(), ...[plugins ?? []]],
+      })
+    );
+  }
 }
 
 export default rollupEntries;

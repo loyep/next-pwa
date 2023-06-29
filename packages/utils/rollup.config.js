@@ -6,10 +6,8 @@
  * >} FileEntry
  */
 import nodeResolve from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
+import swc from "@rollup/plugin-swc";
 import { defineConfig } from "rollup";
-
-const isDev = process.env.NODE_ENV !== "production";
 
 /** @type {FileEntry[]} */
 const files = [
@@ -21,7 +19,7 @@ const files = [
         format: "esm",
       },
     ],
-    external: ["semver"],
+    external: ["semver", "chalk"],
   },
 ];
 
@@ -33,13 +31,30 @@ export default files.map(({ input, output, external, plugins }) =>
     plugins: [
       nodeResolve({
         exportConditions: ["node"],
+        extensions: [".js", ".ts"],
       }),
-      typescript({
-        noForceEmit: true,
-        noEmitOnError: !isDev,
-        outDir: "dist",
-        declaration: false,
-        noEmit: false,
+      swc({
+        swc: {
+          module: {
+            type: "nodenext",
+            lazy: true,
+            importInterop: "swc",
+          },
+          jsc: {
+            parser: {
+              syntax: "typescript",
+              tsx: false,
+              dynamicImport: true,
+              decorators: false,
+            },
+            transform: {
+              react: undefined,
+            },
+            target: "esnext",
+            loose: false,
+          },
+          minify: true,
+        },
       }),
       ...[plugins ?? []],
     ],

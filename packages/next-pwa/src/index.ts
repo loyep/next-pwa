@@ -11,15 +11,18 @@ import type { Configuration, default as WebpackType } from "webpack";
 import type { RuntimeCaching } from "workbox-build";
 import WorkboxPlugin from "workbox-webpack-plugin";
 
-import { buildCustomWorker } from "./build-custom-worker.js";
-import { getDefaultDocumentPage } from "./build-fallback-worker/get-default-document-page.js";
-import { buildFallbackWorker } from "./build-fallback-worker/index.js";
-import { buildSWEntryWorker } from "./build-sw-entry-worker.js";
 import defaultCache from "./cache.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";
 import { resolveWorkboxCommon } from "./resolve-workbox-common.js";
 import type { PluginOptions } from "./types.js";
 import { isInjectManifestConfig, overrideAfterCalledMethod } from "./utils.js";
+import { setDefaultContext } from "./webpack-builders/context.js";
+import {
+  buildCustomWorker,
+  buildFallbackWorker,
+  buildSWEntryWorker,
+  getDefaultDocumentPage,
+} from "./webpack-builders/index.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -31,7 +34,7 @@ const withPWAInit = (
 ): ((nextConfig?: NextConfig) => NextConfig) => {
   return (nextConfig = {}) => ({
     ...nextConfig,
-    ...({
+    ...{
       webpack(config: Configuration, options) {
         const isAppDirEnabled = nextConfig.experimental?.appDir ?? true;
 
@@ -158,11 +161,14 @@ const withPWAInit = (
           });
 
         if (!options.isServer) {
+          setDefaultContext({
+            shouldMinify: !dev,
+          });
+
           const _dest = path.join(options.dir, dest);
           const sweWorkerName = buildSWEntryWorker({
             id: buildId,
             destDir: _dest,
-            minify: !dev,
             shouldGenSWEWorker: cacheOnFrontEndNav,
           });
 
@@ -181,7 +187,6 @@ const withPWAInit = (
               (plugin) => plugin instanceof webpack.DefinePlugin
             ),
             tsconfig: tsConfigJSON,
-            minify: !dev,
           });
 
           if (!!customWorkerScriptName) {
@@ -276,11 +281,7 @@ const withPWAInit = (
             const res = buildFallbackWorker({
               id: buildId,
               fallbacks,
-              baseDir: options.dir,
               destDir: _dest,
-              minify: !dev,
-              pageExtensions,
-              isAppDirEnabled,
             });
 
             if (res) {
@@ -439,7 +440,7 @@ const withPWAInit = (
         }
         return config;
       },
-    } as NextConfig),
+    },
   });
 };
 

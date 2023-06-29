@@ -41,7 +41,7 @@ module.exports = {
     "turbo/no-undeclared-env-vars": [
       "error",
       {
-        allowList: ["^__PWA_FALLBACK_(.*)__+$"],
+        allowList: ["^__PWA_FALLBACK_(.*)__+$", "^NEXT_PWA_(.*)+$"],
       },
     ],
   },
