@@ -14,29 +14,43 @@ const updateAndLog = async (runOptions) => {
   );
 };
 
-await Promise.all([
-  (
-    await fg("./**/package.json", {
-      ignore: ["examples/**", "**/node_modules/**"],
+const packageJsonList = await fg("**/package.json", {
+  ignore: ["examples/**", "**/node_modules/**"],
+});
+const examplesPackageJsonList = await fg("examples/*/package.json", {
+  ignore: ["**/node_modules/**"],
+});
+
+/**
+ * @type {Promise<any>[]}
+ */
+const updatePromise = [];
+
+for (const packageFile of packageJsonList) {
+  updatePromise.push(
+    updateAndLog({
+      packageFile,
+      upgrade: true,
+      target: (dependencyName) => {
+        if (dependencyName === "typescript") {
+          return "@next";
+        }
+        if (/^react(-dom)?$/.test(dependencyName)) {
+          return "@latest";
+        }
+        return "latest";
+      },
     })
-  ).map(
-    async (packageFile) =>
-      await updateAndLog({
-        packageFile,
-        upgrade: true,
-        target: (dependencyName) => {
-          if (dependencyName === "typescript") {
-            return "@next";
-          }
-          if (/^react(-dom)?$/.test(dependencyName)) {
-            return "@latest";
-          }
-          return "latest";
-        },
-      })
-  ),
-  await updateAndLog({
-    packageFile: "examples/*/package.json",
-    upgrade: true,
-  }),
-]);
+  );
+}
+
+for (const packageFile of examplesPackageJsonList) {
+  updatePromise.push(
+    updateAndLog({
+      packageFile,
+      upgrade: true,
+    })
+  );
+}
+
+await Promise.all(updatePromise);
