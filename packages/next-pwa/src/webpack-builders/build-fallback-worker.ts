@@ -31,7 +31,7 @@ export const buildFallbackWorker = ({
   const fallbackJs = path.join(__dirname, `fallback.js`);
 
   webpack({
-    ...getSharedWebpackConfig({ shouldMinify: NextPWAContext.shouldMinify }),
+    ...getSharedWebpackConfig({}),
     mode: NextPWAContext.shouldMinify ? "production" : "development",
     target: "webworker",
     entry: {

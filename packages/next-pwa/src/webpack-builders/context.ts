@@ -1,4 +1,4 @@
-import { convertBoolean } from "./utils.js";
+import { convertBoolean } from "../utils.js";
 
 const resolveContextEnv = <T>(
   env: string | undefined,
@@ -12,6 +12,10 @@ const resolveContextEnv = <T>(
 
 export const NextPWAContext = {
   shouldMinify: resolveContextEnv(process.env.NEXT_PWA_MINIFY, convertBoolean),
+  useSwcMinify: resolveContextEnv(
+    process.env.NEXT_PWA_SWC_MINIFY,
+    convertBoolean
+  ),
 };
 
 /**
@@ -20,7 +24,11 @@ export const NextPWAContext = {
  */
 export const setDefaultContext = ({
   shouldMinify: _minify,
+  useSwcMinify: _swcMinify,
 }: Partial<typeof NextPWAContext>) => {
   NextPWAContext.shouldMinify === undefined &&
     (NextPWAContext.shouldMinify = _minify);
+
+  NextPWAContext.useSwcMinify === undefined &&
+    (NextPWAContext.useSwcMinify = _swcMinify);
 };

@@ -20,7 +20,7 @@ const files = [
         format: "esm",
       },
     ],
-    external: ["semver", "chalk"],
+    external: ["semver"],
   },
 ];
 

@@ -173,6 +173,11 @@ export interface PluginOptions {
    * @default false
    */
   extendDefaultRuntimeCaching?: boolean;
+  /**
+   * Use `swc` to minify custom workers, the fallback worker,...
+   * @default nextConfig.swcMinify // or true if undefined
+   */
+  swcMinify?: boolean;
 }
 
 export interface FallbackRoutes {

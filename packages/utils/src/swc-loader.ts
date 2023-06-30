@@ -1,8 +1,6 @@
 import { createRequire } from "node:module";
 
-import type { Compiler } from "@swc/core";
-
-import * as logger from "./logger.js";
+import { resolveSwc } from "./resolve-swc.js";
 
 const require = createRequire(import.meta.url);
 
@@ -60,23 +58,7 @@ export function swcLoader(this: any, source: string, inputSourceMap: string) {
   const sync = programmaticOptions.sync;
   const parseMap = programmaticOptions.parseMap;
 
-  let swc: Compiler | undefined;
-
-  for (const swcSource of ["next/dist/build/swc", "@swc/core"]) {
-    try {
-      swc = require(swcSource);
-      break;
-    } catch {
-      // Do nothing, this swc source might not be available
-    }
-  }
-
-  if (!swc) {
-    logger.error(
-      "Failed to resolve swc. Please install @swc/core if you haven't."
-    );
-    process.exit(1);
-  }
+  const swc = resolveSwc();
 
   // Remove loader related options
   delete programmaticOptions.sync;

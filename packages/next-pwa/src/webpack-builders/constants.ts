@@ -1,6 +1,9 @@
 import type { MinimizerOptions, TerserOptions } from "terser-webpack-plugin";
+import { resolveSwc } from "utils";
 
-export const TERSER_OPTIONS: MinimizerOptions<TerserOptions> = {
+export const TERSER_OPTIONS: MinimizerOptions<TerserOptions> & {
+  resolveSwc: typeof resolveSwc;
+} = {
   compress: {
     ecma: 5,
     comparisons: false,
@@ -15,4 +18,5 @@ export const TERSER_OPTIONS: MinimizerOptions<TerserOptions> = {
     comments: false,
     ascii_only: true,
   },
+  resolveSwc,
 };
