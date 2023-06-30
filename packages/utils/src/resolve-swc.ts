@@ -1,7 +1,5 @@
 import type { Compiler } from "@swc/core";
 
-import * as logger from "./logger.js";
-
 export const resolveSwc = () => {
   let swc: Compiler | undefined;
 
@@ -15,10 +13,9 @@ export const resolveSwc = () => {
   }
 
   if (!swc) {
-    logger.error(
+    throw new Error(
       "Failed to resolve swc. Please install @swc/core if you haven't."
     );
-    process.exit(1);
   }
 
   return swc;

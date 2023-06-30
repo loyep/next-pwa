@@ -1,13 +1,16 @@
-import type { JsMinifyOptions, TerserCompressOptions } from "@swc/core";
+import type {
+  Compiler,
+  JsMinifyOptions,
+  TerserCompressOptions,
+} from "@swc/core";
 import type {
   CustomOptions,
+  default as TerserWebpack,
   Input,
   MinimizedResult,
   PredefinedOptions,
   SourceMapInput,
 } from "terser-webpack-plugin";
-
-import type { resolveSwc as swcResolver } from "./resolve-swc.js";
 
 /**
  * Custom `terser-webpack-plugin` minifier (with `@swc/core`).
@@ -47,7 +50,16 @@ export const swcMinify = async (
     };
   };
 
-  const swc = resolveSwc() as ReturnType<typeof swcResolver>;
+  let swc: Compiler;
+  try {
+    swc = resolveSwc();
+  } catch {
+    // swc might not be available, fallback to terser
+    return (
+      require("terser-webpack-plugin") as typeof TerserWebpack
+    ).terserMinify(input, sourceMap, minimizerOptions, false);
+  }
+
   // Copy `swc` options
   const swcOptions = buildSwcOptions(minimizerOptions);
 

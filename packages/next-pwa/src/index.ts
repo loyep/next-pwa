@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import fg from "fast-glob";
 import type { NextConfig } from "next";
+import type NextConfigShared from "next/dist/server/config-shared.js";
 import { loadTSConfig, logger } from "utils";
 import type { Configuration, default as WebpackType } from "webpack";
 import type { RuntimeCaching } from "workbox-build";
@@ -35,7 +36,20 @@ const withPWAInit = (
   return (nextConfig = {}) => ({
     ...nextConfig,
     webpack(config: Configuration, options) {
-      const isAppDirEnabled = nextConfig.experimental?.appDir ?? true;
+      let nextDefConfig: NextConfig | undefined;
+
+      try {
+        nextDefConfig = (
+          require("next/dist/server/config-shared") as typeof NextConfigShared
+        ).defaultConfig;
+      } catch {
+        // do nothing - we are using Next's internals.
+      }
+
+      const isAppDirEnabled =
+        nextConfig.experimental?.appDir ??
+        nextDefConfig?.experimental?.appDir ??
+        true;
 
       const webpack: typeof WebpackType = options.webpack;
       const {
@@ -79,7 +93,7 @@ const withPWAInit = (
         customWorkerDir = "worker",
         workboxOptions = {},
         extendDefaultRuntimeCaching = false,
-        swcMinify = nextConfig.swcMinify ?? true,
+        swcMinify = nextConfig.swcMinify ?? nextDefConfig?.swcMinify ?? false,
       } = pluginOptions;
 
       const {
