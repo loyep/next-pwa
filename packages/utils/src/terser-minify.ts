@@ -34,13 +34,19 @@ export const terserMinify = async (
       useSwcMinify: boolean | undefined;
     };
 
-  const buildSwcOptions = (
-    swcOptions: PredefinedOptions & JsMinifyOptions
-  ): JsMinifyOptions & {
-    sourceMap: boolean | undefined;
-    compress: TerserCompressOptions;
-  } => {
-    return {
+  const fallbackToTerser = () => {
+    return (
+      require("terser-webpack-plugin") as typeof TerserWebpack
+    ).terserMinify(input, sourceMap, minimizerOptions, extractComments);
+  };
+
+  if (useSwcMinify) {
+    const buildSwcOptions = (
+      swcOptions: PredefinedOptions & JsMinifyOptions
+    ): JsMinifyOptions & {
+      sourceMap: boolean | undefined;
+      compress: TerserCompressOptions;
+    } => ({
       ...swcOptions,
       compress:
         typeof swcOptions.compress === "boolean"
@@ -55,16 +61,8 @@ export const terserMinify = async (
           ? swcOptions.mangle
           : { ...swcOptions.mangle },
       sourceMap: undefined,
-    };
-  };
+    });
 
-  const fallbackToTerser = () => {
-    return (
-      require("terser-webpack-plugin") as typeof TerserWebpack
-    ).terserMinify(input, sourceMap, minimizerOptions, extractComments);
-  };
-
-  if (useSwcMinify) {
     let swc: Compiler;
     try {
       swc = resolveSwc();

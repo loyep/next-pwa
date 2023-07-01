@@ -174,7 +174,7 @@ export interface PluginOptions {
    */
   extendDefaultRuntimeCaching?: boolean;
   /**
-   * Use [`swc`](https://swc.rs) to minify the custom worker, fallback worker,...
+   * Use [`swc`](https://swc.rs) to minify the custom worker, the fallback worker, and more.
    * @default nextConfig.swcMinify
    */
   swcMinify?: boolean;
