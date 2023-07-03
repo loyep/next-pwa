@@ -123,7 +123,7 @@ export default nextConfigFunction;
 </Tabs>
 
 <Callout>
-  **Note**: This plugin is written in Typescript and JSDoc is supported. It is
+  **Note**: This plugin is written in Typescript and supports JSDoc. It is
   recommended to add `// @ts-check` to the top of your `next.config.js` file to
   leverage type checking. This is especially useful when you use
   `PluginOptions.workboxOptions`, as you may unknowningly mix
@@ -203,7 +203,7 @@ app.prepare().then(() => {
 Create a `manifest.json` file in your `public` folder:
 
 ```json
-// title manifest.json
+// title public/manifest.json
 {
   "name": "My awesome PWA app",
   "short_name": "PWA App",
@@ -235,98 +235,12 @@ Create a `manifest.json` file in your `public` folder:
 
 ### Step 3: Add `<meta />` and `<link />` tags to your `<head />`
 
-Add the following code to your `_app.tsx`'s `<Head />`:
+Add the following to your `app/layout.tsx` or `pages/_app.tsx`:
 
-```tsx
-// title _app.tsx
-<head>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My awesome PWA app</title>
-  <meta name="description" content="Best PWA app in the world!" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="mask-icon" href="/icons/mask-icon.svg" color="#FFFFFF" />
-  <meta name="theme-color" content="#ffffff" />
-  <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
-  <link
-    rel="apple-touch-icon"
-    sizes="152x152"
-    href="/icons/touch-icon-ipad.png"
-  />
-  <link
-    rel="apple-touch-icon"
-    sizes="180x180"
-    href="/icons/touch-icon-iphone-retina.png"
-  />
-  <link
-    rel="apple-touch-icon"
-    sizes="167x167"
-    href="/icons/touch-icon-ipad-retina.png"
-  />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:url" content="https://yourdomain.com" />
-  <meta name="twitter:title" content="My awesome PWA app" />
-  <meta name="twitter:description" content="Best PWA app in the world!" />
-  <meta name="twitter:image" content="/icons/twitter.png" />
-  <meta name="twitter:creator" content="@DavidWShadow" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="My awesome PWA app" />
-  <meta property="og:description" content="Best PWA app in the world!" />
-  <meta property="og:site_name" content="My awesome PWA app" />
-  <meta property="og:url" content="https://yourdomain.com" />
-  <meta property="og:image" content="/icons/og.png" />
-</head>
-```
-
-and these if you want to add a startup image for Apple devices.
-
-```tsx
-// title _app.tsx
-<head>
-  {/* the above code */}
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_2048.png"
-    sizes="2048x2732"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_1668.png"
-    sizes="1668x2224"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_1536.png"
-    sizes="1536x2048"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_1125.png"
-    sizes="1125x2436"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_1242.png"
-    sizes="1242x2208"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_750.png"
-    sizes="750x1334"
-  />
-  <link
-    rel="apple-touch-startup-image"
-    href="/images/apple_splash_640.png"
-    sizes="640x1136"
-  />
-</head>
-```
-
-or if you are using the `app` directory, export this from your root `layout.tsx` (also add `favicon.ico`, `opengraph-image.png`
-and `apple-icon.png` to `app/`):
+<Tabs>
 
 ```ts
-// title layout.tsx
+// title app/layout.tsx
 import type { Metadata } from "next";
 
 const APP_NAME = "PWA App";
@@ -371,6 +285,95 @@ export const metadata: Metadata = {
   },
 };
 ```
+
+```tsx
+// title pages/_app.tsx
+import type { AppProps } from "next/app";
+import Head from "next/head";
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>My awesome PWA app</title>
+        <meta name="description" content="Best PWA app in the world!" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="mask-icon" href="/icons/mask-icon.svg" color="#FFFFFF" />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/icons/touch-icon-ipad.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/touch-icon-iphone-retina.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="167x167"
+          href="/icons/touch-icon-ipad-retina.png"
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:url" content="https://yourdomain.com" />
+        <meta name="twitter:title" content="My awesome PWA app" />
+        <meta name="twitter:description" content="Best PWA app in the world!" />
+        <meta name="twitter:image" content="/icons/twitter.png" />
+        <meta name="twitter:creator" content="@DavidWShadow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="My awesome PWA app" />
+        <meta property="og:description" content="Best PWA app in the world!" />
+        <meta property="og:site_name" content="My awesome PWA app" />
+        <meta property="og:url" content="https://yourdomain.com" />
+        <meta property="og:image" content="/icons/og.png" />
+        {/* add the following only if you want to add a startup image for Apple devices. */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_2048.png"
+          sizes="2048x2732"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_1668.png"
+          sizes="1668x2224"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_1536.png"
+          sizes="1536x2048"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_1125.png"
+          sizes="1125x2436"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_1242.png"
+          sizes="1242x2208"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_750.png"
+          sizes="750x1334"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/images/apple_splash_640.png"
+          sizes="640x1136"
+        />
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
+}
+```
+
+</Tabs>
 
 ## Tips
 

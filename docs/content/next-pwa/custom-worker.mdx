@@ -15,12 +15,34 @@ For example, to disable `Workbox`'s logging, you can simply add `self.__WB_DISAB
 
 You can change the directory of your custom worker file by adding `customWorkerDir` (this path is relative to `baseDir`):
 
+<Tabs>
+
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
   customWorkerDir: "serviceworker",
   // ...
 });
+
+module.exports = withPWA({
+  // your Next config
+});
 ```
 
-In this example, `next-pwa` will look for `serviceworker/index.ts`.
+```js
+// title next.config.mjs
+import withPWAInit from "@ducanh2912/next-pwa";
+
+const withPWA = withPWAInit({
+  customWorkerDir: "serviceworker",
+  // ...
+});
+
+export default withPWA({
+  // your Next config
+});
+```
+
+</Tabs>
+
+In this example, `next-pwa` will look for `serviceworker/index.{js,ts}`.

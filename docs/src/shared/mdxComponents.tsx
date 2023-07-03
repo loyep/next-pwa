@@ -30,6 +30,7 @@ Code.extensions = [
     },
   },
 ];
+Code.className = "!rounded-md";
 
 const filterLegacyRef = <T,>(ref: LegacyRef<T> | undefined) =>
   typeof ref === "string" ? undefined : ref;

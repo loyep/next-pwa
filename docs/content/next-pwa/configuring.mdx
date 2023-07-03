@@ -97,8 +97,24 @@ for [GenerateSW](https://developer.chrome.com/docs/workbox/modules/workbox-webpa
 
 To pass these options to `Workbox`, change your `next.config.js` like so:
 
+<Tabs>
+
 ```js
 // title next.config.js
+const withPWA = require("@ducanh2912/next-pwa").default({
+  // your other options,
+  workboxOptions: {
+    // workbox options go here
+  },
+});
+
+module.exports = withPWA({
+  // your Next config
+});
+```
+
+```js
+// title next.config.mjs
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -113,14 +129,35 @@ export default withPWA({
 });
 ```
 
+</Tabs>
+
 ## Runtime caching
 
 `next-pwa` has a default runtime caching array, see: [cache.ts](https://github.com/DuCanhGH/next-pwa/tree/master/packages/next-pwa/src/cache.ts)
 
 If you want to have your own runtime caching rules, change your `next.config.js` like so:
 
+<Tabs>
+
 ```js
 // title next.config.js
+const withPWA = require("@ducanh2912/next-pwa").default({
+  // your other options,
+  extendDefaultRuntimeCaching: true,
+  workboxOptions: {
+    runtimeCaching: [
+      // your runtime caching array
+    ],
+  },
+});
+
+module.exports = withPWA({
+  // your Next config
+});
+```
+
+```js
+// title next.config.mjs
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -137,6 +174,8 @@ export default withPWA({
   // your Next config
 });
 ```
+
+</Tabs>
 
 Here is [the documentation on how to write a runtime caching array](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-RuntimeCaching),
 including background sync, broadcast update, and more!
