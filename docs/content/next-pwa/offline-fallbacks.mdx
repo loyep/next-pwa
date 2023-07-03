@@ -8,13 +8,14 @@ type: Docs
 With this feature, when fetching (from both cache and network) fails, a precached resource is served rather than an error.
 
 To get started, simply add a `/_offline.tsx` file to `pages/` or a `/~offline/page.tsx` file to `app/`. You are all set!
-When the user is offline, all pages that are not cached will fallback to `/_offline`/`/~offline`.
+When the user is offline, all pages that are not cached will fallback to `/_offline` (or `/~offline` if you are using App Router).
 
 **[Use this example to see it in action](https://github.com/DuCanhGH/next-pwa/tree/master/examples/offline-fallback-v2)**
 
 To also add a fallback for other resources, change your `next.config.js` like so:
 
 ```js
+// title next.config.js
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({

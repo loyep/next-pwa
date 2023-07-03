@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 const Layout: LayoutComponent = ({ children }) => (
-  <div className="w-full h-full flex flex-col md:flex-row relative">
+  <div className="relative flex h-full w-full flex-col md:flex-row">
     <Sidebar />
     {children}
   </div>

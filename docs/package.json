@@ -12,6 +12,7 @@
     "@ducanh2912/next-pwa": "workspace:*",
     "@mantine/hooks": "6.0.15",
     "@tabler/icons-react": "2.23.0",
+    "bright": "0.8.2",
     "client-only": "0.0.1",
     "contentlayer": "0.3.3",
     "highlight.js": "11.8.0",

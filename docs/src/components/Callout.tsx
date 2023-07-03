@@ -9,8 +9,6 @@ import { twMerge } from "tailwind-merge";
 
 import { clsx } from "@/utils/clsx.js";
 
-import { Text } from "./Text.js";
-
 const variants = ["error", "warning", "success", "info"] as const;
 
 export type CalloutVariants = (typeof variants)[number];
@@ -64,7 +62,7 @@ export const Callout = ({
       )}
       {...rest}
     >
-      <div className="w-5 h-5">
+      <div className="h-5 w-5">
         <Icon
           width={20}
           height={20}
@@ -77,7 +75,7 @@ export const Callout = ({
           aria-hidden
         />
       </div>
-      {typeof children === "string" ? <Text>{children}</Text> : children}
+      <span className="[&>*]:!m-0">{children}</span>
     </span>
   );
 };

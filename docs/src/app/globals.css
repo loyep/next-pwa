@@ -13,7 +13,7 @@ body {
   @apply m-0 flex h-full w-full p-0;
 }
 body {
-  @apply transition-colors box-border bg-gray-100 duration-100 dark:bg-neutral-900;
+  @apply box-border bg-gray-100 transition-colors duration-100 dark:bg-neutral-900;
 }
 
 #__next,

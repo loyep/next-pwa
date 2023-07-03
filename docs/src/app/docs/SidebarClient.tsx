@@ -35,15 +35,15 @@ export const SidebarClient = ({ children }: SidebarClientProps) => {
   return (
     <div
       className={clsx(
-        "z-10 flex flex-col w-full print:hidden",
-        "top-[var(--navbar-height)] sticky md:shrink-0 md:w-64 md:self-start",
+        "z-10 flex w-full flex-col print:hidden",
+        "sticky top-[var(--navbar-height)] md:w-64 md:shrink-0 md:self-start",
         isMobileExpanded && "h-[calc(100vh-var(--navbar-height))] md:h-[unset]"
       )}
     >
       <button
         className={clsx(
-          "z-20 w-full h-fit flex flex-row gap-2 items-center justify-start px-4 py-3 md:hidden",
-          "bg-gray-100 duration-100 dark:bg-neutral-900 text-black dark:text-white",
+          "z-20 flex h-fit w-full flex-row items-center justify-start gap-2 px-4 py-3 md:hidden",
+          "bg-gray-100 text-black duration-100 dark:bg-neutral-900 dark:text-white",
           "border-b border-neutral-200/70 dark:border-neutral-400/10"
         )}
         onClick={() => setIsMobileExpanded(!isMobileExpanded)}
@@ -61,12 +61,12 @@ export const SidebarClient = ({ children }: SidebarClientProps) => {
       </button>
       <aside
         className={clsx(
-          "overflow-y-auto overflow-x-hidden px-4 pb-4 md:pt-4 grow h-[calc(100vh-100px)]",
+          "h-[calc(100vh-100px)] grow overflow-y-auto overflow-x-hidden px-4 pb-4 md:pt-4",
           "transform-gpu transition-all duration-150 ease-out",
           "bg-gray-100 dark:bg-neutral-900",
           "border-b border-neutral-200/70 dark:border-neutral-400/10",
           !isMobileExpanded &&
-            "absolute md:[position:unset] max-md:[transform:translate(0,-100%)]"
+            "absolute max-md:[transform:translate(0,-100%)] md:[position:unset]"
         )}
       >
         <ul>{children}</ul>
@@ -104,26 +104,26 @@ export const SidebarTextBox = ({
           <Link
             onClick={toggleChildOpened}
             href={href}
-            className="pl-2 py-1.5 w-full"
+            className="w-full py-1.5 pl-2"
             {...rest}
           />
         ) : (
           <button
             onClick={toggleChildOpened}
-            className="pl-2 py-1.5 w-full"
+            className="w-full py-1.5 pl-2"
             {...rest}
           />
         )}
         {hasChildTree && (
           <button
-            className="h-full pr-2 py-1.5"
+            className="h-full py-1.5 pr-2"
             aria-label={`${isChildOpened ? "Collapse" : "Expand"} section`}
           >
             <IconChevronRight
               onClick={toggleChildOpened}
               className={clsx(
-                "text-gray-500 dark:text-neutral-300",
-                "transition-all duration-100 rounded-sm",
+                "text-gray-700 dark:text-neutral-300",
+                "rounded-sm transition-all duration-100",
                 "hover:bg-gray-300 hover:text-gray-900 dark:hover:bg-neutral-600 dark:hover:text-gray-50",
                 isChildOpened && "rotate-90"
               )}

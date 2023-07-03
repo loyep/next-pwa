@@ -34,20 +34,17 @@ CHANGELOG.md
 next-env.d.ts
 
 # examples
-/.next/
-/out/
+.next/
+out/
 
-/build
+build/
 
-/coverage
+coverage/
 
 .DS_Store
 *.pem
 
-*.css
-*.json
-
-.vercel
+.vercel/
 
 **/public/workbox**
 **/public/sw**

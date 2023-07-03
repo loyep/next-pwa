@@ -59,7 +59,7 @@ const RootLayout: LayoutComponent = ({ children }) => (
     <body>
       <div id="root-container">
         <a
-          className="z-[100] dark:text-white text-black underline absolute -top-full focus:top-0"
+          className="absolute -top-full z-[100] text-black underline focus:top-0 dark:text-white"
           href="#main-content"
         >
           Skip to main content

@@ -31,13 +31,30 @@ tsconfig.tsbuildinfo
 # examples
 examples/*/.next
 
-# next-pwa
+# next.js
+.next/
+out/
+
+build/
+
+coverage/
+
+.DS_Store
+*.pem
+
+*.css
+*.json
+
+.vercel/
+
 **/public/workbox**
 **/public/sw**
 **/public/worker**
 **/public/fallback**
 **/public/precache**
 
-# others
+# other files
 LICENSE
 CODE_OF_CONDUCT.md
+*.css
+*.json

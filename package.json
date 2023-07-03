@@ -49,6 +49,7 @@
     "lint-staged": "13.2.3",
     "npm-check-updates": "16.10.13",
     "prettier": "2.8.8",
+    "prettier-plugin-tailwindcss": "0.3.0",
     "rimraf": "5.0.1",
     "shell-quote": "1.8.1",
     "tslib": "2.6.0",

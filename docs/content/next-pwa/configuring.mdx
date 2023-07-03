@@ -10,6 +10,7 @@ type: Docs
 There are options you can use to customize the behavior of this plugin:
 
 ```js
+// title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
   // disable: process.env.NODE_ENV === "development",
@@ -28,6 +29,7 @@ module.exports = withPWA({
 or if you prefer ESM:
 
 ```js
+// title next.config.js
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -94,6 +96,7 @@ for [GenerateSW](https://developer.chrome.com/docs/workbox/modules/workbox-webpa
 To pass these options to `Workbox`, change your `next.config.js` like so:
 
 ```js
+// title next.config.js
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -115,6 +118,7 @@ export default withPWA({
 If you want to have your own runtime caching rules, change your `next.config.js` like so:
 
 ```js
+// title next.config.js
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({

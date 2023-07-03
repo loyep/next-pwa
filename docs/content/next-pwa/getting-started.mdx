@@ -15,13 +15,23 @@ type: Docs
   example](https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic).
 </Callout>
 
+<Tabs>
 ```bash
+# title npm
 npm i @ducanh2912/next-pwa
-# or
-# yarn add @ducanh2912/next-pwa
-# or
-# pnpm add @ducanh2912/next-pwa
 ```
+
+```bash
+# title yarn
+yarn add @ducanh2912/next-pwa
+```
+
+```bash
+# title pnpm
+pnpm add @ducanh2912/next-pwa
+```
+
+</Tabs>
 
 ## Basic usage
 
@@ -29,19 +39,21 @@ npm i @ducanh2912/next-pwa
 
 Update or create your `next.config.js` with
 
+<Tabs>
 ```js
+// title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
 });
 
 module.exports = withPWA({
-  // Next.js config
+// Next.js config
 });
-```
 
-or if you prefer ESM:
+````
 
 ```js
+// title next.config.mjs
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -51,35 +63,39 @@ const withPWA = withPWAInit({
 export default withPWA({
   // Next.js config
 });
-```
+````
+
+</Tabs>
 
 If your deployment platform requires your production image's size to not exceed a certain limit, you can also do this:
 
+<Tabs>
 ```js
+// title next.config.js
 const {
   PHASE_DEVELOPMENT_SERVER,
   PHASE_PRODUCTION_BUILD,
 } = require("next/constants");
 
-/** @type {import("next").NextConfig} */
+/\*_ @type {import("next").NextConfig} _/
 const nextConfig = {
-  reactStrictMode: true,
+reactStrictMode: true,
 };
 
 module.exports = (phase) => {
-  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
-    const withPWA = require("@ducanh2912/next-pwa").default({
-      dest: "public",
-    });
-    return withPWA(nextConfig);
-  }
-  return nextConfig;
+if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+const withPWA = require("@ducanh2912/next-pwa").default({
+dest: "public",
+});
+return withPWA(nextConfig);
+}
+return nextConfig;
 };
-```
 
-or if you are using ESM:
+````
 
 ```js
+// title next.config.mjs
 import {
   PHASE_DEVELOPMENT_SERVER,
   PHASE_PRODUCTION_BUILD,
@@ -101,7 +117,9 @@ const nextConfigFunction = async (phase) => {
 };
 
 export default nextConfigFunction;
-```
+````
+
+</Tabs>
 
 <Callout>
   **Note**: This plugin is written in Typescript and JSDoc is supported. It is
@@ -136,9 +154,10 @@ in your deployment workflow.
 
 #### Option 2: Using a custom server
 
-Example `server.js`
+Example server:
 
 ```js
+// title server.js
 const { createServer } = require("http");
 const { join } = require("path");
 const { parse } = require("url");
@@ -183,6 +202,7 @@ app.prepare().then(() => {
 Create a `manifest.json` file in your `public` folder:
 
 ```json
+// title manifest.json
 {
   "name": "My awesome PWA app",
   "short_name": "PWA App",
@@ -216,7 +236,8 @@ Create a `manifest.json` file in your `public` folder:
 
 Add the following code to your `_app.tsx`'s `<Head />`:
 
-```jsx
+```tsx
+// title _app.tsx
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>My awesome PWA app</title>
@@ -259,6 +280,7 @@ Add the following code to your `_app.tsx`'s `<Head />`:
 and these if you want to add a startup image for Apple devices.
 
 ```tsx
+// title _app.tsx
 <head>
   {/* the above code */}
   <link
@@ -303,6 +325,7 @@ or if you are using the `app` directory, export this from your root `layout.tsx`
 and `apple-icon.png` to `app/`):
 
 ```ts
+// title layout.tsx
 import type { Metadata } from "next";
 
 const APP_NAME = "PWA App";

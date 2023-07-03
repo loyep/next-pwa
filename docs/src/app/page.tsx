@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import { Balancer, Provider as BalancerProvider } from "react-wrap-balancer";
 
-import { Code } from "@/components/Code.js";
+import { InlineCode } from "@/components/InlineCode.js";
 import { clsx } from "@/utils/clsx.js";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,37 +48,43 @@ const Page = () => (
     <div
       className={clsx(
         "w-full self-stretch",
-        "bg-white dark:bg-black text-black dark:text-white",
+        "bg-white text-black dark:bg-black dark:text-white",
         inter.className
       )}
     >
-      <div className="w-full flex flex-col gap-5 px-5 py-40 items-center justify-center">
-        <h1 className="font-extrabold tracking-tight my-2 text-5xl">
+      <div className="flex w-full flex-col items-center justify-center gap-5 px-5 py-40">
+        <h1
+          className={clsx(
+            "my-2 text-5xl font-extrabold tracking-tight",
+            "bg-gradient-to-t from-gray-500 to-black bg-clip-text text-transparent dark:from-gray-400 dark:to-white"
+          )}
+        >
           <Balancer>Make performant web apps with Next.js & PWA.</Balancer>
         </h1>
-        <h2 className="font-medium tracking-tight my-2 text-2xl opacity-80">
+        <h2 className="my-2 text-2xl font-medium tracking-tight opacity-80">
           <Balancer>
-            <Code>next-pwa</Code> enables you to create PWAs with Next.js. No
-            configuration needed, yet so configurable.
+            <InlineCode>next-pwa</InlineCode> enables you to create PWAs with
+            Next.js. No configuration needed, yet so configurable.
           </Balancer>
         </h2>
         <Link
           href="/docs/next-pwa/getting-started"
           className={clsx(
-            "border rounded-md px-4 py-3 transition-colors duration-100",
-            "bg-black dark:bg-white text-white dark:text-black",
-            "hover:bg-white hover:text-black hover:border-black",
-            "hover:dark:bg-black hover:dark:text-white hover:dark:border-white"
+            "rounded-md border px-6 py-3 font-bold transition-colors duration-100",
+            "bg-black text-white dark:bg-white dark:text-black",
+            "hover:border-black hover:bg-white hover:text-black",
+            "hover:dark:border-white hover:dark:bg-black hover:dark:text-white",
+            "focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
           )}
         >
           Get started
         </Link>
-        <Code>
+        <InlineCode>
           npx create-next-app@latest -e
           https://github.com/DuCanhGH/next-pwa/tree/master/examples/basic
-        </Code>
+        </InlineCode>
       </div>
-      <div className="p-4 md:p-24 w-full">
+      <div className="w-full p-4 md:p-24">
         <div className="grid w-full text-left lg:mb-0 lg:grid-cols-4">
           {FEATURES_LIST.map((feature, idx) => (
             <div

@@ -38,19 +38,19 @@ const PostLayout: PageComponent = async ({ params }) => {
   return (
     <>
       <nav
-        className="order-last hidden w-[350px] shrink-0 xl:block print:hidden px-4"
+        className="order-last hidden w-[350px] shrink-0 px-4 print:hidden xl:block"
         aria-label="Table of contents"
       >
-        <div className="sticky flex flex-col max-h-[calc(100vh-100px)] top-16 pr-4 pt-6 text-sm hyphens-auto ltr:-mr-4 rtl:-ml-4">
-          <p className="mb-4 font-semibold tracking-tight dark:text-white text-black">
+        <div className="sticky top-16 flex max-h-[calc(100vh-100px)] flex-col hyphens-auto pr-4 pt-6 text-sm ltr:-mr-4 rtl:-ml-4">
+          <p className="mb-4 font-semibold tracking-tight text-black dark:text-white">
             On This Page
           </p>
-          <div className="overflow-y-auto w-full self-stretch">
+          <div className="w-full self-stretch overflow-y-auto">
             <TableOfContents components={mdxComponents} />
           </div>
           <div
             className={clsx(
-              "mt-8 border-t pt-8 sticky bottom-0 flex flex-col items-start gap-2 pb-8",
+              "sticky bottom-0 mt-8 flex flex-col items-start gap-2 border-t pb-8 pt-8",
               "dark:border-neutral-800"
             )}
           >
@@ -75,7 +75,7 @@ const PostLayout: PageComponent = async ({ params }) => {
           </div>
         </div>
       </nav>
-      <article className="md:py-8 min-w-0 w-full">
+      <article className="w-full min-w-0 md:py-8">
         <div className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
           <Content components={mdxComponents} />
         </div>

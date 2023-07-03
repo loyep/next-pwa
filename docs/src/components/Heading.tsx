@@ -63,7 +63,7 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
         {id && (
           <a
             href={`#${id}`}
-            className="ml-2 hidden text-slate-400 dark:text-slate-600 group-hover:inline group-active:inline group-focus:inline"
+            className="ml-2 hidden text-slate-400 group-hover:inline group-focus:inline group-active:inline dark:text-slate-600"
             aria-label="Permalink for this section"
           >
             #
