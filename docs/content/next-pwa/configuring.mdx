@@ -9,6 +9,8 @@ type: Docs
 
 There are options you can use to customize the behavior of this plugin:
 
+<Tabs>
+
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
@@ -26,10 +28,8 @@ module.exports = withPWA({
 });
 ```
 
-or if you prefer ESM:
-
 ```js
-// title next.config.js
+// title next.config.mjs
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
@@ -46,6 +46,8 @@ export default withPWA({
   // Next.js config
 });
 ```
+
+</Tabs>
 
 ## Available options
 

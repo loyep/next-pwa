@@ -16,6 +16,7 @@ type: Docs
 </Callout>
 
 <Tabs>
+
 ```bash
 # title npm
 npm i @ducanh2912/next-pwa
@@ -40,6 +41,7 @@ pnpm add @ducanh2912/next-pwa
 Update or create your `next.config.js` with
 
 <Tabs>
+
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
@@ -47,10 +49,9 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 module.exports = withPWA({
-// Next.js config
+  // Next.js config
 });
-
-````
+```
 
 ```js
 // title next.config.mjs
@@ -63,13 +64,14 @@ const withPWA = withPWAInit({
 export default withPWA({
   // Next.js config
 });
-````
+```
 
 </Tabs>
 
 If your deployment platform requires your production image's size to not exceed a certain limit, you can also do this:
 
 <Tabs>
+
 ```js
 // title next.config.js
 const {
@@ -77,22 +79,21 @@ const {
   PHASE_PRODUCTION_BUILD,
 } = require("next/constants");
 
-/\*_ @type {import("next").NextConfig} _/
+/** @type {import("next").NextConfig} */
 const nextConfig = {
-reactStrictMode: true,
+  reactStrictMode: true,
 };
 
 module.exports = (phase) => {
-if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
-const withPWA = require("@ducanh2912/next-pwa").default({
-dest: "public",
-});
-return withPWA(nextConfig);
-}
-return nextConfig;
+  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+    const withPWA = require("@ducanh2912/next-pwa").default({
+      dest: "public",
+    });
+    return withPWA(nextConfig);
+  }
+  return nextConfig;
 };
-
-````
+```
 
 ```js
 // title next.config.mjs
@@ -117,7 +118,7 @@ const nextConfigFunction = async (phase) => {
 };
 
 export default nextConfigFunction;
-````
+```
 
 </Tabs>
 
