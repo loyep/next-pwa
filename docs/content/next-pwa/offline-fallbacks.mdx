@@ -6,20 +6,21 @@ type: Docs
 # Offline support
 
 `next-pwa` has built-in offline support for both Pages Router and App Router. By default, it caches HTML requests, RSC requests, and RSC precaches
-separately. This behavior can be overriden with `workboxOptions.runtimeCaching`, however.
+separately. This behavior can be overridden with `workboxOptions.runtimeCaching`.
 
 ## Development mode
 
 By default, in development mode, `next-pwa` sets every resource to be served from the network only to ensure that the app works as expected.
 
-If you are seeing the behavior where your app is reloading infinitely, it might be because you have disabled `next-pwa` from building a service worker in
-development mode; in which case, try unregistering the service worker if it exists. It might have been installed by a production build of your app before.
+If you see the behavior where your app reloads infinitely, it might be because you have disabled `next-pwa` from building a service worker in
+development mode, in which case, try unregistering its service worker, which might have been installed by a production build of your app before,
+if it exists.
 
 ## Offline fallbacks
 
 Sometimes fetching from both the cache and the network fails, in which case a resource can be setup to be precached and served in place of an error.
 
-To enable this behavior, simply add a `/_offline.tsx` file to `pages/` or a `/~offline/page.tsx` file to `app/`. You are all set!
+To enable this behavior for pages, simply add a `/_offline.tsx` file to `pages/` or a `/~offline/page.tsx` file to `app/`. You are all set!
 When the user is offline, all pages that are not cached will fallback to `/_offline` (or `/~offline` if you are using App Router).
 [You can use this example to see it in action.](https://github.com/DuCanhGH/next-pwa/tree/master/examples/offline-fallback-v2)
 

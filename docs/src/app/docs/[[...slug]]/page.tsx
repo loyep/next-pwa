@@ -76,7 +76,7 @@ const PostLayout: PageComponent = async ({ params }) => {
         </div>
       </nav>
       <article className="w-full min-w-0 md:py-8">
-        <div className="w-full min-w-0 max-w-6xl px-6 pt-4 md:px-12">
+        <div className="w-full min-w-0 max-w-6xl px-6 py-4 md:px-12">
           <Content components={mdxComponents} />
         </div>
       </article>
