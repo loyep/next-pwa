@@ -31,25 +31,25 @@ To also add a fallback for other resources, change your `next.config.js` like so
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
-  // your other options,
+  // Your other options,
   fallbacks: {
-    // failed page requests fallback to this.
+    // Failed page requests fallback to this.
     document: "/~offline",
-    // this is for /_next/.../.json files.
+    // This is for /_next/.../.json files.
     data: "/fallback.json",
-    // this is for images.
+    // This is for images.
     image: "/fallback.webp",
-    // this is for audio files.
+    // This is for audio files.
     audio: "/fallback.mp3",
-    // this is for video files.
+    // This is for video files.
     video: "/fallback.mp4",
-    // this is for fonts.
+    // This is for fonts.
     font: "/fallback-font.woff2",
   },
 });
 
 module.exports = withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 
@@ -58,25 +58,25 @@ module.exports = withPWA({
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
-  // your other options,
+  // Your other options,
   fallbacks: {
-    // failed page requests fallback to this.
+    // Failed page requests fallback to this.
     document: "/~offline",
-    // this is for /_next/.../.json files.
+    // This is for /_next/.../.json files.
     data: "/fallback.json",
-    // this is for images.
+    // This is for images.
     image: "/fallback.webp",
-    // this is for audio files.
+    // This is for audio files.
     audio: "/fallback.mp3",
-    // this is for video files.
+    // This is for video files.
     video: "/fallback.mp4",
-    // this is for fonts.
+    // This is for fonts.
     font: "/fallback-font.woff2",
   },
 });
 
 export default withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 

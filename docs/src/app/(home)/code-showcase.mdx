@@ -1,0 +1,80 @@
+<CodeShowcase>
+
+```js
+// title next.config.js
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+});
+
+module.exports = withPWA({
+  // Your Next.js config
+});
+```
+
+## Easy to setup
+
+Just wrap your Next config with `withPWA` and you are ready to go! You do not need to configure much, but there are many options to customize `next-pwa` to your
+liking.
+
+</CodeShowcase>
+
+<CodeShowcase invert>
+
+```js
+// title next.config.js
+// @ts-check
+const withPWA = require("@ducanh2912/next-pwa").default({
+  // You will get hints as you type here. You can also hover over these options
+  // to get a detailed description about them!
+  dest: "public",
+});
+
+// Your Next config is automatically typed with NextConfig!
+module.exports = withPWA({
+  reactStrictMode: "true", // Type 'string' is not assignable to type 'boolean | null | undefined'.
+});
+```
+
+## Typescript support
+
+`next-pwa` is built with Typescript. As you configure `next-pwa`, you will get type hints and detailed description of its options. If you directly wrap your
+Next config with `withPWA`, it will automatically be typed with `NextConfig`!
+
+</CodeShowcase>
+
+<CodeShowcase>
+
+```js
+// title next.config.js
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  // disable: process.env.NODE_ENV === "development",
+  // register: true,
+  // scope: "/app",
+  // sw: "service-worker.js",
+  // customWorkerDir: "service-worker",
+  // cacheStartURL: true,
+  // dynamicStartUrl: true,
+  // dynamicStartUrlRedirect: "/foo/bar",
+  // cacheOnFrontendNav: true,
+  // aggressiveFrontEndNavCaching: true,
+  // scope: "/beta",
+  // swcMinify: true,
+  // workboxOptions: {},
+  // ...
+});
+
+module.exports = withPWA({
+  // Your Next.js config
+});
+```
+
+## Configurable
+
+There are just [so many options](/docs/next-pwa/configuring) thanks to Workbox's extensive API 🤯 You can disable the plugin, change how it caches stuff
+at runtime, silent its logging, add your custom code to the service worker or even write the service worker yourself!
+
+We are working hard to add useful features to the plugin! You can help by [contributing to the repository](https://github.com/DuCanhGH/next-pwa/tree/master/contributing)
+or [creating feature requests](https://github.com/DuCanhGH/next-pwa/issues/new/choose)!
+
+</CodeShowcase>

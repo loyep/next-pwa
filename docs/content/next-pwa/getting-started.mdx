@@ -8,7 +8,7 @@ type: Docs
 ## Install
 
 <Callout>
-  If you are new to `React` or `Next.js`, you may want to checkout [learn
+  If you are new to React or Next.js, you may want to checkout [learn
   React](https://react.dev/learn), [learn
   Next.js](https://nextjs.org/learn/basics/create-nextjs-app) and [Next.js
   documentation](https://nextjs.org/docs) first, and then start from [a simple
@@ -49,7 +49,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 module.exports = withPWA({
-  // Next.js config
+  // Your Next.js config
 });
 ```
 
@@ -62,7 +62,7 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  // Next.js config
+  // Your Next.js config
 });
 ```
 
@@ -125,7 +125,7 @@ export default nextConfigFunction;
 <Callout>
   **Note**: This plugin is written in Typescript and supports JSDoc. It is
   recommended to add `// @ts-check` to the top of your `next.config.js` file to
-  leverage type checking. This is especially useful when you use
+  leverage typechecking. This is especially useful when you use
   `PluginOptions.workboxOptions`, as you may unknowningly mix
   InjectManifest-specific and GenerateSW-specific options up.
 </Callout>

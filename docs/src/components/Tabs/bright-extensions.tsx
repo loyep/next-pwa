@@ -62,15 +62,6 @@ const Content: BrightProps["Pre"] = (brightProps) => {
   );
 };
 
-export const title: Extension = {
-  name: "title",
-  beforeHighlight(props, annotations) {
-    if (annotations.length > 0) {
-      return { ...props, title: annotations[0].query };
-    }
-  },
-};
-
 export const tabs: Extension = {
   name: "tabs",
   Root,

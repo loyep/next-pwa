@@ -22,9 +22,9 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   //...
 });
 
-// your Next config is automatically typed!
+// Your Next config is automatically typed!
 module.exports = withPWA({
-  // Next.js config
+  // Your Next.js config
 });
 ```
 
@@ -41,9 +41,9 @@ const withPWA = withPWAInit({
   //...
 });
 
-// your Next config is automatically typed!
+// Your Next config is automatically typed!
 export default withPWA({
-  // Next.js config
+  // Your Next.js config
 });
 ```
 
@@ -91,25 +91,24 @@ export default withPWA({
 
 ## Other options
 
-`next-pwa` uses `workbox-webpack-plugin`, other options can be found in [workbox-webpack-plugin's documentation](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin)
-for [GenerateSW](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/#generatesw-plugin) and
+`next-pwa` uses `workbox-webpack-plugin` under the hood, other options can be found in the documentation for [GenerateSW](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/#generatesw-plugin) and
 [InjectManifest](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/#injectmanifest-plugin).
 
-To pass these options to `Workbox`, change your `next.config.js` like so:
+To pass these options to `workbox-webpack-plugin`, change your `next.config.js` like so:
 
 <Tabs>
 
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
-  // your other options,
+  // Your other options,
   workboxOptions: {
-    // workbox options go here
+    // Workbox options go here...
   },
 });
 
 module.exports = withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 
@@ -118,18 +117,23 @@ module.exports = withPWA({
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
-  // your other options,
+  // Your other options,
   workboxOptions: {
-    // workbox options go here
+    // Workbox options go here...
   },
 });
 
 export default withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 
 </Tabs>
+
+<Callout>
+  It is recommended to add `// @ts-check` to the top of your `next.config.js` so
+  as to ensure that you pass valid options to `workbox-webpack-plugin`.
+</Callout>
 
 ## Runtime caching
 
@@ -142,17 +146,17 @@ If you want to have your own runtime caching rules, change your `next.config.js`
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
-  // your other options,
+  // Your other options,
   extendDefaultRuntimeCaching: true,
   workboxOptions: {
     runtimeCaching: [
-      // your runtime caching array
+      // Your runtimeCaching array
     ],
   },
 });
 
 module.exports = withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 
@@ -161,21 +165,23 @@ module.exports = withPWA({
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
-  // your other options,
+  // Your other options,
   extendDefaultRuntimeCaching: true,
   workboxOptions: {
     runtimeCaching: [
-      // your runtime caching array
+      // Your runtimeCaching array
     ],
   },
 });
 
 export default withPWA({
-  // your Next config
+  // Your Next.js config
 });
 ```
 
 </Tabs>
 
-Here is [the documentation on how to write a runtime caching array](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-RuntimeCaching),
-including background sync, broadcast update, and more!
+<Callout>
+  Also check out [the documentation on how to write a runtime caching
+  array](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-RuntimeCaching)!
+</Callout>

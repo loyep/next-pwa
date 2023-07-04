@@ -1,9 +1,9 @@
-import { Code } from "bright";
 import type { MDXComponents } from "mdx/types";
 import type { LegacyRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { Callout } from "@/components/Callout.js";
+import { Code } from "@/components/Code.js";
 import { Heading } from "@/components/Heading.js";
 import { InlineCode } from "@/components/InlineCode.js";
 import { AnchorLinkUnderline } from "@/components/Link/AnchorLinkUnderline.js";
@@ -14,23 +14,6 @@ import { clsx } from "@/utils/clsx.js";
 
 const TEXT_COLOR = "text-black dark:text-white";
 const TEXT_BORDER = "border-b border-neutral-200/70 dark:border-neutral-400/10";
-
-Code.theme = {
-  dark: "github-dark",
-  light: "github-light",
-  lightSelector: "html[data-theme='light']",
-};
-Code.extensions = [
-  {
-    name: "title",
-    beforeHighlight: (props, annotations) => {
-      if (annotations.length > 0) {
-        return { ...props, title: annotations[0].query };
-      }
-    },
-  },
-];
-Code.className = "!rounded-md";
 
 const filterLegacyRef = <T,>(ref: LegacyRef<T> | undefined) =>
   typeof ref === "string" ? undefined : ref;

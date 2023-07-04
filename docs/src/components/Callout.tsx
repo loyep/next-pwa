@@ -49,7 +49,7 @@ export const Callout = ({
     <span
       className={twMerge(
         clsx(
-          "my-6 flex h-fit max-h-full w-fit max-w-full flex-row items-center justify-between gap-2 rounded-md px-3 py-2 text-base font-medium",
+          "my-6 flex h-fit max-h-full w-full flex-row items-center gap-2 rounded-md px-3 py-2 text-base font-medium",
           "text-black dark:text-white md:text-sm [&>p]:!text-inherit",
           {
             "dark:bg-red-1000 bg-red-100": variant === "error",
