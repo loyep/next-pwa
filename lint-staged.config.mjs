@@ -5,12 +5,21 @@ const eslint = new ESLint();
 const isWin = process.platform === "win32";
 
 /**
+ * @param {string[]} str
+ * @returns
+ */
+const escapeStr = (str) => {
+  const escaped = quote(str);
+  return escaped.replace(/\\@/g, "@");
+};
+
+/**
  * @type {Record<
  *   string,
  *   (filenames: string[]) => string | string[] | Promise<string | string[]>
  * >}
  */
-export default {
+const lintStagedConfig = {
   "**/*.{js,jsx,cjs,mjs,ts,tsx}": (filenames) => {
     const escapedFileNames = filenames
       .map((filename) => (isWin ? filename : escapeStr([filename])))
@@ -32,11 +41,4 @@ export default {
   },
 };
 
-/**
- * @param {string[]} str
- * @returns
- */
-function escapeStr(str) {
-  const escaped = quote(str);
-  return escaped.replace(/\\@/g, "@");
-}
+export default lintStagedConfig;
