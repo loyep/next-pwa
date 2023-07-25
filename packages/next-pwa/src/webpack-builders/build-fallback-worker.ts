@@ -6,6 +6,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import webpack from "webpack";
 
 import type { FallbackRoutes } from "../types.js";
+import { getFilename } from "../utils.js";
 import { NextPWAContext } from "./context.js";
 import { getFallbackEnvs } from "./get-fallback-envs.js";
 import { getSharedWebpackConfig } from "./utils.js";
@@ -13,22 +14,38 @@ import { getSharedWebpackConfig } from "./utils.js";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export const buildFallbackWorker = ({
-  id,
+  isDev,
+  buildId,
   fallbacks,
   destDir,
+  basePath,
 }: {
-  id: string;
+  isDev: boolean;
+  buildId: string;
   fallbacks: FallbackRoutes;
   destDir: string;
+  basePath: string;
 }) => {
+  fallbacks = Object.keys(fallbacks).reduce((obj, key) => {
+    const value = fallbacks[key];
+    if (value) {
+      obj[key] = path.posix.join(basePath, value);
+    }
+    return obj;
+  }, {} as FallbackRoutes);
+
   const envs = getFallbackEnvs({
     fallbacks,
-    id,
+    buildId,
   });
-  if (!envs) return;
 
-  const name = `fallback-${id}.js`;
+  if (!envs) {
+    return undefined;
+  }
+
   const fallbackJs = path.join(__dirname, `fallback.js`);
+
+  const name = `fallback-${getFilename(fallbackJs, isDev)}.js`;
 
   webpack({
     ...getSharedWebpackConfig({}),
@@ -40,6 +57,7 @@ export const buildFallbackWorker = ({
     output: {
       path: destDir,
       filename: name,
+      chunkFilename: "sw-chunks/[id]-[chunkhash].js",
     },
     plugins: [
       new CleanWebpackPlugin({
@@ -58,5 +76,8 @@ export const buildFallbackWorker = ({
     }
   });
 
-  return { name, precaches: Object.values(envs).filter((v) => !!v) };
+  return {
+    name: path.posix.join(basePath, name),
+    precaches: Object.values(envs).filter((v) => !!v),
+  };
 };

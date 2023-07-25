@@ -1,3 +1,6 @@
+import crypto from "node:crypto";
+import fs from "node:fs";
+
 import type { GenerateSW, InjectManifest } from "workbox-webpack-plugin";
 
 import type { WorkboxTypes } from "./private-types.js";
@@ -48,4 +51,14 @@ export const convertBoolean = (value: unknown, strict = true) => {
     case "undefined":
       return false;
   }
+};
+
+export const getFileHash = (file: fs.PathOrFileDescriptor) =>
+  crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex");
+
+export const getFilename = (file: fs.PathOrFileDescriptor, isDev: boolean) => {
+  if (isDev) {
+    return "development";
+  }
+  return getFileHash(file).slice(0, 16);
 };
