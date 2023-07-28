@@ -33,6 +33,10 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
               );
               const staticJSCache = await caches.open("static-js-assets");
 
+              // we use RegExp instead of something more complex, such as `cheerio`,
+              // to handle the DOM so as to avoid unnecessary bloat as our usecase is
+              // fairly simple.
+
               for (const [fullLink, link] of html.matchAll(
                 /<link.*?href=['"](.*?)['"].*?>/g
               )) {

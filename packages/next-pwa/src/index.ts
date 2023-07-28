@@ -78,8 +78,8 @@ const withPWAInit = (
         aggressiveFrontEndNavCaching = false,
         reloadOnOnline = true,
         scope = basePath,
-        customWorkerDir = "worker",
-        customWorkerSrc = customWorkerDir,
+        customWorkerDir,
+        customWorkerSrc = customWorkerDir || "worker",
         customWorkerDest = dest,
         customWorkerPrefix = "worker",
         workboxOptions = {},
@@ -106,12 +106,8 @@ const withPWAInit = (
         `Compiling for ${options.isServer ? "server" : "client (static)"}...`
       );
 
-      const requiredUrls: string[] = [];
-
       const _sw = path.posix.join(basePath, sw);
       const _scope = path.posix.join(scope, "/");
-
-      requiredUrls.push(_sw);
 
       config.plugins.push(
         new webpack.DefinePlugin({
@@ -163,9 +159,7 @@ const withPWAInit = (
 
         config.plugins.push(
           new webpack.DefinePlugin({
-            __PWA_SW_ENTRY_WORKER__:
-              sweWorkerPath &&
-              (requiredUrls.push(sweWorkerPath), `'${sweWorkerPath}'`),
+            __PWA_SW_ENTRY_WORKER__: sweWorkerPath && `'${sweWorkerPath}'`,
           })
         );
 
@@ -219,7 +213,6 @@ const withPWAInit = (
 
         if (!!customWorkerScriptName) {
           importScripts.unshift(customWorkerScriptName);
-          requiredUrls.push(customWorkerScriptName);
         }
 
         const {
@@ -301,7 +294,6 @@ const withPWAInit = (
           if (fallbackWorker) {
             hasFallbacks = true;
             importScripts.unshift(fallbackWorker.name);
-            requiredUrls.push(fallbackWorker.name);
 
             fallbackWorker.precaches.forEach((route) => {
               if (
@@ -349,16 +341,6 @@ const withPWAInit = (
         });
 
         config.plugins.push(workboxPlugin);
-
-        if (_dest !== path.join(options.dir, "public")) {
-          logger.info(
-            `Successfully built the service worker. ${requiredUrls.join(
-              ", "
-            )} ${
-              requiredUrls.length === 1 ? "is" : "are"
-            } expected to be manually served.`
-          );
-        }
       }
 
       return config;

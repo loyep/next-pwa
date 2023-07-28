@@ -7,7 +7,7 @@ This plugin is powered by [Workbox](https://developer.chrome.com/docs/workbox/) 
 
 ## Features
 
-- 0️⃣ No configuration needed, but is configurable using `Workbox`'s options and our own options.
+- 0️⃣ No configuration needed, but is configurable using Workbox's options and our own options.
 - ✨ Optimized precaching and runtime caching.
 - 💯 Maximal Lighthouse score.
 - 🎈 Easy-to-understand examples.

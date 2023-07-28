@@ -6,7 +6,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import webpack from "webpack";
 
 import type { FallbackRoutes } from "../types.js";
-import { getFilename } from "../utils.js";
+import { getContentHash } from "../utils.js";
 import { NextPWAContext } from "./context.js";
 import { getFallbackEnvs } from "./get-fallback-envs.js";
 import { getSharedWebpackConfig } from "./utils.js";
@@ -45,7 +45,7 @@ export const buildFallbackWorker = ({
 
   const fallbackJs = path.join(__dirname, `fallback.js`);
 
-  const name = `fallback-${getFilename(fallbackJs, isDev)}.js`;
+  const name = `fallback-${getContentHash(fallbackJs, isDev)}.js`;
 
   webpack({
     ...getSharedWebpackConfig({}),

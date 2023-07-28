@@ -11,16 +11,19 @@ You can share logic between your web app and this worker (path aliases do work).
 
 This is where you can write your custom worker logic.
 
-For example, to disable `Workbox`'s logging, you can simply add `self.__WB_DISABLE_DEV_LOGS = true` to it.
+For example, to disable Workbox's logging, you can simply add `self.__WB_DISABLE_DEV_LOGS = true` to it.
 
-You can change the directory of your custom worker file by adding `customWorkerDir` (this path is relative to `baseDir`):
+You can change the directory in which `next-pwa` looks for a custom worker implementation, change its output directory, or
+change its file structure:
 
 <Tabs>
 
 ```js
 // title next.config.js
 const withPWA = require("@ducanh2912/next-pwa").default({
-  customWorkerDir: "serviceworker",
+  customWorkerSrc: "service-worker",
+  customWorkerDest: "somewhere-else", // defaults to `dest`
+  customWorkerPrefix: "not/a-worker",
   // ...
 });
 
@@ -34,7 +37,9 @@ module.exports = withPWA({
 import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
-  customWorkerDir: "serviceworker",
+  customWorkerSrc: "service-worker",
+  customWorkerDest: "somewhere-else", // defaults to `dest`
+  customWorkerPrefix: "not/a-worker",
   // ...
 });
 
@@ -45,4 +50,14 @@ export default withPWA({
 
 </Tabs>
 
-In this example, `next-pwa` will look for `serviceworker/index.{js,ts}`.
+In this example, `next-pwa` will look for `service-worker/index.{js,ts}`, bundles it if it is available, then emits the result
+to `somewhere-else/not/a-worker-*.js`.
+
+<Callout variant="warning">
+  The difference between `customWorkerDest` and `customWorkerPrefix` is that the
+  former only changes the output directory of the custom worker, whereas the
+  latter also changes the URL the service worker uses to look for the custom
+  worker. In the example above, the service worker will try to look for
+  `/not/a-worker-*.js`, and it is your responsibility to serve it if you change
+  `customWorkerDest` to something different from `public`.
+</Callout>

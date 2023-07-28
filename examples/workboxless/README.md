@@ -1,6 +1,6 @@
 # next-pwa - basic example
 
-This example demonstrates how to use `next-sw`, which is an unstable package and does not use `workbox`.
+This example demonstrates how to use `next-sw`, which is an unstable package and does not use Workbox.
 
 ## Usage
 

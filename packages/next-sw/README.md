@@ -27,7 +27,7 @@ This plugin is powered by [Service Worker](https://developer.mozilla.org/en-US/d
 
 ## How is it different from `@ducanh2912/next-pwa`?
 
-It directly makes use of the `ServiceWorker` API instead of `workbox`. Both are supported, so just make a pick! If you are not sure, you may want to use `@ducanh2912/next-pwa` instead as it allows you to customize your service worker further.
+It directly makes use of the `ServiceWorker` API instead of Workbox. Both are supported, so just make a pick! If you are not sure, you may want to use `@ducanh2912/next-pwa` instead as it allows you to customize your service worker further.
 
 ## Reference
 

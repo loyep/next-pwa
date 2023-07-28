@@ -5,7 +5,7 @@ import { logger } from "@ducanh2912/utils";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import webpack from "webpack";
 
-import { getFilename } from "../utils.js";
+import { getContentHash } from "../utils.js";
 import { NextPWAContext } from "./context.js";
 import { getSharedWebpackConfig } from "./utils.js";
 
@@ -28,7 +28,7 @@ export const buildSWEntryWorker = ({
 
   const swEntryWorkerEntry = path.join(__dirname, `sw-entry-worker.js`);
 
-  const name = `swe-worker-${getFilename(swEntryWorkerEntry, isDev)}.js`;
+  const name = `swe-worker-${getContentHash(swEntryWorkerEntry, isDev)}.js`;
 
   webpack({
     ...getSharedWebpackConfig({}),

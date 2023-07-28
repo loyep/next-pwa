@@ -12,7 +12,7 @@ import type { Configuration } from "webpack";
 import webpack from "webpack";
 
 import { defaultSwcRc } from "../.swcrc.js";
-import { getFilename } from "../utils.js";
+import { getContentHash } from "../utils.js";
 import { NextPWAContext } from "./context.js";
 import { getSharedWebpackConfig } from "./utils.js";
 
@@ -77,7 +77,7 @@ export const buildCustomWorker = ({
     );
   }
 
-  const name = `${customWorkerPrefix}-${getFilename(
+  const name = `${customWorkerPrefix}-${getContentHash(
     customWorkerEntry,
     isDev
   )}.js`;

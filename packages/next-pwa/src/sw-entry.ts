@@ -44,7 +44,7 @@ if (
   });
 
   if (__PWA_START_URL__) {
-    window.workbox.addEventListener("installed", async ({ isUpdate }) => {
+    window.workbox.addEventListener("activated", async ({ isUpdate }) => {
       if (!isUpdate) {
         const cache = await caches.open("start-url");
         const response = await fetch(__PWA_START_URL__);
@@ -61,17 +61,20 @@ if (
     });
   }
 
-  window.workbox.addEventListener("installed", async () => {
+  window.workbox.addEventListener("activated", async () => {
     const nextDataCache = await caches.open("next-data");
-    window.performance.getEntriesByType("resource").forEach((entry) => {
-      const entryName = entry.name;
-      if (
-        entryName.startsWith(`${window.location.origin}/_next/data/`) &&
-        entryName.endsWith(".json")
-      ) {
-        nextDataCache.add(entryName);
-      }
-    });
+    await Promise.all(
+      window.performance
+        .getEntriesByType("resource")
+        .map(async ({ name: entryName }) => {
+          if (
+            entryName.startsWith(`${window.location.origin}/_next/data/`) &&
+            entryName.endsWith(".json")
+          ) {
+            await nextDataCache.add(entryName);
+          }
+        })
+    );
   });
 
   if (__PWA_ENABLE_REGISTER__) {
@@ -124,8 +127,6 @@ if (
   }
 
   if (__PWA_RELOAD_ON_ONLINE__) {
-    window.addEventListener("online", () => {
-      location.reload();
-    });
+    window.addEventListener("online", () => location.reload());
   }
 }
