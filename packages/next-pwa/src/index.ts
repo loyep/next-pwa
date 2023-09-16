@@ -1,3 +1,4 @@
+// eslint-disable-next-line simple-import-sort/imports
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -36,12 +37,12 @@ const withPWAInit = (
           require("next/dist/server/config-shared") as typeof NextConfigShared
         ).defaultConfig;
       } catch {
-        // do nothing - we are using Next's internals.
+        // do nothing - we are using Next's internals and they might not be available.
       }
 
       const isAppDirEnabled =
-        nextConfig.experimental?.appDir ??
-        nextDefConfig?.experimental?.appDir ??
+        (nextConfig.experimental as any)?.appDir ??
+        (nextDefConfig?.experimental as any)?.appDir ??
         true;
 
       const webpack: typeof Webpack = options.webpack;
@@ -85,6 +86,7 @@ const withPWAInit = (
         workboxOptions = {},
         extendDefaultRuntimeCaching = false,
         swcMinify = nextConfig.swcMinify ?? nextDefConfig?.swcMinify ?? false,
+        browserslist = "chrome >= 56",
       } = pluginOptions;
 
       if (typeof nextConfig.webpack === "function") {
@@ -102,7 +104,7 @@ const withPWAInit = (
         config.plugins = [];
       }
 
-      logger.info(
+      logger.event(
         `Compiling for ${options.isServer ? "server" : "client (static)"}...`
       );
 
@@ -147,6 +149,7 @@ const withPWAInit = (
       if (!options.isServer) {
         setDefaultContext("shouldMinify", !dev);
         setDefaultContext("useSwcMinify", swcMinify);
+        setDefaultContext("browserslist", browserslist);
 
         const _dest = path.join(options.dir, dest);
         const _cwdest = path.join(options.dir, customWorkerDest);

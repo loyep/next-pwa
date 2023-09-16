@@ -11,8 +11,8 @@ import type { TsConfigJson as TSConfigJSON } from "type-fest";
 import type { Configuration } from "webpack";
 import webpack from "webpack";
 
-import { defaultSwcRc } from "../.swcrc.js";
 import { getContentHash } from "../utils.js";
+import { defaultSwcRc } from "./.swcrc.js";
 import { NextPWAContext } from "./context.js";
 import { getSharedWebpackConfig } from "./utils.js";
 
@@ -65,7 +65,7 @@ export const buildCustomWorker = ({
     return undefined;
   }
 
-  logger.info(`Found a custom worker implementation at ${customWorkerEntry}.`);
+  logger.event(`Found a custom worker implementation at ${customWorkerEntry}.`);
 
   const swcRc = defaultSwcRc;
 
@@ -82,7 +82,7 @@ export const buildCustomWorker = ({
     isDev
   )}.js`;
 
-  logger.info(
+  logger.event(
     `Building custom worker to ${path.join(customWorkerDest, name)}...`
   );
 

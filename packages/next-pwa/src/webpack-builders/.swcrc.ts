@@ -1,6 +1,6 @@
-import type { SwcOptions } from "@ducanh2912/utils";
+import type { Options } from "@swc/core";
 
-export const defaultSwcRc: SwcOptions = {
+export const defaultSwcRc: Options = {
   module: {
     type: "es6",
     lazy: true,
@@ -18,7 +18,6 @@ export const defaultSwcRc: SwcOptions = {
         runtime: "automatic",
       },
     },
-    target: "es2022",
     loose: false,
   },
   minify: false,
