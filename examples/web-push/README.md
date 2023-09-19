@@ -1,6 +1,6 @@
 # next-pwa - web push
 
-This example demonstrates how to use `next-pwa` to implement web push with custom worker.
+This example demonstrates how to use `next-pwa` to implement web push using a custom worker.
 
 **NOTE**
 
