@@ -2,6 +2,7 @@ import type { SpawnOptionsWithoutStdio } from "node:child_process";
 import { spawn } from "node:child_process";
 
 import { NextInstance } from "./next-instance-base";
+import { getURLFromLog } from "./utils";
 
 export class NextInstanceStart extends NextInstance {
   public async setup(sourceDir: string) {
@@ -64,8 +65,9 @@ export class NextInstanceStart extends NextInstance {
         this._process.stdout.on("data", (chunk: Buffer) => {
           const msg = chunk.toString();
           this._cliOutput += msg;
-          if (msg.includes("started server on") && msg.includes("url:")) {
-            this._url = msg.split("url: ").pop()?.split(/\s/)[0].trim() ?? "";
+          const potentialUrl = getURLFromLog(msg);
+          if (potentialUrl !== undefined) {
+            this._url = potentialUrl;
             resolve();
           }
           console.log(msg);
