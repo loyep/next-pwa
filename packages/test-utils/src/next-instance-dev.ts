@@ -1,8 +1,8 @@
 import type { SpawnOptionsWithoutStdio } from "node:child_process";
 import { spawn } from "node:child_process";
 
-import { NextInstance } from "./next-instance-base";
-import { getURLFromLog } from "./utils";
+import { NextInstance } from "./next-instance-base.js";
+import { getURLFromLog } from "./utils.js";
 
 export class NextInstanceDev extends NextInstance {
   public async setup(sourceDir: string) {

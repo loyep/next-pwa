@@ -1,1 +1,1 @@
-export { createDescribe } from "./create-describe";
+export { createDescribe } from "./create-describe.js";

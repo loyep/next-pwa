@@ -1,6 +1,6 @@
-import type { NextInstance, NextInstanceOpts } from "./next-instance-base";
-import { NextInstanceDev } from "./next-instance-dev";
-import { NextInstanceStart } from "./next-instance-start";
+import type { NextInstance, NextInstanceOpts } from "./next-instance-base.js";
+import { NextInstanceDev } from "./next-instance-dev.js";
+import { NextInstanceStart } from "./next-instance-start.js";
 
 const validTestModes = ["dev", "start"] as const;
 
@@ -36,9 +36,7 @@ const createNext = async (opts: NextTestOpts) => {
     await nextInstance.spawn();
     return nextInstance;
   } catch (err) {
-    console.error(
-      `failed to create next instance: ${JSON.stringify(err, null, 2)}`
-    );
+    console.error(`failed to create next instance: ${err}`);
     try {
       await nextInstance?.destroy();
     } catch {
