@@ -1,6 +1,6 @@
-import type { NextInstance, NextInstanceOpts } from "./next-instance-base.js";
-import { NextInstanceDev } from "./next-instance-dev.js";
-import { NextInstanceStart } from "./next-instance-start.js";
+import type { NextInstance, NextInstanceOpts } from "./next-instance-base.ts";
+import { NextInstanceDev } from "./next-instance-dev.ts";
+import { NextInstanceStart } from "./next-instance-start.ts";
 
 const validTestModes = ["dev", "start"] as const;
 
