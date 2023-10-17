@@ -39,30 +39,6 @@ export const resolveWorkboxPlugin = ({
 
   hasFallbacks: boolean;
 } & PluginCompleteOptions) => {
-  if (!workboxOptions.babelPresetEnvTargets) {
-    switch (typeof nextPWAContext.browserslist) {
-      case "string":
-        workboxOptions.babelPresetEnvTargets = [nextPWAContext.browserslist];
-        break;
-      case "object": {
-        if (Array.isArray(nextPWAContext.browserslist)) {
-          workboxOptions.babelPresetEnvTargets = nextPWAContext.browserslist;
-        } else {
-          workboxOptions.babelPresetEnvTargets = [];
-          for (const [browser, minimumVersion] of Object.entries(
-            nextPWAContext.browserslist
-          )) {
-            workboxOptions.babelPresetEnvTargets.push(
-              `${browser} >= ${minimumVersion}`
-            );
-          }
-        }
-        break;
-      }
-      default:
-        break;
-    }
-  }
   if (isInjectManifestConfig(workboxOptions)) {
     const swSrc = path.join(rootDir, workboxOptions.swSrc);
     logger.event(`Using InjectManifest with ${swSrc}`);
@@ -83,7 +59,33 @@ export const resolveWorkboxPlugin = ({
       ignoreURLParametersMatching = [],
       importScripts: userImportScripts,
       runtimeCaching: userRuntimeCaching,
+      ...workbox
     } = workboxOptions;
+
+    if (!workbox.babelPresetEnvTargets) {
+      switch (typeof nextPWAContext.browserslist) {
+        case "string":
+          workbox.babelPresetEnvTargets = [nextPWAContext.browserslist];
+          break;
+        case "object": {
+          if (Array.isArray(nextPWAContext.browserslist)) {
+            workbox.babelPresetEnvTargets = nextPWAContext.browserslist;
+          } else {
+            workbox.babelPresetEnvTargets = [];
+            for (const [browser, minimumVersion] of Object.entries(
+              nextPWAContext.browserslist
+            )) {
+              workbox.babelPresetEnvTargets.push(
+                `${browser} >= ${minimumVersion}`
+              );
+            }
+          }
+          break;
+        }
+        default:
+          break;
+      }
+    }
 
     let runtimeCaching: RuntimeCaching[];
 
@@ -174,7 +176,7 @@ export const resolveWorkboxPlugin = ({
       cleanupOutdatedCaches,
       ignoreURLParametersMatching,
       importScripts,
-      ...workboxOptions,
+      ...workbox,
       runtimeCaching,
     });
 
