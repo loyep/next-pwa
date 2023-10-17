@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,17 +9,11 @@ import type NextConfigShared from "next/dist/server/config-shared.js";
 import type { Configuration, default as Webpack } from "webpack";
 
 import defaultCache from "./cache.js";
-import { resolveWorkboxCommon } from "./resolve-workbox-common.js";
 import { resolveWorkboxPlugin } from "./resolve-workbox-plugin.js";
 import type { PluginOptions } from "./types.js";
 import { getFileHash } from "./utils.js";
-import { buildCustomWorker } from "./webpack-builders/build-custom-worker.js";
+import { buildSWEntryWorker } from "./webpack-builders/build-sw-entry-worker.js";
 import { setDefaultContext } from "./webpack-builders/context.js";
-import {
-  buildFallbackWorker,
-  buildSWEntryWorker,
-  getDefaultDocumentPage,
-} from "./webpack-builders/index.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -57,7 +50,7 @@ const withPWAInit = (
 
       const basePath = options.config.basePath || "/";
 
-      const tsConfigJSON = loadTSConfig(
+      const tsConfigJson = loadTSConfig(
         options.dir,
         nextConfig?.typescript?.tsconfigPath
       );
@@ -154,7 +147,6 @@ const withPWAInit = (
         setDefaultContext("devWatchWorkers", watchWorkersInDev);
 
         const _dest = path.join(options.dir, dest);
-        const _cwdest = path.join(options.dir, customWorkerDest);
         const sweWorkerPath = buildSWEntryWorker({
           isDev: dev,
           destDir: _dest,
@@ -176,7 +168,7 @@ const withPWAInit = (
           logger.info(`  window.workbox.register()`);
 
           if (
-            !tsConfigJSON?.compilerOptions?.types?.includes(
+            !tsConfigJson?.compilerOptions?.types?.includes(
               "@ducanh2912/next-pwa/workbox"
             )
           ) {
@@ -201,24 +193,6 @@ const withPWAInit = (
             ],
           })
         );
-
-        const customWorkerScriptName = buildCustomWorker({
-          isDev: dev,
-          baseDir: options.dir,
-          swDest: _dest,
-          customWorkerSrc,
-          customWorkerDest: _cwdest,
-          customWorkerPrefix,
-          plugins: config.plugins.filter(
-            (plugin) => plugin instanceof webpack.DefinePlugin
-          ),
-          tsconfig: tsConfigJSON,
-          basePath,
-        });
-
-        if (!!customWorkerScriptName) {
-          importScripts.unshift(customWorkerScriptName);
-        }
 
         const {
           additionalManifestEntries,
@@ -278,71 +252,36 @@ const withPWAInit = (
           (key) => workbox[key] === undefined && delete workbox[key]
         );
 
-        let hasFallbacks = false;
-
-        if (fallbacks) {
-          if (!fallbacks.document) {
-            fallbacks.document = getDefaultDocumentPage(
-              options.dir,
-              pageExtensions,
-              isAppDirEnabled
-            );
-          }
-          const fallbackWorker = buildFallbackWorker({
-            isDev: dev,
-            buildId,
-            fallbacks,
-            destDir: _dest,
-            basePath,
-          });
-
-          if (fallbackWorker) {
-            hasFallbacks = true;
-            importScripts.unshift(fallbackWorker.name);
-
-            fallbackWorker.precaches.forEach((route) => {
-              if (
-                route &&
-                typeof route !== "boolean" &&
-                !manifestEntries.find(
-                  (entry) =>
-                    typeof entry !== "string" && entry.url.startsWith(route)
-                )
-              ) {
-                manifestEntries.push({
-                  url: route,
-                  revision: buildId,
-                });
-              }
-            });
-          }
-        }
-
-        const workboxCommon = resolveWorkboxCommon({
-          dest: _dest,
-          sw,
-          dev,
-          buildId,
-          buildExcludes,
-          manifestEntries,
-          manifestTransforms,
-          modifyURLPrefix,
-          publicPath: config.output?.publicPath,
-        });
-
         const workboxPlugin = resolveWorkboxPlugin({
-          rootDir: options.dir,
-          basePath,
-          isDev: dev,
-
-          workboxCommon,
           workboxOptions: workbox,
           importScripts,
 
           extendDefaultRuntimeCaching,
           dynamicStartUrl,
 
-          hasFallbacks,
+          rootDir: options.dir,
+          destDir: _dest,
+          basePath,
+          buildId,
+          pageExtensions,
+          isDev: dev,
+          isAppDirEnabled,
+          plugins: config.plugins.filter(
+            (plugin) => plugin instanceof webpack.DefinePlugin
+          ),
+          tsConfigJson,
+
+          customWorkerSrc,
+          customWorkerDest,
+          customWorkerPrefix,
+          fallbacks,
+
+          sw,
+          buildExcludes,
+          manifestEntries,
+          manifestTransforms,
+          modifyURLPrefix,
+          publicPath: config.output?.publicPath,
         });
 
         config.plugins.push(workboxPlugin);

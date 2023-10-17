@@ -4,14 +4,14 @@ import type { Asset, Configuration } from "webpack";
 import type { ManifestEntry, ManifestTransform } from "workbox-build";
 import type { GenerateSWConfig } from "workbox-webpack-plugin";
 
-import type { SharedWorkboxOptionsKeys } from "./private-types.js";
+import type {
+  NextBuildInfo,
+  SharedWorkboxOptionsKeys,
+} from "./private-types.js";
 import type { PluginOptions } from "./types.js";
 
 export interface ResolveWorkboxCommonOptions {
-  dest: string;
   sw: string;
-  dev: boolean;
-  buildId: string;
   buildExcludes: NonNullable<PluginOptions["buildExcludes"]>;
   manifestEntries: (string | ManifestEntry)[];
   manifestTransforms: ManifestTransform[];
@@ -21,19 +21,24 @@ export interface ResolveWorkboxCommonOptions {
 
 export type WorkboxCommon = Pick<GenerateSWConfig, SharedWorkboxOptionsKeys>;
 
+interface ResolveWorkboxCommonCompleteOptions
+  extends ResolveWorkboxCommonOptions,
+    Pick<NextBuildInfo, "destDir" | "isDev" | "buildId"> {}
+
 export const resolveWorkboxCommon = ({
-  dest,
-  sw,
-  dev,
+  destDir,
+  isDev,
   buildId,
+
+  sw,
   buildExcludes,
   manifestEntries,
   manifestTransforms,
   modifyURLPrefix,
   publicPath,
-}: ResolveWorkboxCommonOptions): WorkboxCommon => ({
-  swDest: path.join(dest, sw),
-  additionalManifestEntries: dev ? [] : manifestEntries,
+}: ResolveWorkboxCommonCompleteOptions): WorkboxCommon => ({
+  swDest: path.join(destDir, sw),
+  additionalManifestEntries: isDev ? [] : manifestEntries,
   exclude: [
     ...buildExcludes,
     ({ asset }: { asset: Asset }) => {
@@ -45,7 +50,7 @@ export const resolveWorkboxCommon = ({
       ) {
         return true;
       }
-      if (dev && !asset.name.startsWith("static/runtime/")) {
+      if (isDev && !asset.name.startsWith("static/runtime/")) {
         return true;
       }
       return false;

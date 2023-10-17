@@ -4,44 +4,79 @@ import { logger } from "@ducanh2912/utils";
 import type { RuntimeCaching } from "workbox-build";
 import WorkboxPlugin from "workbox-webpack-plugin";
 
-import type { WorkboxTypes } from "./private-types.js";
+import type { NextBuildInfo, WorkboxTypes } from "./private-types.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";
-import type { WorkboxCommon } from "./resolve-workbox-common.js";
+import {
+  resolveWorkboxCommon,
+  type ResolveWorkboxCommonOptions,
+} from "./resolve-workbox-common.js";
 import type { PluginOptions } from "./types.js";
 import { isInjectManifestConfig, overrideAfterCalledMethod } from "./utils.js";
+import {
+  buildWorkers,
+  type BuildWorkersOptions,
+} from "./webpack-builders/build-workers.js";
 import { nextPWAContext } from "./webpack-builders/context.js";
 
 type PluginCompleteOptions = Required<
   Pick<PluginOptions, "extendDefaultRuntimeCaching" | "dynamicStartUrl">
 >;
 
-export const resolveWorkboxPlugin = ({
-  rootDir,
-  basePath,
-  isDev,
+interface WorkboxPluginOptions
+  extends PluginCompleteOptions,
+    BuildWorkersOptions,
+    ResolveWorkboxCommonOptions,
+    NextBuildInfo {
+  workboxOptions: WorkboxTypes[keyof WorkboxTypes];
+  importScripts: string[];
+}
 
-  workboxCommon,
+export const resolveWorkboxPlugin = ({
   workboxOptions,
   importScripts,
 
   extendDefaultRuntimeCaching,
   dynamicStartUrl,
 
-  hasFallbacks,
-}: {
-  rootDir: string;
-  basePath: string;
-  isDev: boolean;
+  // Next.js build info
+  rootDir,
+  destDir,
+  basePath,
+  buildId,
+  pageExtensions,
+  isDev,
+  isAppDirEnabled,
+  plugins,
+  tsConfigJson,
 
-  workboxCommon: WorkboxCommon;
-  workboxOptions: WorkboxTypes[keyof WorkboxTypes];
-  importScripts: string[];
+  // `buildWorkers` options
+  customWorkerSrc,
+  customWorkerDest,
+  customWorkerPrefix,
+  fallbacks,
 
-  hasFallbacks: boolean;
-} & PluginCompleteOptions) => {
+  // `resolveWorkboxCommon` options
+  sw,
+  buildExcludes,
+  manifestEntries,
+  manifestTransforms,
+  modifyURLPrefix,
+  publicPath,
+}: WorkboxPluginOptions) => {
   if (isInjectManifestConfig(workboxOptions)) {
     const swSrc = path.join(rootDir, workboxOptions.swSrc);
     logger.event(`Using InjectManifest with ${swSrc}`);
+    const workboxCommon = resolveWorkboxCommon({
+      destDir,
+      sw,
+      isDev,
+      buildId,
+      buildExcludes,
+      manifestEntries,
+      manifestTransforms,
+      modifyURLPrefix,
+      publicPath,
+    });
     const workboxPlugin = new WorkboxPlugin.InjectManifest({
       ...workboxCommon,
       ...workboxOptions,
@@ -52,6 +87,36 @@ export const resolveWorkboxPlugin = ({
     }
     return workboxPlugin;
   } else {
+    const { hasFallbacks, additionalManifestEntries } = buildWorkers({
+      rootDir,
+      destDir,
+      basePath,
+      buildId,
+      pageExtensions,
+      isDev,
+      isAppDirEnabled,
+      plugins,
+      tsConfigJson,
+
+      customWorkerSrc,
+      customWorkerDest,
+      customWorkerPrefix,
+      fallbacks,
+    });
+    manifestEntries.push(...additionalManifestEntries);
+    const workboxCommon = resolveWorkboxCommon({
+      destDir,
+      isDev,
+      buildId,
+
+      sw,
+      buildExcludes,
+      manifestEntries,
+      manifestTransforms,
+      modifyURLPrefix,
+      publicPath,
+    });
+
     const {
       skipWaiting = true,
       clientsClaim = true,
@@ -62,7 +127,7 @@ export const resolveWorkboxPlugin = ({
       ...workbox
     } = workboxOptions;
 
-    if (!workbox.babelPresetEnvTargets) {
+    if (workbox.babelPresetEnvTargets === undefined) {
       switch (typeof nextPWAContext.browserslist) {
         case "string":
           workbox.babelPresetEnvTargets = [nextPWAContext.browserslist];
