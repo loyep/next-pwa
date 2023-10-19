@@ -1,9 +1,10 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { logger } from "@ducanh2912/utils";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import webpack from "webpack";
+
+import { logger } from "$utils/index.js";
 
 import type { FallbackRoutes } from "../types.js";
 import { getContentHash } from "../utils.js";

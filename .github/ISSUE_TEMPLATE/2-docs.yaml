@@ -8,17 +8,9 @@ body:
   - type: textarea
     attributes:
       label: Provide environment information
-      description: Please provide the version of `next` and `@ducanh2912/next-pwa`/`@ducanh2912/next-sw` that you are currently using.
+      description: Please provide the version of `next` and `@ducanh2912/next-pwa` that you are currently using.
     validations:
       required: true
-  - type: dropdown
-    id: project
-    attributes:
-      multiple: false
-      label: Whose documentation is this feedback for?
-      options:
-        - "@ducanh2912/next-pwa"
-        - "@ducanh2912/next-sw"
   - type: textarea
     attributes:
       label: Describe the problem

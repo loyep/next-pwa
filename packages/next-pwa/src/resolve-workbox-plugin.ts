@@ -1,8 +1,9 @@
 import path from "node:path";
 
-import { logger } from "@ducanh2912/utils";
 import type { RuntimeCaching } from "workbox-build";
 import WorkboxPlugin from "workbox-webpack-plugin";
+
+import { logger } from "$utils/index.js";
 
 import type { NextBuildInfo, WorkboxTypes } from "./private-types.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";

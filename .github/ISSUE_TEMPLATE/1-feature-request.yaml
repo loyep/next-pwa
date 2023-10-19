@@ -10,17 +10,7 @@ body:
       value: Thanks for taking the time to file a feature request! Please fill out this form as completely as possible.
   - type: markdown
     attributes:
-      value: 'Feature requests will be converted to the GitHub Discussions "Ideas" section.'
-  - type: dropdown
-    id: project
-    attributes:
-      multiple: false
-      label: Which project is this feature idea for?
-      options:
-        - "@ducanh2912/next-pwa"
-        - "@ducanh2912/next-sw"
-    validations:
-      required: true
+      value: 'Feature requests will be converted to the GitHub Discussions "Ideas" section when suitable.'
   - type: textarea
     attributes:
       label: Describe the feature you'd like to request

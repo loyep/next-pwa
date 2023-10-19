@@ -1,6 +1,7 @@
 import fg from "fast-glob";
 import path from "path";
-import { createDescribe } from "tests-utils";
+
+import { createDescribe } from "../../test-utils/index.ts";
 
 createDescribe(
   "integration terser",

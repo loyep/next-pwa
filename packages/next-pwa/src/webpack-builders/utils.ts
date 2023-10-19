@@ -1,11 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveSwc, terserMinify } from "@ducanh2912/utils";
 import type { Config as SwcConfig } from "@swc/core";
 import type { MinimizerOptions, TerserOptions } from "terser-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import type { Configuration } from "webpack";
+
+import { resolveSwc, terserMinify } from "$utils/index.js";
 
 import { assertValue } from "../utils.js";
 import { defaultSwcRc } from "./.swcrc.js";

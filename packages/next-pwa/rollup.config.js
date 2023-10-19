@@ -7,7 +7,6 @@
  *   external?: (string | RegExp)[] | string | RegExp;
  * }} FileEntry
  */
-import { swcConfig } from "@ducanh2912/constants/swc-config";
 import alias from "@rollup/plugin-alias";
 import json from "@rollup/plugin-json";
 import nodeResolve from "@rollup/plugin-node-resolve";
@@ -17,6 +16,7 @@ import { defineConfig } from "rollup";
 import dts from "rollup-plugin-dts";
 
 import packageJson from "./package.json" assert { type: "json" };
+import { swcConfig } from "./swc-config.js";
 
 const isDev = process.env.NODE_ENV !== "production";
 const shouldEmitDeclaration = !isDev;

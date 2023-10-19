@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { findFirstTruthy } from "@ducanh2912/utils";
+import { findFirstTruthy } from "$utils/index.js";
 
 export const getDefaultDocumentPage = (
   baseDir: string,

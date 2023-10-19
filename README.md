@@ -1,1 +1,1 @@
-packages/next-pwa/README.md
+./packages/next-pwa/README.md

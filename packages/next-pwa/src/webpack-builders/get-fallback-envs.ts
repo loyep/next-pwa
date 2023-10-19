@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { logger } from "@ducanh2912/utils";
+import { logger } from "$utils/index.js";
 
 import type { FallbackRoutes } from "../types.js";
 

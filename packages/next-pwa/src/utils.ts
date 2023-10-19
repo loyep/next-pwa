@@ -1,8 +1,9 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 
-import { logger } from "@ducanh2912/utils";
 import type { GenerateSW, InjectManifest } from "workbox-webpack-plugin";
+
+import { logger } from "$utils/index.js";
 
 import type { WorkboxTypes } from "./private-types.js";
 

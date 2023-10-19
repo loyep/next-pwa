@@ -1,15 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import {
-  addPathAliasesToSWC,
-  findFirstTruthy,
-  logger,
-} from "@ducanh2912/utils";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import type { TsConfigJson as TSConfigJSON } from "type-fest";
 import type { Configuration } from "webpack";
 import webpack from "webpack";
+
+import { addPathAliasesToSWC, findFirstTruthy, logger } from "$utils/index.js";
 
 import { getContentHash } from "../utils.js";
 import { defaultSwcRc } from "./.swcrc.js";

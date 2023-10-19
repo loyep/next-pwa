@@ -1,12 +1,13 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { loadTSConfig, logger } from "@ducanh2912/utils";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import fg from "fast-glob";
 import type { NextConfig } from "next";
 import type NextConfigShared from "next/dist/server/config-shared.js";
 import type { Configuration, default as Webpack } from "webpack";
+
+import { loadTSConfig, logger } from "$utils/index.js";
 
 import defaultCache from "./cache.js";
 import { resolveWorkboxPlugin } from "./resolve-workbox-plugin.js";
