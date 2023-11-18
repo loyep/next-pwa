@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 import { Logo } from "@/components/Logo.js";
 import { DOCS_DOMAIN } from "@/shared/constants.js";

@@ -40,8 +40,8 @@ export const search = (
   // duplicates), but only create a TOC from top-level headings (by default).
   visit(root, "heading", (node, position, parent) => {
     const value = getNodeAsString(node);
+    // @ts-expect-error God knows
     const id: string =
-      // @ts-expect-error `hProperties` from <https://github.com/syntax-tree/mdast-util-to-hast>
       node.data && node.data.hProperties && node.data.hProperties.id;
     const slug = slugs.slug(id || value);
 
