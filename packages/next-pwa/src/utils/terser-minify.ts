@@ -58,8 +58,8 @@ export const terserMinify = async (
         swcOptions.mangle == null
           ? true
           : typeof swcOptions.mangle === "boolean"
-          ? swcOptions.mangle
-          : { ...swcOptions.mangle },
+            ? swcOptions.mangle
+            : { ...swcOptions.mangle },
       sourceMap: undefined,
     });
 
