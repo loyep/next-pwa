@@ -51,11 +51,6 @@ export default withPWA({
 
 ## Available options
 
-- `browserslist` — Configure supported browsers using Browserslist.
-
-- `buildExcludes` — One or more specifiers used to exclude assets from the precache manifest. This is interpreted following the same rules as webpack's
-  standard `exclude` option. Relative to `.next/static` or your custom build folder.
-
 - `cacheOnFrontendNav` — Enable additional route caching when users navigate through pages with `next/link`.
 
   - `aggressiveFrontEndNavCaching` — Cache every `<link rel="stylesheet" />` and `<script />` on frontend navigation. Requires `cacheOnFrontEndNav` to be enabled.
@@ -89,13 +84,9 @@ export default withPWA({
 
 - `sw` — The service worker's output filename.
 
-- `swcMinify` — Use [`swc`](https://swc.rs) to minify the custom worker, the fallback worker, and more.
-
 - `register` — Whether `next-pwa` should automatically register the service worker. Set this to `false` if you want to register the service worker yourself.
 
 - `reloadOnOnline` — Reload the app when it has gone back online.
-
-- `watchWorkersInDev` — Watch certain workers for file changes in development mode. This currently includes the custom worker.
 
 ## Other options
 
