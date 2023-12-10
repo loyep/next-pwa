@@ -62,13 +62,6 @@ const files = [
       format: "esm",
     },
   },
-  {
-    input: "src/swc-loader.ts",
-    output: {
-      file: "dist/swc-loader.cjs",
-      format: "cjs",
-    },
-  },
 ];
 
 /**

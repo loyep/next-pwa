@@ -1,11 +1,10 @@
 import path from "node:path";
 
-import type { TsConfigJson } from "type-fest";
 import type { Configuration } from "webpack";
 import type { ManifestEntry } from "workbox-build";
 
-import type { NextBuildInfo } from "../private-types.js";
-import type { PluginOptions } from "../types.js";
+import type { NextBuildInfo } from "../../private-types.js";
+import type { PluginOptions } from "../../types.js";
 import { buildCustomWorker } from "./build-custom-worker.js";
 import { buildFallbackWorker } from "./build-fallback-worker.js";
 import { getDefaultDocumentPage } from "./get-default-document-page.js";
@@ -19,10 +18,7 @@ export interface BuildWorkersOptions
       | "customWorkerPrefix"
       | "fallbacks"
     >
-  > {
-  plugins: Configuration["plugins"];
-  tsConfigJson: TsConfigJson | undefined;
-}
+  > {}
 
 interface BuildWorkersCompleteOptions
   extends BuildWorkersOptions,
@@ -45,8 +41,6 @@ export const buildWorkers = ({
   pageExtensions,
   isDev,
   isAppDirEnabled,
-  plugins,
-  tsConfigJson,
 
   customWorkerSrc,
   customWorkerDest,
@@ -55,23 +49,22 @@ export const buildWorkers = ({
 }: BuildWorkersCompleteOptions) => {
   const importScripts: string[] = [];
   const additionalManifestEntries: ManifestEntry[] = [];
+  const childCompilationInstances: NonNullable<Configuration["plugins"]> = [];
 
   const cwDest = path.join(rootDir, customWorkerDest);
 
-  const customWorkerScriptName = buildCustomWorker({
+  const customWorker = buildCustomWorker({
     isDev,
-    baseDir: rootDir,
-    swDest: destDir,
+    rootDir,
     customWorkerSrc,
     customWorkerDest: cwDest,
     customWorkerPrefix,
-    plugins,
-    tsconfig: tsConfigJson,
     basePath,
   });
 
-  if (!!customWorkerScriptName) {
-    importScripts.unshift(customWorkerScriptName);
+  if (customWorker !== undefined) {
+    importScripts.unshift(customWorker.name);
+    childCompilationInstances.push(customWorker.pluginInstance);
   }
 
   let hasFallbacks = false;
@@ -95,6 +88,7 @@ export const buildWorkers = ({
     if (fallbackWorker) {
       hasFallbacks = true;
       importScripts.unshift(fallbackWorker.name);
+      childCompilationInstances.push(fallbackWorker.pluginInstance);
 
       fallbackWorker.precaches.forEach((route) => {
         if (
@@ -113,5 +107,10 @@ export const buildWorkers = ({
     }
   }
 
-  return { hasFallbacks, additionalManifestEntries };
+  return {
+    importScripts,
+    hasFallbacks,
+    additionalManifestEntries,
+    childCompilationInstances,
+  };
 };

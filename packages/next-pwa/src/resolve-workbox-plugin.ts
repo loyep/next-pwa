@@ -16,8 +16,7 @@ import { isInjectManifestConfig, overrideAfterCalledMethod } from "./utils.js";
 import {
   buildWorkers,
   type BuildWorkersOptions,
-} from "./webpack-builders/build-workers.js";
-import { nextPWAContext } from "./webpack-builders/context.js";
+} from "./webpack/builders/build-workers.js";
 
 type PluginCompleteOptions = Required<
   Pick<PluginOptions, "extendDefaultRuntimeCaching" | "dynamicStartUrl">
@@ -29,12 +28,10 @@ interface WorkboxPluginOptions
     ResolveWorkboxCommonOptions,
     NextBuildInfo {
   workboxOptions: WorkboxTypes[keyof WorkboxTypes];
-  importScripts: string[];
 }
 
 export const resolveWorkboxPlugin = ({
   workboxOptions,
-  importScripts,
 
   extendDefaultRuntimeCaching,
   dynamicStartUrl,
@@ -47,8 +44,6 @@ export const resolveWorkboxPlugin = ({
   pageExtensions,
   isDev,
   isAppDirEnabled,
-  plugins,
-  tsConfigJson,
 
   // `buildWorkers` options
   customWorkerSrc,
@@ -58,7 +53,7 @@ export const resolveWorkboxPlugin = ({
 
   // `resolveWorkboxCommon` options
   sw,
-  buildExcludes,
+  exclude,
   manifestEntries,
   manifestTransforms,
   modifyURLPrefix,
@@ -72,23 +67,29 @@ export const resolveWorkboxPlugin = ({
       sw,
       isDev,
       buildId,
-      buildExcludes,
+      exclude,
       manifestEntries,
       manifestTransforms,
       modifyURLPrefix,
       publicPath,
     });
     const workboxPlugin = new WorkboxPlugin.InjectManifest({
-      ...workboxCommon,
       ...workboxOptions,
+      ...workboxCommon,
       swSrc,
     });
     if (isDev) {
       overrideAfterCalledMethod(workboxPlugin);
     }
-    return workboxPlugin;
+    return [workboxPlugin];
   } else {
-    const { hasFallbacks, additionalManifestEntries } = buildWorkers({
+    const importScripts: string[] = [];
+    const {
+      importScripts: workersImportScripts,
+      hasFallbacks,
+      additionalManifestEntries,
+      childCompilationInstances,
+    } = buildWorkers({
       rootDir,
       destDir,
       basePath,
@@ -96,22 +97,20 @@ export const resolveWorkboxPlugin = ({
       pageExtensions,
       isDev,
       isAppDirEnabled,
-      plugins,
-      tsConfigJson,
 
       customWorkerSrc,
       customWorkerDest,
       customWorkerPrefix,
       fallbacks,
     });
+    importScripts.push(...workersImportScripts);
     manifestEntries.push(...additionalManifestEntries);
     const workboxCommon = resolveWorkboxCommon({
       destDir,
+      sw,
       isDev,
       buildId,
-
-      sw,
-      buildExcludes,
+      exclude,
       manifestEntries,
       manifestTransforms,
       modifyURLPrefix,
@@ -127,31 +126,6 @@ export const resolveWorkboxPlugin = ({
       runtimeCaching: userRuntimeCaching,
       ...workbox
     } = workboxOptions;
-
-    if (workbox.babelPresetEnvTargets === undefined) {
-      switch (typeof nextPWAContext.browserslist) {
-        case "string":
-          workbox.babelPresetEnvTargets = [nextPWAContext.browserslist];
-          break;
-        case "object": {
-          if (Array.isArray(nextPWAContext.browserslist)) {
-            workbox.babelPresetEnvTargets = nextPWAContext.browserslist;
-          } else {
-            workbox.babelPresetEnvTargets = [];
-            for (const [browser, minimumVersion] of Object.entries(
-              nextPWAContext.browserslist
-            )) {
-              workbox.babelPresetEnvTargets.push(
-                `${browser} >= ${minimumVersion}`
-              );
-            }
-          }
-          break;
-        }
-        default:
-          break;
-      }
-    }
 
     let runtimeCaching: RuntimeCaching[];
 
@@ -236,13 +210,13 @@ export const resolveWorkboxPlugin = ({
     }
 
     const workboxPlugin = new WorkboxPlugin.GenerateSW({
+      ...workbox,
       ...workboxCommon,
       skipWaiting,
       clientsClaim,
       cleanupOutdatedCaches,
       ignoreURLParametersMatching,
       importScripts,
-      ...workbox,
       runtimeCaching,
     });
 
@@ -250,6 +224,6 @@ export const resolveWorkboxPlugin = ({
       overrideAfterCalledMethod(workboxPlugin);
     }
 
-    return workboxPlugin;
+    return [workboxPlugin, ...childCompilationInstances];
   }
 };

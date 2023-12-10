@@ -26,33 +26,22 @@ type GenerateSWOverrideJSDoc = {
 export type SharedWorkboxOptionsKeys = keyof GenerateSWConfig &
   keyof WebpackInjectManifestOptions;
 
-export type BlockedSharedWorkboxOptionsKeys = Extract<
-  SharedWorkboxOptionsKeys,
-  "exclude"
->;
-
 export type WorkboxTypes = {
-  GenerateSW: Omit<
-    Impossible<
-      Exclude<keyof WebpackInjectManifestOptions, SharedWorkboxOptionsKeys>
-    > &
-      GenerateSWConfig &
-      GenerateSWOverrideJSDoc,
-    BlockedSharedWorkboxOptionsKeys
-  >;
-  InjectManifest: Omit<
-    Impossible<Exclude<keyof GenerateSWConfig, SharedWorkboxOptionsKeys>> &
-      WebpackInjectManifestOptions,
-    BlockedSharedWorkboxOptionsKeys
-  >;
+  GenerateSW: Impossible<
+    Exclude<keyof WebpackInjectManifestOptions, SharedWorkboxOptionsKeys>
+  > &
+    GenerateSWConfig &
+    GenerateSWOverrideJSDoc;
+  InjectManifest: Impossible<
+    Exclude<keyof GenerateSWConfig, SharedWorkboxOptionsKeys>
+  > &
+    WebpackInjectManifestOptions;
 };
 
 export type StringKeyOf<BaseType> = `${Extract<
   keyof BaseType,
   string | number
 >}`;
-
-export type BrowserslistOptions = string | string[] | Record<string, string>;
 
 export interface NextBuildInfo {
   rootDir: string;

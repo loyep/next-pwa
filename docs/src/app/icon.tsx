@@ -13,6 +13,8 @@ export const size = {
   height: 32,
 };
 
+export const generateStaticParams = () => [];
+
 const Icon = async () => {
   const notoSansMono = await fs.readFile(
     path.join(__dirname, "../shared/notoSansMono.ttf")

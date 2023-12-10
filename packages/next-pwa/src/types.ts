@@ -1,6 +1,4 @@
-import type { GenerateSWConfig } from "workbox-webpack-plugin";
-
-import type { BrowserslistOptions, WorkboxTypes } from "./private-types.js";
+import type { WorkboxTypes } from "./private-types.js";
 
 export interface PluginOptions {
   /**
@@ -9,26 +7,6 @@ export interface PluginOptions {
    * @default false
    */
   aggressiveFrontEndNavCaching?: boolean;
-  /**
-   * Configure supported browsers using Browserslist.
-   * @default "chrome >= 56"
-   */
-  browserslist?: BrowserslistOptions;
-  /**
-   * One or more specifiers used to exclude assets from the precache manifest.
-   * This is interpreted following the same rules as webpack's standard `exclude`
-   * option. Relative to `.next/static` or your custom build folder. Defaults to
-   * [].
-   * @example
-   *   ```ts
-   *   [/chunks\/images\/.*$/];
-   *   ```
-   * @default
-   *   ```ts
-   *   [];
-   *   ```
-   */
-  buildExcludes?: GenerateSWConfig["exclude"];
   /**
    * Enable additional route caching when users navigate through pages with
    * `next/link`. This improves user experience in some cases but it
@@ -47,11 +25,6 @@ export interface PluginOptions {
    * @default dest
    */
   customWorkerDest?: string;
-  // NEXT-PWA-TODO(major): remove this option
-  /**
-   * @deprecated renamed to `customWorkerSrc`, to be removed next major version.
-   */
-  customWorkerDir?: string;
   /**
    * The custom worker's output filename prefix.
    * @default "worker"
@@ -64,12 +37,10 @@ export interface PluginOptions {
    * @default "worker"
    */
   customWorkerSrc?: string;
-  // NEXT-PWA-TODO(major): change this option's default to `"public"`
   /**
    * Set the output directory for service worker. Relative to Next.js's root
-   * directory. By default, this plugin uses `.next`, but it is recommended to
-   * change it to `public` instead.
-   * @default ".next"
+   * directory.
+   * @default "public"
    */
   dest?: string;
   /**
@@ -128,11 +99,6 @@ export interface PluginOptions {
    */
   sw?: string;
   /**
-   * Use [`swc`](https://swc.rs) to minify the custom worker, the fallback worker, and more.
-   * @default nextConfig.swcMinify
-   */
-  swcMinify?: boolean;
-  /**
    * Allow this plugin to automatically register the service worker for you. Set
    * this to `false` if you want to register the service worker yourself, which
    * can be done by running `window.workbox.register()` in
@@ -186,12 +152,6 @@ export interface PluginOptions {
    * @default true
    */
   reloadOnOnline?: boolean;
-  /**
-   * Watch certain workers for file changes in development mode. This currently includes the
-   * custom worker.
-   * @default false
-   */
-  watchWorkersInDev?: boolean;
   /**
    * Pass options to `workbox-webpack-plugin`. This one relies on
    * `workbox-webpack-plugin`'s own JSDoc, so some information may not be

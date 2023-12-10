@@ -1,18 +1,21 @@
 import path from "node:path";
 
 import type { Asset, Configuration } from "webpack";
-import type { ManifestEntry, ManifestTransform } from "workbox-build";
+import type {
+  ManifestEntry,
+  ManifestTransform,
+  WebpackPartial,
+} from "workbox-build";
 import type { GenerateSWConfig } from "workbox-webpack-plugin";
 
 import type {
   NextBuildInfo,
   SharedWorkboxOptionsKeys,
 } from "./private-types.js";
-import type { PluginOptions } from "./types.js";
 
 export interface ResolveWorkboxCommonOptions {
   sw: string;
-  buildExcludes: NonNullable<PluginOptions["buildExcludes"]>;
+  exclude: NonNullable<WebpackPartial["exclude"]>;
   manifestEntries: (string | ManifestEntry)[];
   manifestTransforms: ManifestTransform[];
   modifyURLPrefix: Record<string, string>;
@@ -31,7 +34,7 @@ export const resolveWorkboxCommon = ({
   buildId,
 
   sw,
-  buildExcludes,
+  exclude,
   manifestEntries,
   manifestTransforms,
   modifyURLPrefix,
@@ -40,7 +43,7 @@ export const resolveWorkboxCommon = ({
   swDest: path.join(destDir, sw),
   additionalManifestEntries: isDev ? [] : manifestEntries,
   exclude: [
-    ...buildExcludes,
+    ...exclude,
     ({ asset }: { asset: Asset }) => {
       if (
         asset.name.startsWith("server/") ||

@@ -1,16 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import webpack from "webpack";
 
-import { logger } from "$utils/index.js";
-
-import type { FallbackRoutes } from "../types.js";
-import { getContentHash } from "../utils.js";
-import { nextPWAContext } from "./context.js";
+import type { FallbackRoutes } from "../../types.js";
+import { getContentHash } from "../../utils.js";
+import { ChildCompilationPlugin } from "../plugins/child-compilation-plugins.js";
 import { getFallbackEnvs } from "./get-fallback-envs.js";
-import { getSharedWebpackConfig } from "./utils.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -51,41 +47,13 @@ export const buildFallbackWorker = ({
   // use Promise we will block the build until our stuff is done)
   const name = `fallback-${getContentHash(fallbackJs, isDev)}.js`;
 
-  webpack({
-    ...getSharedWebpackConfig({}),
-    mode: nextPWAContext.shouldMinify ? "production" : "development",
-    target: "webworker",
-    entry: {
-      main: fallbackJs,
-    },
-    output: {
-      path: destDir,
-      filename: name,
-      chunkFilename: "sw-chunks/[id]-[chunkhash].js",
-    },
-    plugins: [
-      new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [
-          path.join(destDir, "fallback-*.js"),
-          path.join(destDir, "fallback-*.js.map"),
-        ],
-      }),
-      new webpack.EnvironmentPlugin(envs),
-    ],
-  }).run((error, status) => {
-    if (error || status?.hasErrors()) {
-      logger.error("Failed to build the fallback worker.");
-      logger.error(
-        status?.toString({ colors: true }) ?? error?.message ?? "Unknown error"
-      );
-      throw new Error(
-        "Failed to build the fallback worker due to webpack errors."
-      );
-    }
-  });
-
   return {
     name: path.posix.join(basePath, name),
     precaches: Object.values(envs).filter((v) => !!v),
+    pluginInstance: new ChildCompilationPlugin({
+      src: fallbackJs,
+      dest: path.join(destDir, name),
+      plugins: [new webpack.EnvironmentPlugin(envs)],
+    }),
   };
 };

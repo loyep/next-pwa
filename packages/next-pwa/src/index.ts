@@ -13,8 +13,7 @@ import defaultCache from "./cache.js";
 import { resolveWorkboxPlugin } from "./resolve-workbox-plugin.js";
 import type { PluginOptions } from "./types.js";
 import { getFileHash } from "./utils.js";
-import { buildSWEntryWorker } from "./webpack-builders/build-sw-entry-worker.js";
-import { setDefaultContext } from "./webpack-builders/context.js";
+import { buildSWEntryWorker } from "./webpack/builders/build-sw-entry-worker.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -43,10 +42,7 @@ const withPWAInit = (
       const {
         buildId,
         dev,
-        config: {
-          distDir = ".next",
-          pageExtensions = ["tsx", "ts", "jsx", "js", "mdx"],
-        },
+        config: { pageExtensions },
       } = options;
 
       const basePath = options.config.basePath || "/";
@@ -61,27 +57,22 @@ const withPWAInit = (
       const {
         disable = false,
         register = true,
-        dest = distDir,
+        dest = "public",
         sw = "sw.js",
         cacheStartUrl = true,
         dynamicStartUrl = true,
         dynamicStartUrlRedirect,
         publicExcludes = ["!noprecache/**/*"],
-        buildExcludes = [],
         fallbacks = {},
         cacheOnFrontEndNav = false,
         aggressiveFrontEndNavCaching = false,
         reloadOnOnline = true,
         scope = basePath,
-        customWorkerDir,
-        customWorkerSrc = customWorkerDir || "worker",
+        customWorkerSrc = "worker",
         customWorkerDest = dest,
         customWorkerPrefix = "worker",
         workboxOptions = {},
         extendDefaultRuntimeCaching = false,
-        swcMinify = nextConfig.swcMinify ?? nextDefConfig?.swcMinify ?? false,
-        browserslist = "chrome >= 56",
-        watchWorkersInDev = false,
       } = pluginOptions;
 
       if (typeof nextConfig.webpack === "function") {
@@ -92,8 +83,6 @@ const withPWAInit = (
         options.isServer && logger.info("PWA support is disabled.");
         return config;
       }
-
-      const importScripts: string[] = [];
 
       if (!config.plugins) {
         config.plugins = [];
@@ -142,13 +131,8 @@ const withPWAInit = (
         });
 
       if (!options.isServer) {
-        setDefaultContext("shouldMinify", !dev);
-        setDefaultContext("useSwcMinify", swcMinify);
-        setDefaultContext("browserslist", browserslist);
-        setDefaultContext("devWatchWorkers", watchWorkersInDev);
-
         const _dest = path.join(options.dir, dest);
-        const sweWorkerPath = buildSWEntryWorker({
+        const sweWorker = buildSWEntryWorker({
           isDev: dev,
           destDir: _dest,
           shouldGenSWEWorker: cacheOnFrontEndNav,
@@ -157,8 +141,9 @@ const withPWAInit = (
 
         config.plugins.push(
           new webpack.DefinePlugin({
-            __PWA_SW_ENTRY_WORKER__: sweWorkerPath && `'${sweWorkerPath}'`,
-          })
+            __PWA_SW_ENTRY_WORKER__: sweWorker?.name && `'${sweWorker.name}'`,
+          }),
+          ...(sweWorker ? [sweWorker.pluginInstance] : [])
         );
 
         if (!register) {
@@ -186,11 +171,12 @@ const withPWAInit = (
         config.plugins.push(
           new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [
-              path.join(_dest, "workbox-*.js"),
-              path.join(_dest, "workbox-*.js.map"),
+              path.join(_dest, "{workbox,fallback,swe-worker,worker}-*.js"),
+              path.join(_dest, "{workbox,fallback,swe-worker,worker}-*.js.map"),
               path.join(_dest, sw),
               path.join(_dest, `${sw}.map`),
-              path.join(_dest, "sw-chunks/**"),
+              path.join(customWorkerDest, `${customWorkerPrefix}-*.js`),
+              path.join(customWorkerDest, `${customWorkerPrefix}-*.js.map`),
             ],
           })
         );
@@ -199,8 +185,7 @@ const withPWAInit = (
           additionalManifestEntries,
           modifyURLPrefix = {},
           manifestTransforms = [],
-          // @ts-expect-error removed from types
-          exclude,
+          exclude = [],
           ...workbox
         } = workboxOptions;
 
@@ -255,7 +240,6 @@ const withPWAInit = (
 
         const workboxPlugin = resolveWorkboxPlugin({
           workboxOptions: workbox,
-          importScripts,
 
           extendDefaultRuntimeCaching,
           dynamicStartUrl,
@@ -267,10 +251,6 @@ const withPWAInit = (
           pageExtensions,
           isDev: dev,
           isAppDirEnabled,
-          plugins: config.plugins.filter(
-            (plugin) => plugin instanceof webpack.DefinePlugin
-          ),
-          tsConfigJson,
 
           customWorkerSrc,
           customWorkerDest,
@@ -278,14 +258,14 @@ const withPWAInit = (
           fallbacks,
 
           sw,
-          buildExcludes,
+          exclude,
           manifestEntries,
           manifestTransforms,
           modifyURLPrefix,
           publicPath: config.output?.publicPath,
         });
 
-        config.plugins.push(workboxPlugin);
+        config.plugins.push(...workboxPlugin);
       }
 
       return config;
