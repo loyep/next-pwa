@@ -43,7 +43,6 @@ export const resolveWorkboxPlugin = ({
   buildId,
   pageExtensions,
   isDev,
-  isAppDirEnabled,
 
   // `buildWorkers` options
   customWorkerSrc,
@@ -96,7 +95,6 @@ export const resolveWorkboxPlugin = ({
       buildId,
       pageExtensions,
       isDev,
-      isAppDirEnabled,
 
       customWorkerSrc,
       customWorkerDest,

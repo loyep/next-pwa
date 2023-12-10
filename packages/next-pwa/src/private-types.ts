@@ -50,5 +50,4 @@ export interface NextBuildInfo {
   buildId: string;
   pageExtensions: string[];
   isDev: boolean;
-  isAppDirEnabled: boolean;
 }

@@ -30,7 +30,6 @@ interface BuildWorkersCompleteOptions
       | "buildId"
       | "pageExtensions"
       | "isDev"
-      | "isAppDirEnabled"
     > {}
 
 export const buildWorkers = ({
@@ -40,7 +39,6 @@ export const buildWorkers = ({
   buildId,
   pageExtensions,
   isDev,
-  isAppDirEnabled,
 
   customWorkerSrc,
   customWorkerDest,
@@ -71,11 +69,7 @@ export const buildWorkers = ({
 
   if (fallbacks) {
     if (!fallbacks.document) {
-      fallbacks.document = getDefaultDocumentPage(
-        rootDir,
-        pageExtensions,
-        isAppDirEnabled
-      );
+      fallbacks.document = getDefaultDocumentPage(rootDir, pageExtensions);
     }
     const fallbackWorker = buildFallbackWorker({
       isDev,

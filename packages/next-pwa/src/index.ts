@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import fg from "fast-glob";
 import type { NextConfig } from "next";
-import type NextConfigShared from "next/dist/server/config-shared.js";
 import type { Configuration, default as Webpack } from "webpack";
 
 import { loadTSConfig, logger } from "$utils/index.js";
@@ -23,21 +22,6 @@ const withPWAInit = (
   return (nextConfig = {}) => ({
     ...nextConfig,
     webpack(config: Configuration, options) {
-      let nextDefConfig: NextConfig | undefined;
-
-      try {
-        nextDefConfig = (
-          require("next/dist/server/config-shared") as typeof NextConfigShared
-        ).defaultConfig;
-      } catch {
-        // do nothing - we are using Next's internals and they might not be available.
-      }
-
-      const isAppDirEnabled =
-        (nextConfig.experimental as any)?.appDir ??
-        (nextDefConfig?.experimental as any)?.appDir ??
-        true;
-
       const webpack: typeof Webpack = options.webpack;
       const {
         buildId,
@@ -250,7 +234,6 @@ const withPWAInit = (
           buildId,
           pageExtensions,
           isDev: dev,
-          isAppDirEnabled,
 
           customWorkerSrc,
           customWorkerDest,

@@ -5,21 +5,16 @@ import { findFirstTruthy } from "$utils/index.js";
 
 export const getDefaultDocumentPage = (
   baseDir: string,
-  pageExtensions: string[],
-  isAppDirEnabled: boolean
+  pageExtensions: string[]
 ) => {
   const pagesDir = findFirstTruthy(["pages", "src/pages"], (dir) => {
     dir = path.join(baseDir, dir);
     return fs.existsSync(dir) ? dir : undefined;
   });
-  let appDir: string | undefined = undefined;
-
-  if (isAppDirEnabled) {
-    appDir = findFirstTruthy(["app", "src/app"], (dir) => {
-      dir = path.join(baseDir, dir);
-      return fs.existsSync(dir) ? dir : undefined;
-    });
-  }
+  const appDir = findFirstTruthy(["app", "src/app"], (dir) => {
+    dir = path.join(baseDir, dir);
+    return fs.existsSync(dir) ? dir : undefined;
+  });
 
   if (!pagesDir && !appDir) {
     return undefined;
