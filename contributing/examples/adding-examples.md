@@ -49,6 +49,10 @@ yarn create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/
 pnpm create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/DIRECTORY_NAME DIRECTORY_NAME-app
 ```
 
+```bash
+bun create next-app --example https://github.com/DuCanhGH/next-pwa/tree/master/examples/DIRECTORY_NAME DIRECTORY_NAME-app
+```
+
 ## Recommended `.gitignore`
 
 ```gitignore
