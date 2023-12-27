@@ -2,7 +2,7 @@ import { Workbox } from "workbox-window";
 
 import type { MessageType } from "./sw-entry-worker.js";
 
-declare const __PWA_START_URL__: URL | RequestInfo;
+declare const __PWA_START_URL__: string | undefined;
 declare const __PWA_SW__: string;
 declare const __PWA_ENABLE_REGISTER__: boolean;
 declare const __PWA_CACHE_ON_FRONT_END_NAV__: boolean;
@@ -39,22 +39,20 @@ if (
     const cacheOnFrontEndNav = async (
       originalUrl?: string | URL | null | undefined
     ) => {
-      if (!window.navigator.onLine) {
+      if (!window.navigator.onLine || !originalUrl) {
         return;
       }
 
-      const url = originalUrl
-        ? originalUrl instanceof URL
+      const url =
+        originalUrl instanceof URL
           ? originalUrl.toString()
           : typeof originalUrl === "string"
             ? originalUrl
-            : undefined
-        : undefined;
+            : undefined;
 
       if (typeof url !== "string") return;
 
-      const isStartUrl =
-        !!__PWA_START_URL__ && originalUrl === __PWA_START_URL__;
+      const isStartUrl = !!__PWA_START_URL__ && url === __PWA_START_URL__;
 
       if (isStartUrl) {
         if (!swEntryWorker) {
