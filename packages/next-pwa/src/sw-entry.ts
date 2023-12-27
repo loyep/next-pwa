@@ -37,18 +37,31 @@ if (
 
   if (__PWA_CACHE_ON_FRONT_END_NAV__ || __PWA_START_URL__) {
     const cacheOnFrontEndNav = async (
-      url?: string | URL | null | undefined
+      originalUrl?: string | URL | null | undefined
     ) => {
-      if (!window.navigator.onLine || !url) {
+      if (!window.navigator.onLine) {
         return;
       }
-      const isStartUrl = !!__PWA_START_URL__ && url === __PWA_START_URL__;
+
+      const url = originalUrl
+        ? originalUrl instanceof URL
+          ? originalUrl.toString()
+          : typeof originalUrl === "string"
+            ? originalUrl
+            : undefined
+        : undefined;
+
+      if (typeof url !== "string") return;
+
+      const isStartUrl =
+        !!__PWA_START_URL__ && originalUrl === __PWA_START_URL__;
+
       if (isStartUrl) {
         if (!swEntryWorker) {
-          const response = await fetch(url);
+          const response = await fetch(originalUrl);
           if (!response.redirected) {
             const startUrlCache = await caches.open("start-url");
-            return startUrlCache.put(url, response);
+            return startUrlCache.put(originalUrl, response);
           }
         } else {
           swEntryWorker.postMessage({

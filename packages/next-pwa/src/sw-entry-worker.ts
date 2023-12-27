@@ -4,11 +4,11 @@ export type MessageType =
   | {
       type: "__FRONTEND_NAV_CACHE__";
       shouldCacheAggressively: boolean;
-      url: URL | string;
+      url: string;
     }
   | {
       type: "__START_URL_CACHE__";
-      url: URL | string;
+      url: string;
     };
 
 self.onmessage = async (ev: MessageEvent<MessageType>) => {
