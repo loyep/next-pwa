@@ -21,6 +21,7 @@ type PublicPath = NonNullable<NonNullable<WebpackConfig["output"]>["publicPath"]
 export type NextPwaContext = {
   publicPath: PublicPath | undefined;
   nextConfig: NextConfigComplete;
+  webpack: typeof Webpack;
   webpackContext: WebpackConfigContext;
   webpackConfig: WebpackConfig;
   tsConfig: TsConfigJson | undefined;
@@ -233,6 +234,7 @@ export const createContext = (
   return {
     publicPath,
     nextConfig: resolvedNextConfig,
+    webpack,
     webpackContext: options,
     webpackConfig,
     tsConfig,

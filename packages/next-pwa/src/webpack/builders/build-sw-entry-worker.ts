@@ -24,6 +24,7 @@ export const buildSWEntryWorker = (ctx: NextPwaContext) => {
     pluginInstance: new ChildCompilationPlugin({
       src: swEntryWorkerEntry,
       dest: path.join(ctx.options.dest, name),
+      webpack: ctx.webpack,
     }),
   };
 };

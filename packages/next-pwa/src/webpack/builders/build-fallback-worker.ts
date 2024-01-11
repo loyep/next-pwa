@@ -1,8 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import webpack from "webpack";
-
 import { NextPwaContext } from "../../context.js";
 import type { FallbackRoutes } from "../../types.js";
 import { getContentHash } from "../../utils.js";
@@ -42,7 +40,8 @@ export const buildFallbackWorker = (ctx: NextPwaContext) => {
     pluginInstance: new ChildCompilationPlugin({
       src: fallbackJs,
       dest: path.join(ctx.options.dest, name),
-      plugins: [new webpack.EnvironmentPlugin(envs)],
+      plugins: [new ctx.webpack.EnvironmentPlugin(envs)],
+      webpack: ctx.webpack,
     }),
   };
 };

@@ -72,7 +72,7 @@ export class NextInstanceStart extends NextInstance {
           console.error(msg);
         });
       } catch (err) {
-        console.error(`next spawn failed: ${JSON.stringify(err, null, 2)}`);
+        console.error(`next spawn failed: ${err}`);
       }
     });
   }

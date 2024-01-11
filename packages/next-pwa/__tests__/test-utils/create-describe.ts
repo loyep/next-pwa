@@ -35,13 +35,13 @@ const createNext = async (opts: NextTestOpts) => {
     await nextInstance.spawn();
     return nextInstance;
   } catch (err) {
-    console.error(`failed to create next instance: ${err}`);
+    console.error(`failed to create next instance: ${err}, cliOutput: ${nextInstance?.cliOutput ?? "N/A"}`);
     try {
-      await nextInstance?.destroy();
-    } catch {
-      // do nothing
+      void nextInstance?.destroy();
+    } catch (err) {
+      console.error("failed to clean up after failure", err);
     }
-    process.exit(1);
+    throw new Error("failed to create next instance.");
   }
 };
 

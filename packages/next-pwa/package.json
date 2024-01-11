@@ -53,7 +53,7 @@
     "dev": "rimraf dist && rollup --config --watch",
     "build": "rimraf dist && cross-env NODE_ENV=production rollup --config --compact",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "typecheck": "tsc"
   },
   "dependencies": {

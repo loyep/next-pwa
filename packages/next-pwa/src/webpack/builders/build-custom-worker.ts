@@ -33,6 +33,7 @@ export const buildCustomWorker = (ctx: NextPwaContext) => {
     pluginInstance: new ChildCompilationPlugin({
       src: customWorkerEntry,
       dest: path.join(ctx.options.customWorkerDest, name),
+      webpack: ctx.webpack,
     }),
   };
 };

@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import type { NextConfig } from "next";
-import type { Configuration, default as Webpack } from "webpack";
+import type { Configuration } from "webpack";
 
 import { logger } from "$utils/index.js";
 
@@ -16,8 +16,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): ((nextConfig?: NextConf
   return (nextConfig = {}) => ({
     ...nextConfig,
     webpack(config: Configuration, options) {
-      const webpack: typeof Webpack = options.webpack;
-      const ctx = createContext(webpack, options, nextConfig, config, pluginOptions);
+      const ctx = createContext(options.webpack, options, nextConfig, config, pluginOptions);
 
       if (ctx.options.disable) {
         options.isServer && logger.info("PWA support is disabled.");
@@ -34,7 +33,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): ((nextConfig?: NextConf
         const sweWorker = buildSWEntryWorker(ctx);
 
         ctx.webpackConfig.plugins.push(
-          new webpack.DefinePlugin({
+          new ctx.webpack.DefinePlugin({
             __PWA_SW_ENTRY_WORKER__: sweWorker?.name && `'${sweWorker.name}'`,
           }),
           ...(sweWorker ? [sweWorker.pluginInstance] : []),
