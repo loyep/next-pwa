@@ -2,5 +2,5 @@ packages:
   - "docs"
   - "packages/**"
   - "examples/**"
-  - "!examples/**/.next"
+  - "!**/.next"
   - "next-pwa-e2e-test"

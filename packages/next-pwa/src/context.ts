@@ -1,4 +1,5 @@
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import fg from "fast-glob";
 import type { NextConfig, NextConfigComplete, WebpackConfigContext } from "next/dist/server/config-shared.js";
@@ -10,6 +11,8 @@ import { loadTSConfig } from "$utils/index.js";
 import type { PluginOptions } from "./types.js";
 import { getFileHash } from "./utils.js";
 import { getDefaultDocumentPage } from "./webpack/builders/get-default-document-page.js";
+
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export type PluginOptionsComplete = Required<PluginOptions>;
 
@@ -59,6 +62,7 @@ export const parseOptions = (
   }: PluginOptions,
 ): PluginOptionsComplete => {
   if (!additionalManifestEntries) {
+    const publicDir = path.resolve(webpackContext.dir, "public");
     additionalManifestEntries = fg
       .sync(
         [
@@ -74,12 +78,12 @@ export const parseOptions = (
           ...publicExcludes,
         ],
         {
-          cwd: path.resolve(webpackContext.dir, "public"),
+          cwd: publicDir,
         },
       )
       .map((f) => ({
         url: path.posix.join(nextConfig.basePath, f),
-        revision: getFileHash(`public/${f}`),
+        revision: getFileHash(path.resolve(publicDir, f)),
       }));
   }
 
