@@ -9,6 +9,8 @@ import * as cheerio from "cheerio";
 import fsExtra from "fs-extra";
 import type { PackageJson } from "type-fest";
 
+import treeKill from "./tree-kill.ts";
+
 export interface NextInstanceOpts {
   skipInstall: boolean;
   dependencies?: PackageJson["dependencies"];
@@ -161,14 +163,31 @@ export abstract class NextInstance {
       throw new Error("next instance already destroyed");
     }
     this._isDestroyed = true;
-    let exitResolve: () => void;
-    const exitPromise = new Promise<void>((resolve) => {
-      exitResolve = resolve;
-    });
-    this._process?.addListener("exit", () => exitResolve());
-    this._process?.kill();
-    await exitPromise;
-    this._process = undefined;
+    if (this._process) {
+      try {
+        let exitResolve: () => void;
+        const exitPromise = new Promise<void>((resolve) => {
+          exitResolve = resolve;
+        });
+        this._process.addListener("exit", () => exitResolve());
+        await new Promise<void>((resolve) => {
+          if (this._process?.pid) {
+            treeKill(this._process.pid, "SIGKILL", (err) => {
+              if (err) {
+                console.error("Failed to kill tree of process", this._process?.pid, "err:", err);
+              }
+              resolve();
+            });
+          }
+        });
+        this._process.kill("SIGKILL");
+        await exitPromise;
+        this._process = undefined;
+        console.log("Stopped next server");
+      } catch (err) {
+        console.error("Failed to stop next server", err);
+      }
+    }
     await this.clean();
   }
   public async fetch(pathname: string, init?: RequestInit) {

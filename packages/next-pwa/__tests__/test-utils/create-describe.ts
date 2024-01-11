@@ -35,9 +35,9 @@ const createNext = async (opts: NextTestOpts) => {
     await nextInstance.spawn();
     return nextInstance;
   } catch (err) {
-    console.error(`failed to create next instance: ${err}, cliOutput: ${nextInstance?.cliOutput ?? "N/A"}`);
+    console.error(`failed to create next instance: ${err}, cliOutput:${nextInstance?.cliOutput ? `\n${nextInstance.cliOutput}` : "N/A"}`);
     try {
-      void nextInstance?.destroy();
+      await nextInstance?.destroy();
     } catch (err) {
       console.error("failed to clean up after failure", err);
     }
@@ -52,7 +52,7 @@ export const createDescribe = (name: string, opts: NextTestOpts, fn: (args: { ne
       next = await createNext(opts);
     });
     afterAll(async () => {
-      await next.destroy();
+      await next?.destroy();
     });
     const nextProxy = new Proxy<NextInstance>({} as NextInstance, {
       get(_target, property: keyof NextInstance) {
