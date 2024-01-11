@@ -25,27 +25,18 @@ export class ChildCompilationPlugin implements WebpackPluginInstance {
   }
   apply(compiler: webpack.Compiler) {
     compiler.hooks.make.tapPromise(this.constructor.name, (compilation) =>
-      this.performChildCompilation(compilation, compiler).catch(
-        (error: webpack.WebpackError) => {
-          compilation.errors.push(error);
-        }
-      )
+      this.performChildCompilation(compilation, compiler).catch((error: webpack.WebpackError) => {
+        compilation.errors.push(error);
+      }),
     );
   }
-  async performChildCompilation(
-    compilation: webpack.Compilation,
-    parentCompiler: webpack.Compiler
-  ): Promise<void> {
+  async performChildCompilation(compilation: webpack.Compilation, parentCompiler: webpack.Compiler): Promise<void> {
     const resolvedDest = relativeToOutputPath(compilation, this.dest);
     const outputOptions: Parameters<Compilation["createChildCompiler"]>["1"] = {
       filename: resolvedDest,
     };
 
-    const childCompiler = compilation.createChildCompiler(
-      this.constructor.name,
-      outputOptions,
-      []
-    );
+    const childCompiler = compilation.createChildCompiler(this.constructor.name, outputOptions, []);
 
     childCompiler.context = parentCompiler.context;
     childCompiler.inputFileSystem = parentCompiler.inputFileSystem;
@@ -57,23 +48,15 @@ export class ChildCompilationPlugin implements WebpackPluginInstance {
       }
     }
 
-    new webpack.EntryPlugin(
-      parentCompiler.context,
-      this.src,
-      this.constructor.name
-    ).apply(childCompiler);
+    new webpack.EntryPlugin(parentCompiler.context, this.src, this.constructor.name).apply(childCompiler);
 
     await new Promise<void>((resolve, reject) => {
       childCompiler.runAsChild((error, _entries, childCompilation) => {
         if (error) {
           reject(error);
         } else {
-          compilation.warnings = compilation.warnings.concat(
-            childCompilation?.warnings ?? []
-          );
-          compilation.errors = compilation.errors.concat(
-            childCompilation?.errors ?? []
-          );
+          compilation.warnings = compilation.warnings.concat(childCompilation?.warnings ?? []);
+          compilation.errors = compilation.errors.concat(childCompilation?.errors ?? []);
 
           resolve();
         }

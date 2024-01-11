@@ -4,12 +4,7 @@ import { convert } from "unist-util-is";
 import { visit } from "unist-util-visit";
 
 import { toExpression } from "./tocToExpression.js";
-import type {
-  Node,
-  SearchEntry,
-  SearchOptions,
-  SearchResult,
-} from "./types.js";
+import type { Node, SearchEntry, SearchOptions, SearchResult } from "./types.js";
 import { getNodeAsString } from "./utils.js";
 
 const slugs = new Slugger();
@@ -22,11 +17,7 @@ const slugs = new Slugger();
  * @param settings
  * @returns
  */
-export const search = (
-  root: Node,
-  expression: RegExp | undefined,
-  settings: SearchOptions
-): SearchResult => {
+export const search = (root: Node, expression: RegExp | undefined, settings: SearchOptions): SearchResult => {
   const skip = settings.skip ? toExpression(settings.skip) : undefined;
   const parents = convert(settings.parents || ((d) => d === root));
   const map: SearchEntry[] = [];
@@ -41,8 +32,7 @@ export const search = (
   visit(root, "heading", (node, position, parent) => {
     const value = getNodeAsString(node);
     // @ts-expect-error God knows
-    const id: string =
-      node.data && node.data.hProperties && node.data.hProperties.id;
+    const id: string = node.data?.hProperties?.id;
     const slug = slugs.slug(id || value);
 
     if (!parents(parent)) {
@@ -57,29 +47,19 @@ export const search = (
     }
 
     // Our closing heading.
-    if (
-      position !== null &&
-      opening &&
-      !endIndex &&
-      node.depth <= opening.depth
-    ) {
+    if (position !== null && opening && !endIndex && node.depth <= opening.depth) {
       endIndex = position;
     }
 
     // A heading after the closing (if we were looking for one).
-    if (
-      (endIndex || !expression) &&
-      (!settings.maxDepth || node.depth <= settings.maxDepth) &&
-      (!skip || !skip.test(value))
-    ) {
+    if ((endIndex || !expression) && (!settings.maxDepth || node.depth <= settings.maxDepth) && (!skip || !skip.test(value))) {
       map.push({ depth: node.depth, children: node.children, id: slug });
     }
   });
 
   return {
     index: index === undefined ? -1 : index,
-    endIndex:
-      index === undefined ? -1 : endIndex || (root as any).children.length,
+    endIndex: index === undefined ? -1 : endIndex || (root as any).children.length,
     map,
   };
 };

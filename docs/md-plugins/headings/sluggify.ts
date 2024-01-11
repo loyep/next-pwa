@@ -18,11 +18,7 @@ const rehypeSlug: Plugin<any[], Root> = () => {
     slugs.reset();
 
     visit(tree, "element", (node) => {
-      if (
-        headingRank(node as any) &&
-        node.properties &&
-        !hasProperty(node, "id")
-      ) {
+      if (headingRank(node as any) && node.properties && !hasProperty(node, "id")) {
         node.properties.id = slugs.slug(getNodeAsString(node));
       }
     });

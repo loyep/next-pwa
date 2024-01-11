@@ -5,10 +5,8 @@ import { coerce as semverCoerce, lt as semverLt } from "semver";
 import { getPackageVersion } from "./get-package-version.js";
 
 const nextPackageJson = semverCoerce(getPackageVersion("next"));
-const isNextOlderThan13_4_1 =
-    !!nextPackageJson && semverLt(nextPackageJson, "13.4.1"),
-  isNextOlderThan13_4_20 =
-    !!nextPackageJson && semverLt(nextPackageJson, "13.4.20");
+const isNextOlderThan13_4_1 = !!nextPackageJson && semverLt(nextPackageJson, "13.4.1");
+const isNextOlderThan13_4_20 = !!nextPackageJson && semverLt(nextPackageJson, "13.4.20");
 
 const LOGGING_METHOD = ["wait", "error", "warn", "info", "event"] as const;
 
@@ -16,10 +14,7 @@ type LoggingMethods = (typeof LOGGING_METHOD)[number];
 
 type Prefixes = Record<LoggingMethods, string>;
 
-const mapLoggingMethodToConsole: Record<
-  LoggingMethods,
-  "log" | "error" | "warn" | "log"
-> = {
+const mapLoggingMethodToConsole: Record<LoggingMethods, "log" | "error" | "warn" | "log"> = {
   wait: "log",
   error: "error",
   warn: "warn",
@@ -77,7 +72,7 @@ const prefixedLog = (prefixType: LoggingMethods, ...message: any[]) => {
   if (message.length === 0) {
     console[consoleMethod]("");
   } else {
-    console[consoleMethod](" " + prefix, ...message);
+    console[consoleMethod](` ${prefix}`, ...message);
   }
 };
 

@@ -10,8 +10,7 @@ interface NextTestOpts extends NextInstanceOpts {
   sourceDir: string;
 }
 
-const isValidTestMode = (mode: string | undefined): mode is NextTestMode =>
-  typeof mode === "string" && validTestModes.includes(mode as any);
+const isValidTestMode = (mode: string | undefined): mode is NextTestMode => typeof mode === "string" && validTestModes.includes(mode as any);
 
 let testMode: NextTestMode = "start";
 
@@ -46,11 +45,7 @@ const createNext = async (opts: NextTestOpts) => {
   }
 };
 
-export const createDescribe = (
-  name: string,
-  opts: NextTestOpts,
-  fn: (args: { next: NextInstance; testMode: NextTestMode }) => void
-) => {
+export const createDescribe = (name: string, opts: NextTestOpts, fn: (args: { next: NextInstance; testMode: NextTestMode }) => void) => {
   describe(name, () => {
     let next: NextInstance;
     beforeAll(async () => {

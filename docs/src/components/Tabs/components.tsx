@@ -66,7 +66,6 @@ export const TabsContent = ({
       id={`${TABS_ID_PREFIX}-${keyPrefix}-content-${value}`}
       className={clsx(isSelected && "hidden")}
       role="tabpanel"
-      tabIndex={0}
       aria-labelledby={`${TABS_ID_PREFIX}-${keyPrefix}-trigger-${value}`}
     >
       {children}
@@ -81,14 +80,11 @@ export const TabsTrigger = ({
   value: string | undefined;
   children: ReactNode;
 }) => {
-  const {
-    keyPrefix,
-    value: contextValue,
-    setValue: setContextValue,
-  } = useTabsContext();
+  const { keyPrefix, value: contextValue, setValue: setContextValue } = useTabsContext();
   const isSelected = contextValue === value;
   return (
     <button
+      type="button"
       id={`${TABS_ID_PREFIX}-${keyPrefix}-trigger-${value}`}
       onClick={() => setContextValue(value)}
       data-tab-state={isSelected}

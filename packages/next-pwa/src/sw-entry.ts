@@ -16,11 +16,7 @@ declare global {
   }
 }
 
-if (
-  typeof window !== "undefined" &&
-  "serviceWorker" in navigator &&
-  typeof caches !== "undefined"
-) {
+if (typeof window !== "undefined" && "serviceWorker" in navigator && typeof caches !== "undefined") {
   let swEntryWorker: Worker | undefined;
 
   if (__PWA_SW_ENTRY_WORKER__) {
@@ -36,19 +32,12 @@ if (
   }
 
   if (__PWA_CACHE_ON_FRONT_END_NAV__ || __PWA_START_URL__) {
-    const cacheOnFrontEndNav = async (
-      originalUrl?: string | URL | null | undefined
-    ) => {
+    const cacheOnFrontEndNav = async (originalUrl?: string | URL | null | undefined) => {
       if (!window.navigator.onLine || !originalUrl) {
         return;
       }
 
-      const url =
-        originalUrl instanceof URL
-          ? originalUrl.toString()
-          : typeof originalUrl === "string"
-            ? originalUrl
-            : undefined;
+      const url = originalUrl instanceof URL ? originalUrl.toString() : typeof originalUrl === "string" ? originalUrl : undefined;
 
       if (typeof url !== "string") return;
 

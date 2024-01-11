@@ -1,14 +1,9 @@
-import { allDocs, type Docs } from "contentlayer/generated";
+import { type Docs, allDocs } from "contentlayer/generated";
 import { v4 as uuidv4 } from "uuid";
 
 const treePriority: Record<string, string[]> = {
   "/docs": ["next-pwa"],
-  "/docs/next-pwa": [
-    "getting-started",
-    "configuring",
-    "custom-worker",
-    "offline-fallbacks",
-  ],
+  "/docs/next-pwa": ["getting-started", "configuring", "custom-worker", "offline-fallbacks"],
 };
 
 export interface DocsTree {
@@ -26,13 +21,9 @@ interface BuildMapValue {
   title: string;
 }
 
-const fallbackTitle = (title: string | undefined, url: string) =>
-  title ?? url.slice(url.lastIndexOf("/") + 1);
+const fallbackTitle = (title: string | undefined, url: string) => title ?? url.slice(url.lastIndexOf("/") + 1);
 
-const buildChildren = (
-  docPath: string,
-  buildMap: Record<string, BuildMapValue>
-) => {
+const buildChildren = (docPath: string, buildMap: Record<string, BuildMapValue>) => {
   const result: DocsTree[] = [];
   buildMap[docPath].childId.forEach((childPath) => {
     const childDocPath = `${docPath}/${childPath}`;

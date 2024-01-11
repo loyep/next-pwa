@@ -14,11 +14,7 @@ self.fallback = async (request) => {
       ignoreSearch: true,
     });
   }
-  if (
-    destination === "" &&
-    process.env.__PWA_FALLBACK_DATA__ &&
-    url.match(/\/_next\/data\/.+\/.+\.json$/i)
-  ) {
+  if (destination === "" && process.env.__PWA_FALLBACK_DATA__ && url.match(/\/_next\/data\/.+\/.+\.json$/i)) {
     return caches.match(process.env.__PWA_FALLBACK_DATA__, {
       ignoreSearch: true,
     });

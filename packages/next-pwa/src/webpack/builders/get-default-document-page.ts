@@ -3,10 +3,7 @@ import path from "node:path";
 
 import { findFirstTruthy } from "$utils/index.js";
 
-export const getDefaultDocumentPage = (
-  baseDir: string,
-  pageExtensions: string[]
-) => {
+export const getDefaultDocumentPage = (baseDir: string, pageExtensions: string[]) => {
   const pagesDir = findFirstTruthy(["pages", "src/pages"], (dir) => {
     dir = path.join(baseDir, dir);
     return fs.existsSync(dir) ? dir : undefined;

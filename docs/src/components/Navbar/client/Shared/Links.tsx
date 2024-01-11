@@ -1,8 +1,8 @@
 "use client";
 import { usePathname } from "next/navigation";
 
-import { LINKS } from "../../constants.js";
 import { NavLink } from "../../Link/index.js";
+import { LINKS } from "../../constants.js";
 
 export interface NavLinksProps {
   type: "desktop" | "mobile";
@@ -16,10 +16,7 @@ export const NavLinks = ({ type }: NavLinksProps) => {
         <NavLink
           key={`navlink-${type}-screen-${label}`}
           href={link}
-          isActive={
-            !!pathname &&
-            (link === "/" ? pathname === link : pathname.startsWith(link))
-          }
+          isActive={!!pathname && (link === "/" ? pathname === link : pathname.startsWith(link))}
         >
           {label}
         </NavLink>

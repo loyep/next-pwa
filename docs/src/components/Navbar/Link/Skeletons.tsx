@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ComponentPropsWithRef } from "react";
+import type { ComponentPropsWithRef, ComponentPropsWithoutRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface NavLinkSkeletonsProps {
@@ -20,18 +20,12 @@ export const NavLinkSkeletons = ({
     length: skeletonsLength = 0,
   },
 }: NavLinkSkeletonsProps) => (
-  <div
-    className={twMerge("flex flex-row gap-[5px]", parentClassName)}
-    aria-label={skeletonsLabel}
-    aria-busy
-    aria-live="polite"
-    {...parentRest}
-  >
+  <div className={twMerge("flex flex-row gap-[5px]", parentClassName)} aria-label={skeletonsLabel} aria-busy aria-live="polite" {...parentRest}>
     {Array.from({ length: skeletonsLength }, (_, idx) => (
       <div
         className={twMerge(
           "flex animate-pulse items-center rounded-md bg-gray-300 px-3 py-2 text-base font-medium md:justify-center md:text-sm dark:bg-slate-700",
-          skeletonClassName
+          skeletonClassName,
         )}
         key={`${skeletonsKeyBase}-${idx}`}
         {...skeletonProps}

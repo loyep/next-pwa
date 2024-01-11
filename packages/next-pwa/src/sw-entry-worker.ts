@@ -39,10 +39,7 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
       }
       pagesCache.put(url, page.clone());
 
-      if (
-        ev.data.shouldCacheAggressively &&
-        page.headers.get("Content-Type")?.includes("text/html")
-      ) {
+      if (ev.data.shouldCacheAggressively && page.headers.get("Content-Type")?.includes("text/html")) {
         try {
           const html = await page.text();
 
@@ -55,9 +52,7 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
           // to handle the DOM so as to avoid unnecessary bloat as our use case is
           // fairly simple.
 
-          for (const [fullLink, link] of html.matchAll(
-            /<link.*?href=['"](.*?)['"].*?>/g
-          )) {
+          for (const [fullLink, link] of html.matchAll(/<link.*?href=['"](.*?)['"].*?>/g)) {
             if (/rel=['"]stylesheet['"]/.test(fullLink)) {
               fetchPromises.push(
                 stylesheetCache.match(link).then((res) => {
@@ -65,17 +60,13 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
                     return stylesheetCache.add(link);
                   }
                   return Promise.resolve();
-                })
+                }),
               );
             }
           }
 
-          for (const [, script] of html.matchAll(
-            /<script.*?src=['"](.*?)['"].*?>/g
-          )) {
-            const scriptCache = /\/_next\/static.+\.js$/i.test(script)
-              ? nextStaticJSCache
-              : staticJSCache;
+          for (const [, script] of html.matchAll(/<script.*?src=['"](.*?)['"].*?>/g)) {
+            const scriptCache = /\/_next\/static.+\.js$/i.test(script) ? nextStaticJSCache : staticJSCache;
 
             fetchPromises.push(
               scriptCache.match(script).then((res) => {
@@ -83,7 +74,7 @@ self.onmessage = async (ev: MessageEvent<MessageType>) => {
                   return scriptCache.add(script);
                 }
                 return Promise.resolve();
-              })
+              }),
             );
           }
 

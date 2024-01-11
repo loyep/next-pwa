@@ -13,5 +13,4 @@ import type { ColorScheme } from "../shared/types.js";
  * @param value - The value.
  * @returns
  */
-export const isColorScheme = (value?: string): value is ColorScheme =>
-  typeof value === "string" && ["dark", "light"].includes(value);
+export const isColorScheme = (value?: string): value is ColorScheme => typeof value === "string" && ["dark", "light"].includes(value);

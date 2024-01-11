@@ -5,11 +5,7 @@ export function PWALifeCycle() {
   // This hook only run once in browser after the component is rendered for the first time.
   // It has same effect as the old componentDidMount lifecycle callback.
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      window.workbox !== undefined
-    ) {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator && window.workbox !== undefined) {
       const wb = window.workbox;
       // add event listeners to handle PWA lifecycle events
       wb.addEventListener("installed", (event) => {
@@ -22,11 +18,7 @@ export function PWALifeCycle() {
         // When `event.wasWaitingBeforeRegister` is true, a previously updated service worker is still waiting.
         // You may want to customize the UI prompt accordingly.
         // https://developer.chrome.com/docs/workbox/handling-service-worker-updates/#the-code-to-put-in-your-page
-        if (
-          confirm(
-            "A newer version of this web app is available, reload to update?"
-          )
-        ) {
+        if (confirm("A newer version of this web app is available, reload to update?")) {
           // Send a message to the waiting service worker, instructing it to activate.
           wb.messageSkipWaiting();
           wb.addEventListener("controlling", () => {
@@ -34,7 +26,7 @@ export function PWALifeCycle() {
           });
         } else {
           console.log(
-            "User rejected to update SW, keeping the old version. New version will be automatically loaded when the app is opened next time."
+            "User rejected to update SW, keeping the old version. New version will be automatically loaded when the app is opened next time.",
           );
         }
       });

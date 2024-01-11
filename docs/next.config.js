@@ -32,7 +32,6 @@ const plugins = [withPWA, withContentlayer];
  *     { defaultConfig }: { defaultConfig: NextConfig },
  * ) => NextConfig}
  */
-const nextComposePlugins = () =>
-  plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
+const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
 module.exports = nextComposePlugins;

@@ -4,5 +4,4 @@
  * @param value
  * @returns
  */
-export const toExpression = (value: string) =>
-  new RegExp("^(" + value + ")$", "i");
+export const toExpression = (value: string) => new RegExp(`^(${value})$`, "i");

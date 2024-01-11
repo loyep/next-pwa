@@ -13,20 +13,9 @@ interface LinkActiveProps extends ComponentPropsWithoutRef<typeof Link> {
  * @param props
  * @returns
  */
-export const LinkActive = ({
-  href,
-  activeClassName,
-  hoverClassName,
-  ...rest
-}: LinkActiveProps) => {
+export const LinkActive = ({ href, activeClassName, hoverClassName, ...rest }: LinkActiveProps) => {
   const pathname = usePathname();
   const isActive = href === pathname;
 
-  return (
-    <Link
-      href={href}
-      className={isActive ? activeClassName : hoverClassName}
-      {...rest}
-    />
-  );
+  return <Link href={href} className={isActive ? activeClassName : hoverClassName} {...rest} />;
 };

@@ -14,6 +14,7 @@ export const NavMobileMenu = () => {
   }));
   const pathname = usePathname();
   useEffect(() => {
+    pathname;
     setShowMobileLinks(false);
   }, [setShowMobileLinks, pathname]);
   return (

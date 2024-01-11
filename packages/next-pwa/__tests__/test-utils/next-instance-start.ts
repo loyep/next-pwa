@@ -39,15 +39,9 @@ export class NextInstanceStart extends NextInstance {
         this._process.on("exit", (code, signal) => {
           this._process = undefined;
           if (code || signal) {
-            reject(
-              new Error(`next build failed with code/signal ${code || signal}`)
-            );
+            reject(new Error(`next build failed with code/signal ${code || signal}`));
           } else {
-            console.log(
-              `next build ran successfully with stdout: ${
-                buildStdout || "none"
-              } and stderr: ${buildStderr || "none"}`
-            );
+            console.log(`next build ran successfully with stdout: ${buildStdout || "none"} and stderr: ${buildStderr || "none"}`);
             resolve();
           }
         });

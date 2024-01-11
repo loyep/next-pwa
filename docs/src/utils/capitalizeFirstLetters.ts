@@ -13,10 +13,7 @@ export const capitalizeFirstLetters = (text: string) => {
     let returnVal = "";
     for (let i = 0; i < text.length; i++) {
       const curCharUpper = text[i].toUpperCase();
-      if (
-        text[i] !== curCharUpper &&
-        (i === 0 || (i >= 2 && returnVal.substring(i - 2, i).match(/[.?!] /)))
-      ) {
+      if (text[i] !== curCharUpper && (i === 0 || (i >= 2 && returnVal.substring(i - 2, i).match(/[.?!] /)))) {
         returnVal += curCharUpper;
         continue;
       }

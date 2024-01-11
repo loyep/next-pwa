@@ -11,14 +11,7 @@ interface LogoProps {
   noMoveTextUp?: true;
 }
 
-export const Logo = ({
-  containerClassName,
-  nextLogoHeight = 20,
-  nextLogoClassName,
-  nextLogoStyle,
-  textStyle,
-  noMoveTextUp,
-}: LogoProps) => (
+export const Logo = ({ containerClassName, nextLogoHeight = 20, nextLogoClassName, nextLogoStyle, textStyle, noMoveTextUp }: LogoProps) => (
   <div
     style={{
       display: "flex",
@@ -29,12 +22,7 @@ export const Logo = ({
     className={containerClassName}
     aria-label="Next PWA"
   >
-    <NextSvg
-      height={nextLogoHeight}
-      className={nextLogoClassName}
-      style={nextLogoStyle}
-      aria-hidden
-    />
+    <NextSvg height={nextLogoHeight} className={nextLogoClassName} style={nextLogoStyle} aria-hidden />
     <p
       style={{
         fontSize: nextLogoHeight * 1.32,

@@ -10,11 +10,7 @@ import type { ContentsOptions, SearchEntry } from "./types.js";
  * @param parent
  * @param settings
  */
-const insert = (
-  entry: SearchEntry,
-  parent: List | ListItem,
-  settings: ContentsOptions
-) => {
+const insert = (entry: SearchEntry, parent: List | ListItem, settings: ContentsOptions) => {
   let index = -1;
   const tail = parent.children[parent.children.length - 1];
 
@@ -30,7 +26,7 @@ const insert = (
               {
                 type: "link",
                 title: null,
-                url: "#" + entry.id,
+                url: `#${entry.id}`,
                 children: all(entry.children),
               },
             ],

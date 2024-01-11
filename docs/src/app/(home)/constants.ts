@@ -13,8 +13,7 @@ export const FEATURES_LIST: Feature[] = [
   {
     icon: "⛏️",
     label: "Configurable",
-    description:
-      "...yet there are many options available to extend the plugin.",
+    description: "...yet there are many options available to extend the plugin.",
   },
   {
     icon: "💯",
@@ -29,7 +28,6 @@ export const FEATURES_LIST: Feature[] = [
   {
     icon: "🚀",
     label: "Developer experience",
-    description:
-      "Built-in TypeScript definitions and JSDoc to enable the best DX.",
+    description: "Built-in TypeScript definitions and JSDoc to enable the best DX.",
   },
 ];

@@ -16,8 +16,7 @@ export const useColorScheme = create<ColorSchemeStoreInterface>((set, get) => ({
     localStorage.setItem("theme", val);
   },
   toggleColorScheme(value) {
-    const nextColorScheme =
-      value || (get().colorScheme === "dark" ? "light" : "dark");
+    const nextColorScheme = value || (get().colorScheme === "dark" ? "light" : "dark");
     get().setColorScheme(nextColorScheme);
   },
 }));

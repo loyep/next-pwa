@@ -19,6 +19,22 @@ yarn-error.log*
 
 # production
 dist/
+.next/
+.vercel/
+.output/
+.contentlayer/
+out/
 
 # vscode
 .vscode
+
+# rollup
+.rollup.cache
+
+# next-pwa
+**/public/swe-worker**
+**/public/sw**
+**/public/workbox**
+**/public/worker**
+**/public/fallback**
+**/public/precache**

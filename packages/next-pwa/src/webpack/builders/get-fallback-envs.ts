@@ -13,7 +13,7 @@ export const getFallbackEnvs = ({
 }) => {
   let data = fallbacks.data;
 
-  if (data && data.endsWith(".json")) {
+  if (data?.endsWith(".json")) {
     data = path.posix.join("/_next/data", buildId, data);
   }
 
@@ -28,9 +28,7 @@ export const getFallbackEnvs = ({
 
   if (Object.values(envs).filter((v) => !!v).length === 0) return;
 
-  logger.info(
-    "This app will fallback to these precached routes when fetching from the cache and the network fails:"
-  );
+  logger.info("This app will fallback to these precached routes when fetching from the cache and the network fails:");
 
   if (envs.__PWA_FALLBACK_DOCUMENT__) {
     logger.info(`  Documents (pages): ${envs.__PWA_FALLBACK_DOCUMENT__}`);
@@ -48,9 +46,7 @@ export const getFallbackEnvs = ({
     logger.info(`  Fonts: ${envs.__PWA_FALLBACK_FONT__}`);
   }
   if (envs.__PWA_FALLBACK_DATA__) {
-    logger.info(
-      `  Data (/_next/data/**/*.json): ${envs.__PWA_FALLBACK_DATA__}`
-    );
+    logger.info(`  Data (/_next/data/**/*.json): ${envs.__PWA_FALLBACK_DATA__}`);
   }
 
   return envs;

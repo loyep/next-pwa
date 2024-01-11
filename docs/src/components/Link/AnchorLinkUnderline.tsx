@@ -4,24 +4,13 @@ import { twMerge } from "tailwind-merge";
 
 import { linkUnderlineClassName } from "./classNames.js";
 
-type LinkProps = Omit<
-  DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
-  "ref"
->;
+type LinkProps = Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, "ref">;
 
 /**
  * `<a />`, but with underline.
  */
-export const AnchorLinkUnderline = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, ...rest }, ref) => (
-    <a
-      className={twMerge(linkUnderlineClassName, className)}
-      target="_blank"
-      rel="noopener noreferrer"
-      ref={ref}
-      {...rest}
-    />
-  )
-);
+export const AnchorLinkUnderline = forwardRef<HTMLAnchorElement, LinkProps>(({ className, ...rest }, ref) => (
+  <a className={twMerge(linkUnderlineClassName, className)} target="_blank" rel="noopener noreferrer" ref={ref} {...rest} />
+));
 
 AnchorLinkUnderline.displayName = "AnchorLink";

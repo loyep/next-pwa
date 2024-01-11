@@ -19,7 +19,7 @@ const SidebarContent = ({ node }: { node: DocsTree }) => {
                     className={clsx(
                       "relative flex flex-col",
                       "before:absolute before:inset-y-1 before:w-px before:bg-gray-200 before:content-[''] dark:before:bg-neutral-800",
-                      "ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0"
+                      "ltr:ml-3 ltr:pl-3 ltr:before:left-0 rtl:mr-3 rtl:pr-3 rtl:before:right-0",
                     )}
                   >
                     {node.children.map((childNode) => (

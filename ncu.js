@@ -8,10 +8,7 @@ import { run } from "npm-check-updates";
  */
 const updateAndLog = async (runOptions) => {
   const upgraded = await run(runOptions);
-  console.log(
-    `Upgraded dependencies for ${runOptions.packageFile ?? "./package.json"}:`,
-    upgraded
-  );
+  console.log(`Upgraded dependencies for ${runOptions.packageFile ?? "./package.json"}:`, upgraded);
 };
 
 const packageJsonList = await fg("**/package.json", {
@@ -39,15 +36,12 @@ for (const packageFile of packageJsonList) {
         if (dependencyName === "typescript") {
           return "@next";
         }
-        if (
-          /^react(-dom)?$/.test(dependencyName) ||
-          /next$|(^@next\/.*$)/.test(dependencyName)
-        ) {
+        if (/^react(-dom)?$/.test(dependencyName) || /next$|(^@next\/.*$)/.test(dependencyName)) {
           return "@canary";
         }
         return "latest";
       },
-    })
+    }),
   );
 }
 
@@ -59,7 +53,7 @@ for (const packageFile of examplesPackageJsonList) {
         return !excludePackages.includes(packageName);
       },
       upgrade: true,
-    })
+    }),
   );
 }
 

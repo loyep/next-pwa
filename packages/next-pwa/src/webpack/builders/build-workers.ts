@@ -1,110 +1,54 @@
-import path from "node:path";
-
 import type { Configuration } from "webpack";
 import type { ManifestEntry } from "workbox-build";
 
-import type { NextBuildInfo } from "../../private-types.js";
-import type { PluginOptions } from "../../types.js";
+import { NextPwaContext } from "../../context.js";
 import { buildCustomWorker } from "./build-custom-worker.js";
 import { buildFallbackWorker } from "./build-fallback-worker.js";
-import { getDefaultDocumentPage } from "./get-default-document-page.js";
 
-export interface BuildWorkersOptions
-  extends Required<
-    Pick<
-      PluginOptions,
-      | "customWorkerSrc"
-      | "customWorkerDest"
-      | "customWorkerPrefix"
-      | "fallbacks"
-    >
-  > {}
-
-interface BuildWorkersCompleteOptions
-  extends BuildWorkersOptions,
-    Pick<
-      NextBuildInfo,
-      | "rootDir"
-      | "destDir"
-      | "basePath"
-      | "buildId"
-      | "pageExtensions"
-      | "isDev"
-    > {}
-
-export const buildWorkers = ({
-  rootDir,
-  destDir,
-  basePath,
-  buildId,
-  pageExtensions,
-  isDev,
-
-  customWorkerSrc,
-  customWorkerDest,
-  customWorkerPrefix,
-  fallbacks,
-}: BuildWorkersCompleteOptions) => {
-  const importScripts: string[] = [];
+export const buildWorkers = (ctx: NextPwaContext) => {
   const additionalManifestEntries: ManifestEntry[] = [];
   const childCompilationInstances: NonNullable<Configuration["plugins"]> = [];
 
-  const cwDest = path.join(rootDir, customWorkerDest);
+  const customWorker = buildCustomWorker(ctx);
 
-  const customWorker = buildCustomWorker({
-    isDev,
-    rootDir,
-    customWorkerSrc,
-    customWorkerDest: cwDest,
-    customWorkerPrefix,
-    basePath,
-  });
+  if (!ctx.options.workboxOptions.importScripts) ctx.options.workboxOptions.importScripts = [];
 
   if (customWorker !== undefined) {
-    importScripts.unshift(customWorker.name);
+    ctx.options.workboxOptions.importScripts.unshift(customWorker.name);
     childCompilationInstances.push(customWorker.pluginInstance);
   }
 
   let hasFallbacks = false;
 
-  if (fallbacks) {
-    if (!fallbacks.document) {
-      fallbacks.document = getDefaultDocumentPage(rootDir, pageExtensions);
-    }
-    const fallbackWorker = buildFallbackWorker({
-      isDev,
-      buildId,
-      fallbacks,
-      destDir,
-      basePath,
-    });
+  if (ctx.options.fallbacks) {
+    const fallbackWorker = buildFallbackWorker(ctx);
 
     if (fallbackWorker) {
       hasFallbacks = true;
-      importScripts.unshift(fallbackWorker.name);
+      ctx.options.workboxOptions.importScripts.unshift(fallbackWorker.name);
       childCompilationInstances.push(fallbackWorker.pluginInstance);
 
-      fallbackWorker.precaches.forEach((route) => {
+      if (!ctx.options.workboxOptions.additionalManifestEntries) {
+        ctx.options.workboxOptions.additionalManifestEntries = [];
+      }
+
+      for (const route of fallbackWorker.precaches) {
         if (
           route &&
           typeof route !== "boolean" &&
-          !additionalManifestEntries.find(
-            (entry) => typeof entry !== "string" && entry.url.startsWith(route)
-          )
+          !additionalManifestEntries.find((entry) => typeof entry !== "string" && entry.url.startsWith(route))
         ) {
-          additionalManifestEntries.push({
+          ctx.options.workboxOptions.additionalManifestEntries.push({
             url: route,
-            revision: buildId,
+            revision: ctx.webpackContext.buildId,
           });
         }
-      });
+      }
     }
   }
 
   return {
-    importScripts,
     hasFallbacks,
-    additionalManifestEntries,
     childCompilationInstances,
   };
 };

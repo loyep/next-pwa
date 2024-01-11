@@ -1,14 +1,7 @@
 // Source (MIT): https://github.com/lukeed/clsx
 export type ClassDictionary = Record<string, any>;
 export type ClassArray = ClassValue[];
-export type ClassValue =
-  | ClassArray
-  | ClassDictionary
-  | string
-  | number
-  | null
-  | boolean
-  | undefined;
+export type ClassValue = ClassArray | ClassDictionary | string | number | null | boolean | undefined;
 
 const toClassName = (classValue: ClassValue) => {
   let className = "";

@@ -1,13 +1,9 @@
-import type {
-  WebpackInjectManifestOptions,
-  WebpackPartial,
-} from "workbox-build";
+import type { WebpackInjectManifestOptions, WebpackPartial } from "workbox-build";
 import type { GenerateSWConfig } from "workbox-webpack-plugin";
 
 type Impossible<K extends keyof any> = { [P in K]?: never };
 
-export type SharedWorkboxOptionsKeys = keyof GenerateSWConfig &
-  keyof WebpackInjectManifestOptions;
+export type SharedWorkboxOptionsKeys = keyof GenerateSWConfig & keyof WebpackInjectManifestOptions;
 
 export interface WebpackOptions {
   /**
@@ -23,9 +19,7 @@ export interface WebpackOptions {
 export interface GenerateSWOptions
   extends GenerateSWConfig,
     WebpackOptions,
-    Impossible<
-      Exclude<keyof WebpackInjectManifestOptions, SharedWorkboxOptionsKeys>
-    > {
+    Impossible<Exclude<keyof WebpackInjectManifestOptions, SharedWorkboxOptionsKeys>> {
   /**
    * Whether to add an unconditional call to [`skipWaiting()`](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle#skip_the_waiting_phase)
    * to the generated service worker. If `false`, then a `message` listener will
@@ -69,16 +63,4 @@ export type WorkboxTypes = {
   InjectManifest: InjectManifestOptions;
 };
 
-export type StringKeyOf<BaseType> = `${Extract<
-  keyof BaseType,
-  string | number
->}`;
-
-export interface NextBuildInfo {
-  rootDir: string;
-  destDir: string;
-  basePath: string;
-  buildId: string;
-  pageExtensions: string[];
-  isDev: boolean;
-}
+export type StringKeyOf<BaseType> = `${Extract<keyof BaseType, string | number>}`;

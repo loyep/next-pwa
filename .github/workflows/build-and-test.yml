@@ -6,15 +6,25 @@ env:
   TURBO_REMOTE_ONLY: true
 jobs:
   build_and_lint_check:
-    name: 🔎 Typecheck, check formatting and lint
+    name: 🔎 Typecheck
     uses: ./.github/workflows/build-reusable.yml
     with:
-      afterBuild: |
-        pnpm typecheck &&
-        pnpm format:check &&
-        pnpm lint &&
-        pnpm docs:lint
+      afterBuild: pnpm typecheck
     secrets: inherit
+  quality:
+    name: 🔎 Ensure that the code meets our quality standard
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v1
+        with:
+          version: latest
+      - name: Run Biome
+        run: biome ci .
   # test-integration-dev:
   #   name: ⚫️ Run Jest (development mode) integration tests
   #   uses: ./.github/workflows/build-reusable.yml

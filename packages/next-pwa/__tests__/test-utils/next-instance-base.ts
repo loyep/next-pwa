@@ -45,10 +45,7 @@ export abstract class NextInstance {
     }
     const tmpDir = await fs.realpath(os.tmpdir());
 
-    this._testDir = path.join(
-      tmpDir,
-      `next-pwa-test-${Date.now()}-${(Math.random() * 1000) | 0}`
-    );
+    this._testDir = path.join(tmpDir, `next-pwa-test-${Date.now()}-${(Math.random() * 1000) | 0}`);
     this._appTestDir = path.join(this._testDir, "next-pwa-e2e-test");
 
     if (!existsSync(this._testDir)) {
@@ -56,9 +53,7 @@ export abstract class NextInstance {
       await fs.mkdir(this._appTestDir);
     }
 
-    console.log(
-      `creating test directory with isolated next at ${this._testDir}...`
-    );
+    console.log(`creating test directory with isolated next at ${this._testDir}...`);
 
     const packageJsonPath = path.join(sourceDir, "package.json");
 
@@ -89,32 +84,23 @@ export abstract class NextInstance {
           dependencies: this._dependencies,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
 
     const origRepoDir = path.join(__dirname, "../../../..");
 
     const copyRepoPromise: Promise<any>[] = [];
 
-    for (const dir of [
-      "packages",
-      "package.json",
-      "pnpm-workspace.yaml",
-      "tsconfig.json",
-    ]) {
+    for (const dir of ["packages", "package.json", "pnpm-workspace.yaml", "tsconfig.json"]) {
       const resolvedPath = path.join(origRepoDir, dir);
       if (existsSync(resolvedPath)) {
         copyRepoPromise.push(
           fsExtra.copy(resolvedPath, path.join(this._testDir, dir), {
             filter: (item) => {
-              return (
-                !item.includes("node_modules") &&
-                !item.includes("pnpm-lock.yaml") &&
-                !item.includes(".DS_Store")
-              );
+              return !item.includes("node_modules") && !item.includes("pnpm-lock.yaml") && !item.includes(".DS_Store");
             },
-          })
+          }),
         );
       }
     }
@@ -124,27 +110,15 @@ export abstract class NextInstance {
     console.log("installing dependencies...");
 
     await new Promise<void>((resolve, reject) => {
-      exec(
-        `pnpm i --no-frozen-lockfile --production`,
-        { cwd: this._testDir },
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error(
-              `failed to install dependencies: ${error} with stdout: ${
-                stdout || "none"
-              } and stderr: ${stderr || "none"}`
-            );
-            reject();
-          } else {
-            console.log(
-              `installed dependencies successfully with stdout: ${
-                stdout || "none"
-              } and stderr: ${stderr || "none"}`
-            );
-            resolve();
-          }
+      exec("pnpm i --no-frozen-lockfile --production", { cwd: this._testDir }, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`failed to install dependencies: ${error} with stdout: ${stdout || "none"} and stderr: ${stderr || "none"}`);
+          reject();
+        } else {
+          console.log(`installed dependencies successfully with stdout: ${stdout || "none"} and stderr: ${stderr || "none"}`);
+          resolve();
         }
-      );
+      });
     });
 
     const copyFilePromise: Promise<any>[] = [];
@@ -155,7 +129,7 @@ export abstract class NextInstance {
         copyFilePromise.push(
           fs.cp(resolvedPath, path.join(this._appTestDir, dir), {
             recursive: true,
-          })
+          }),
         );
       }
     }
@@ -163,9 +137,7 @@ export abstract class NextInstance {
     for (const file of ["next.config.js", "next.config.mjs", "tsconfig.json"]) {
       const resolvedPath = path.join(sourceDir, file);
       if (existsSync(resolvedPath)) {
-        copyFilePromise.push(
-          fs.copyFile(resolvedPath, path.join(this._appTestDir, file))
-        );
+        copyFilePromise.push(fs.copyFile(resolvedPath, path.join(this._appTestDir, file)));
       }
     }
 

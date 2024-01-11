@@ -20,10 +20,7 @@ import { swcConfig } from "./swc-config.js";
 
 const isDev = process.env.NODE_ENV !== "production";
 const shouldEmitDeclaration = !isDev;
-const forcedExternals = [
-  ...Object.keys(packageJson.dependencies),
-  ...Object.keys(packageJson.peerDependencies),
-];
+const forcedExternals = [...Object.keys(packageJson.dependencies), ...Object.keys(packageJson.peerDependencies)];
 
 /** @type {FileEntry[]} */
 const files = [
@@ -62,10 +59,7 @@ for (const { input, output, external = [], plugins } of files) {
     defineConfig({
       input,
       output,
-      external: [
-        ...(Array.isArray(external) ? external : [external]),
-        ...forcedExternals,
-      ],
+      external: [...(Array.isArray(external) ? external : [external]), ...forcedExternals],
       plugins: [
         nodeResolve({
           exportConditions: ["node"],
@@ -95,7 +89,7 @@ for (const { input, output, external = [], plugins } of files) {
         }),
         ...[plugins ?? []],
       ],
-    })
+    }),
   );
 }
 
@@ -130,12 +124,9 @@ if (shouldEmitDeclaration) {
       defineConfig({
         input,
         output,
-        external: [
-          ...(Array.isArray(external) ? external : [external]),
-          ...forcedExternals,
-        ],
+        external: [...(Array.isArray(external) ? external : [external]), ...forcedExternals],
         plugins: [dts(), ...[plugins ?? []]],
-      })
+      }),
     );
   }
 }

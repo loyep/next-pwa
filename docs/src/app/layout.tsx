@@ -25,8 +25,7 @@ export const metadata: Metadata = {
   applicationName: "Next PWA",
   manifest: "/manifest.webmanifest",
   authors: [{ name: "DuCanhGH", url: "https://github.com/DuCanhGH/" }],
-  keywords:
-    "react, pwa, service-worker, progressive-web-app, nextjs, next.js, workbox",
+  keywords: "react, pwa, service-worker, progressive-web-app, nextjs, next.js, workbox",
   openGraph: {
     type: "website",
     title: {
@@ -50,6 +49,7 @@ const RootLayout: LayoutComponent = ({ children }) => (
     <head>
       <script
         id="get-initial-color-scheme"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Duh
         dangerouslySetInnerHTML={{
           __html: `window.DID_FETCH_INITIAL_COLOR||(window.DID_FETCH_INITIAL_COLOR=!0,document.documentElement.dataset.theme=(()=>{const e=localStorage.getItem("theme");if(e&&["dark","light"].includes(e))return e;return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})());`,
         }}
@@ -58,10 +58,7 @@ const RootLayout: LayoutComponent = ({ children }) => (
     </head>
     <body>
       <div id="root-container">
-        <a
-          className="absolute -top-full z-[100] text-black underline focus:top-0 dark:text-white"
-          href="#main-content"
-        >
+        <a className="absolute -top-full z-[100] text-black underline focus:top-0 dark:text-white" href="#main-content">
           Skip to main content
         </a>
         <RootClientLogic />

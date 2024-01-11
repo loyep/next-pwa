@@ -15,13 +15,6 @@ export interface LayoutProps {
   params?: any;
 }
 
-export type PageComponent = (
-  props: PageProps
-) => ReactNode | Promise<ReactNode>;
-export type LayoutComponent = (
-  props: LayoutProps
-) => ReactNode | Promise<ReactNode>;
-export type GenerateMetadata = (
-  props: PageProps,
-  parent: ResolvingMetadata
-) => Metadata | Promise<Metadata>;
+export type PageComponent = (props: PageProps) => ReactNode | Promise<ReactNode>;
+export type LayoutComponent = (props: LayoutProps) => ReactNode | Promise<ReactNode>;
+export type GenerateMetadata = (props: PageProps, parent: ResolvingMetadata) => Metadata | Promise<Metadata>;

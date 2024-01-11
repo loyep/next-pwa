@@ -7,9 +7,7 @@ import { logger } from "$utils/index.js";
 
 import type { WorkboxTypes } from "./private-types.js";
 
-export const overrideAfterCalledMethod = (
-  workboxPlugin: InjectManifest | GenerateSW
-) => {
+export const overrideAfterCalledMethod = (workboxPlugin: InjectManifest | GenerateSW) => {
   Object.defineProperty(workboxPlugin, "alreadyCalled", {
     get() {
       return false;
@@ -20,12 +18,8 @@ export const overrideAfterCalledMethod = (
   });
 };
 
-export const isInjectManifestConfig = (
-  config: WorkboxTypes[keyof WorkboxTypes] | undefined
-): config is WorkboxTypes["InjectManifest"] => {
-  return (
-    typeof config !== "undefined" && typeof (config as any).swSrc === "string"
-  );
+export const isInjectManifestConfig = (config: WorkboxTypes[keyof WorkboxTypes] | undefined): config is WorkboxTypes["InjectManifest"] => {
+  return typeof config !== "undefined" && typeof (config as any).swSrc === "string";
 };
 
 /**
@@ -57,13 +51,9 @@ export const convertBoolean = (value: unknown, strict = true) => {
   }
 };
 
-export const getFileHash = (file: fs.PathOrFileDescriptor) =>
-  crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex");
+export const getFileHash = (file: fs.PathOrFileDescriptor) => crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex");
 
-export const getContentHash = (
-  file: fs.PathOrFileDescriptor,
-  isDev: boolean
-) => {
+export const getContentHash = (file: fs.PathOrFileDescriptor, isDev: boolean) => {
   if (isDev) {
     return "development";
   }

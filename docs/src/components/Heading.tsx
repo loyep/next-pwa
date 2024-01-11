@@ -4,11 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { clsx } from "@/utils/clsx.js";
 
-export interface HeadingProps
-  extends DetailedHTMLProps<
-    HTMLAttributes<HTMLParagraphElement>,
-    HTMLParagraphElement
-  > {
+export interface HeadingProps extends DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> {
   variant?: "default" | "error";
   type?: "subtitle" | "title" | "title-large" | "display";
   isInSatori?: boolean;
@@ -39,39 +35,31 @@ const mapTypeToComponent: Record<
   },
 };
 
-export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-  ({ id, variant = "default", className, type = "title", ...rest }, ref) => {
-    const mappedComponent = mapTypeToComponent[type];
-    const Component = mappedComponent.element;
-    return (
-      <span
-        className={twMerge(
-          "group flex flex-row",
-          mappedComponent.className,
-          className
-        )}
-      >
-        <Component
-          ref={ref}
-          id={id}
-          className={clsx("break-words", {
-            "text-black dark:text-white": variant === "default",
-            "text-red-500 dark:text-red-400": variant === "error",
-          })}
-          {...rest}
-        />
-        {id && (
-          <a
-            href={`#${id}`}
-            className="ml-2 hidden text-slate-400 group-hover:inline group-focus:inline group-active:inline dark:text-slate-600"
-            aria-label="Permalink for this section"
-          >
-            #
-          </a>
-        )}
-      </span>
-    );
-  }
-);
+export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(({ id, variant = "default", className, type = "title", ...rest }, ref) => {
+  const mappedComponent = mapTypeToComponent[type];
+  const Component = mappedComponent.element;
+  return (
+    <span className={twMerge("group flex flex-row", mappedComponent.className, className)}>
+      <Component
+        ref={ref}
+        id={id}
+        className={clsx("break-words", {
+          "text-black dark:text-white": variant === "default",
+          "text-red-500 dark:text-red-400": variant === "error",
+        })}
+        {...rest}
+      />
+      {id && (
+        <a
+          href={`#${id}`}
+          className="ml-2 hidden text-slate-400 group-hover:inline group-focus:inline group-active:inline dark:text-slate-600"
+          aria-label="Permalink for this section"
+        >
+          #
+        </a>
+      )}
+    </span>
+  );
+});
 
 Heading.displayName = "Heading";

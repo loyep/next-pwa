@@ -1,9 +1,4 @@
-import {
-  type Icon as TablerIcon,
-  IconCheck as SuccessIcon,
-  IconExclamationMark as WarningIcon,
-  IconX as ErrorIcon,
-} from "@tabler/icons-react";
+import { type Icon as TablerIcon, IconCheck as SuccessIcon, IconExclamationMark as WarningIcon, IconX as ErrorIcon } from "@tabler/icons-react";
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -13,11 +8,7 @@ const variants = ["error", "warning", "success", "info"] as const;
 
 export type CalloutVariants = (typeof variants)[number];
 
-export interface CalloutProps
-  extends Omit<
-    DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>,
-    "ref"
-  > {
+export interface CalloutProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, "ref"> {
   /**
    * Specify the color and icon variant for the callout. Defaults to "info".
    *
@@ -36,15 +27,8 @@ const variantToIcon: Record<CalloutVariants, TablerIcon> = {
 /**
  * A simple Callout component.
  */
-export const Callout = ({
-  className,
-  variant = "info",
-  children,
-  ...rest
-}: CalloutProps) => {
-  const Icon = variants.includes(variant)
-    ? variantToIcon[variant]
-    : WarningIcon;
+export const Callout = ({ className, variant = "info", children, ...rest }: CalloutProps) => {
+  const Icon = variants.includes(variant) ? variantToIcon[variant] : WarningIcon;
   return (
     <span
       className={twMerge(
@@ -56,9 +40,9 @@ export const Callout = ({
             "bg-green-150 dark:bg-lime-1000": variant === "success",
             "bg-yellow-75 dark:bg-yellow-1000": variant === "warning",
             "bg-gray-200 dark:bg-zinc-800": variant === "info",
-          }
+          },
         ),
-        className
+        className,
       )}
       {...rest}
     >

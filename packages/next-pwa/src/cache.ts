@@ -164,10 +164,7 @@ const defaultCache: RuntimeCaching[] = [
   },
   {
     urlPattern: ({ request, url: { pathname }, sameOrigin }) =>
-      request.headers.get("RSC") === "1" &&
-      request.headers.get("Next-Router-Prefetch") === "1" &&
-      sameOrigin &&
-      !pathname.startsWith("/api/"),
+      request.headers.get("RSC") === "1" && request.headers.get("Next-Router-Prefetch") === "1" && sameOrigin && !pathname.startsWith("/api/"),
     handler: "NetworkFirst",
     options: {
       cacheName: "pages-rsc-prefetch",
@@ -178,10 +175,7 @@ const defaultCache: RuntimeCaching[] = [
     },
   },
   {
-    urlPattern: ({ request, url: { pathname }, sameOrigin }) =>
-      request.headers.get("RSC") === "1" &&
-      sameOrigin &&
-      !pathname.startsWith("/api/"),
+    urlPattern: ({ request, url: { pathname }, sameOrigin }) => request.headers.get("RSC") === "1" && sameOrigin && !pathname.startsWith("/api/"),
     handler: "NetworkFirst",
     options: {
       cacheName: "pages-rsc",
@@ -192,8 +186,7 @@ const defaultCache: RuntimeCaching[] = [
     },
   },
   {
-    urlPattern: ({ url: { pathname }, sameOrigin }) =>
-      sameOrigin && !pathname.startsWith("/api/"),
+    urlPattern: ({ url: { pathname }, sameOrigin }) => sameOrigin && !pathname.startsWith("/api/"),
     handler: "NetworkFirst",
     options: {
       cacheName: "pages",
