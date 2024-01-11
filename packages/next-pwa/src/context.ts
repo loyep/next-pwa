@@ -180,7 +180,7 @@ export const createContext = (
   userOptions: PluginOptions,
 ): NextPwaContext => {
   // Do NOT use resolvedNextConfig here.
-  // Its `webpack` function is a function with all plugins called,
+  // Its `webpack` function is the resulting function of calling all plugins,
   // including ours. Calling it will cause an infinitely recursive call.
   if (typeof userNextConfig.webpack === "function") {
     webpackConfig = userNextConfig.webpack(webpackConfig, options);
