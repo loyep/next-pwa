@@ -428,7 +428,7 @@ importers:
   examples/reproduction-template:
     dependencies:
       '@ducanh2912/next-pwa':
-        specifier: workspace:*
+        specifier: latest
         version: link:../../packages/next-pwa
       next:
         specifier: canary

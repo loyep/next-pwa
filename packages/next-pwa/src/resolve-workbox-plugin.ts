@@ -3,7 +3,7 @@ import path from "node:path";
 import type { RuntimeCaching } from "workbox-build";
 import WorkboxPlugin from "workbox-webpack-plugin";
 
-import { logger } from "$utils/index.js";
+import { logger } from "#utils/index.js";
 
 import { NextPwaContext } from "./context.js";
 import { resolveRuntimeCaching } from "./resolve-runtime-caching.js";

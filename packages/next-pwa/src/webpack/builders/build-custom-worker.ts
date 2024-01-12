@@ -2,7 +2,7 @@ import path from "node:path";
 
 import fg from "fast-glob";
 
-import { logger } from "$utils/index.js";
+import { logger } from "#utils/index.js";
 
 import { NextPwaContext } from "../../context.js";
 import { getContentHash } from "../../utils.js";

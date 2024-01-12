@@ -12,6 +12,9 @@
     "!dist/dts"
   ],
   "source": "./src/index.ts",
+  "imports": {
+    "#utils/*.js": "./src/utils/*.ts"
+  },
   "exports": {
     ".": {
       "require": {

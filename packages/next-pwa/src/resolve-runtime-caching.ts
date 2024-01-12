@@ -1,6 +1,6 @@
 import type { RuntimeCaching } from "workbox-build";
 
-import { logger } from "$utils/index.js";
+import { logger } from "#utils/index.js";
 
 import defaultCache from "./cache.js";
 

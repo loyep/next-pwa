@@ -6,19 +6,24 @@ import type { NextConfig, NextConfigComplete, WebpackConfigContext } from "next/
 import type { TsConfigJson } from "type-fest";
 import type { Asset, Configuration as WebpackConfig, default as Webpack } from "webpack";
 
-import { loadTSConfig } from "$utils/index.js";
+import { loadTSConfig, logger } from "#utils/index.js";
 
+import { RequireFields, WorkboxOptions } from "./private-types.js";
 import type { PluginOptions } from "./types.js";
 import { getFileHash } from "./utils.js";
 import { getDefaultDocumentPage } from "./webpack/builders/get-default-document-page.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
-export type PluginOptionsComplete = Required<PluginOptions>;
+export interface PluginOptionsComplete extends Required<PluginOptions> {
+  disable: false;
+  workboxOptions: RequireFields<WorkboxOptions, "swDest" | "additionalManifestEntries" | "exclude" | "modifyURLPrefix" | "manifestTransforms">;
+}
 
 type PublicPath = NonNullable<NonNullable<WebpackConfig["output"]>["publicPath"]>;
 
 export type NextPwaContext = {
+  disabled: false;
   publicPath: PublicPath | undefined;
   nextConfig: NextConfigComplete;
   webpack: typeof Webpack;
@@ -61,7 +66,9 @@ export const parseOptions = (
     } = {},
     extendDefaultRuntimeCaching = false,
   }: PluginOptions,
-): PluginOptionsComplete => {
+): PluginOptionsComplete | { disable: true } => {
+  if (disable) return { disable };
+
   if (!additionalManifestEntries) {
     const publicDir = path.resolve(webpackContext.dir, "public");
     additionalManifestEntries = fg
@@ -183,7 +190,7 @@ export const createContext = (
   userNextConfig: NextConfig,
   webpackConfig: WebpackConfig,
   userOptions: PluginOptions,
-): NextPwaContext => {
+): NextPwaContext | { disabled: true; webpackConfig: WebpackConfig } => {
   // Do NOT use resolvedNextConfig here.
   // Its `webpack` function is the resulting function of calling all plugins,
   // including ours. Calling it will cause an infinitely recursive call.
@@ -195,11 +202,18 @@ export const createContext = (
     basePath: options.config.basePath || "/",
   } satisfies NextConfigComplete;
   const publicPath = webpackConfig.output?.publicPath;
-  const tsConfig = loadTSConfig(options.dir, resolvedNextConfig.typescript.tsconfigPath);
   const resolvedOptions = parseOptions(options, publicPath, resolvedNextConfig, userOptions);
   if (!webpackConfig.plugins) {
     webpackConfig.plugins = [];
   }
+  if (resolvedOptions.disable) {
+    !options.isServer && logger.info("PWA support is disabled.");
+    return {
+      disabled: true,
+      webpackConfig,
+    };
+  }
+  const tsConfig = loadTSConfig(options.dir, resolvedNextConfig.typescript.tsconfigPath);
   webpackConfig.plugins.push(
     new webpack.DefinePlugin({
       __PWA_SW__: `'${resolvedOptions.sw}'`,
@@ -232,6 +246,7 @@ export const createContext = (
     return entries;
   };
   return {
+    disabled: false,
     publicPath,
     nextConfig: resolvedNextConfig,
     webpack,

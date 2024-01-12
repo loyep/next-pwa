@@ -1,7 +1,26 @@
 import type { WebpackInjectManifestOptions, WebpackPartial } from "workbox-build";
 import type { GenerateSWConfig } from "workbox-webpack-plugin";
 
-type Impossible<K extends keyof any> = { [P in K]?: never };
+export type Impossible<K extends keyof any> = { [P in K]?: never };
+
+/**
+ * Make certain fields in a object type required
+ *
+ * @example
+ *     interface A {
+ *         a?: string;
+ *         b?: string;
+ *         c?: string;
+ *     }
+ *     type B = RequireFields<A, "b" | "c">;
+ *     const b: B = {
+ *         b: "hehe",
+ *         c: "hehe",
+ *     }; //valid
+ *     const b: B = { a: "hehe" }; //invalid
+ *     const c: B = { a: "hehe", b: "hehe" }; //invalid
+ */
+export type RequireFields<T, U extends keyof T> = T & Required<Pick<T, U>>;
 
 export type SharedWorkboxOptionsKeys = keyof GenerateSWConfig & keyof WebpackInjectManifestOptions;
 
@@ -58,9 +77,6 @@ export type InjectManifestOptions = WebpackInjectManifestOptions &
   WebpackOptions &
   Impossible<Exclude<keyof GenerateSWConfig, SharedWorkboxOptionsKeys>>;
 
-export type WorkboxTypes = {
-  GenerateSW: GenerateSWOptions;
-  InjectManifest: InjectManifestOptions;
-};
+export type WorkboxOptions = GenerateSWOptions | InjectManifestOptions;
 
 export type StringKeyOf<BaseType> = `${Extract<keyof BaseType, string | number>}`;

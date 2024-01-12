@@ -4,7 +4,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import type { NextConfig } from "next";
 import type { Configuration } from "webpack";
 
-import { logger } from "$utils/index.js";
+import { logger } from "#utils/index.js";
 
 import defaultCache from "./cache.js";
 import { createContext } from "./context.js";
@@ -18,8 +18,7 @@ const withPWAInit = (pluginOptions: PluginOptions = {}): ((nextConfig?: NextConf
     webpack(config: Configuration, options) {
       const ctx = createContext(options.webpack, options, nextConfig, config, pluginOptions);
 
-      if (ctx.options.disable) {
-        options.isServer && logger.info("PWA support is disabled.");
+      if (ctx.disabled) {
         return ctx.webpackConfig;
       }
 

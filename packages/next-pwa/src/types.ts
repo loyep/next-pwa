@@ -1,4 +1,4 @@
-import type { WorkboxTypes } from "./private-types.js";
+import type { WorkboxOptions } from "./private-types.js";
 
 export interface PluginOptions {
   /**
@@ -157,7 +157,7 @@ export interface PluginOptions {
    * `workbox-webpack-plugin`'s own JSDoc, so some information may not be
    * exactly correct.
    */
-  workboxOptions?: WorkboxTypes[keyof WorkboxTypes];
+  workboxOptions?: WorkboxOptions;
 }
 
 export interface FallbackRoutes {

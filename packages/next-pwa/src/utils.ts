@@ -3,9 +3,9 @@ import fs from "node:fs";
 
 import type { GenerateSW, InjectManifest } from "workbox-webpack-plugin";
 
-import { logger } from "$utils/index.js";
+import { logger } from "#utils/index.js";
 
-import type { WorkboxTypes } from "./private-types.js";
+import type { InjectManifestOptions, WorkboxOptions } from "./private-types.js";
 
 export const overrideAfterCalledMethod = (workboxPlugin: InjectManifest | GenerateSW) => {
   Object.defineProperty(workboxPlugin, "alreadyCalled", {
@@ -18,8 +18,8 @@ export const overrideAfterCalledMethod = (workboxPlugin: InjectManifest | Genera
   });
 };
 
-export const isInjectManifestConfig = (config: WorkboxTypes[keyof WorkboxTypes] | undefined): config is WorkboxTypes["InjectManifest"] => {
-  return typeof config !== "undefined" && typeof (config as any).swSrc === "string";
+export const isInjectManifestConfig = (config: WorkboxOptions | undefined): config is InjectManifestOptions => {
+  return typeof config !== "undefined" && typeof config.swSrc === "string";
 };
 
 /**
