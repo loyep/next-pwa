@@ -17,7 +17,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export interface PluginOptionsComplete extends Required<PluginOptions> {
   disable: false;
-  workboxOptions: RequireFields<WorkboxOptions, "swDest" | "additionalManifestEntries" | "exclude" | "modifyURLPrefix" | "manifestTransforms">;
+  workboxOptions: RequireFields<WorkboxOptions, "swDest" | "additionalManifestEntries" | "exclude" | "manifestTransforms">;
 }
 
 type PublicPath = NonNullable<NonNullable<WebpackConfig["output"]>["publicPath"]>;
@@ -59,7 +59,6 @@ export const parseOptions = (
     customWorkerPrefix = "worker",
     workboxOptions: {
       additionalManifestEntries,
-      modifyURLPrefix: _modifyURLPrefix = {},
       manifestTransforms: _manifestTransforms = [],
       exclude: _exclude = [/\/_next\/static\/.*(?<!\.p)\.woff2/, /\.map$/, /^manifest.*\.js$/],
       ...workbox
@@ -81,6 +80,8 @@ export const parseOptions = (
           "!worker-*.js.map",
           "!fallback-*.js",
           "!fallback-*.js.map",
+          "!swe-worker-*.js",
+          "!swe-worker-*.js.map",
           `!${sw.replace(/^\/+/, "")}`,
           `!${sw.replace(/^\/+/, "")}.map`,
           ...publicExcludes,
@@ -135,7 +136,7 @@ export const parseOptions = (
     cacheOnFrontEndNav,
     aggressiveFrontEndNavCaching,
     reloadOnOnline,
-    scope: path.posix.join(nextConfig.basePath, scope),
+    scope: path.posix.join(scope, "/"),
     customWorkerSrc,
     customWorkerDest: path.resolve(webpackContext.dir, customWorkerDest),
     customWorkerPrefix,
@@ -155,16 +156,14 @@ export const parseOptions = (
           return false;
         },
       ],
-      modifyURLPrefix: {
-        ..._modifyURLPrefix,
-        "/_next/../public/": "/",
-      },
       manifestTransforms: [
         ..._manifestTransforms,
         async (manifestEntries, compilation) => {
           const manifest = manifestEntries.map((m) => {
-            m.url = m.url.replace("/_next//static/image", "/_next/static/image");
-            m.url = m.url.replace("/_next//static/media", "/_next/static/media");
+            m.url = m.url
+              .replace("/_next//static/image", "/_next/static/image")
+              .replace("/_next//static/media", "/_next/static/media")
+              .replace("/_next/../public", "");
             if (m.revision === null) {
               let key = m.url;
               if (typeof publicPath === "string" && key.startsWith(publicPath)) {
