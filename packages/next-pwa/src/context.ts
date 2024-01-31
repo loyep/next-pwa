@@ -4,9 +4,9 @@ import { fileURLToPath } from "node:url";
 import fg from "fast-glob";
 import type { NextConfig, NextConfigComplete, WebpackConfigContext } from "next/dist/server/config-shared.js";
 import type { TsConfigJson } from "type-fest";
-import type { Asset, Configuration as WebpackConfig, default as Webpack } from "webpack";
+import type { Asset, Compilation, Configuration as WebpackConfig, default as Webpack } from "webpack";
 
-import { loadTSConfig, logger } from "#utils/index.js";
+import { loadTSConfig, logger, relativeToOutputPath } from "#utils/index.js";
 
 import { RequireFields, WorkboxOptions } from "./private-types.js";
 import type { PluginOptions } from "./types.js";
@@ -68,8 +68,9 @@ export const parseOptions = (
 ): PluginOptionsComplete | { disable: true } => {
   if (disable) return { disable };
 
+  const publicDir = path.resolve(webpackContext.dir, "public");
+
   if (!additionalManifestEntries) {
-    const publicDir = path.resolve(webpackContext.dir, "public");
     additionalManifestEntries = fg
       .sync(
         [
@@ -159,11 +160,21 @@ export const parseOptions = (
       manifestTransforms: [
         ..._manifestTransforms,
         async (manifestEntries, compilation) => {
+          // This path always uses forward slashes, so it is safe to use it in the following string replace.
+          const publicDirRelativeOutput = relativeToOutputPath(compilation as Compilation, publicDir);
+          // `publicPath` is always `${assetPrefix}/_next/` for Next.js apps.
+          const publicFilesPrefix = `${publicPath}${publicDirRelativeOutput}`;
           const manifest = manifestEntries.map((m) => {
-            m.url = m.url
-              .replace("/_next//static/image", "/_next/static/image")
-              .replace("/_next//static/media", "/_next/static/media")
-              .replace("/_next/../public", "");
+            m.url = m.url.replace("/_next//static/image", "/_next/static/image").replace("/_next//static/media", "/_next/static/media");
+
+            // We remove `${publicPath}/${publicDirRelativeOutput}` because `assetPrefix`
+            // is not intended for files that are in the public directory and we also want
+            // to remove `/_next/${publicDirRelativeOutput}` from the URL, since that is not how
+            // we resolve files in the public directory.
+            if (m.url.startsWith(publicFilesPrefix)) {
+              m.url = path.posix.join(nextConfig.basePath, m.url.replace(publicFilesPrefix, ""));
+            }
+
             if (m.revision === null) {
               let key = m.url;
               if (typeof publicPath === "string" && key.startsWith(publicPath)) {
