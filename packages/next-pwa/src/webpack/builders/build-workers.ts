@@ -1,12 +1,10 @@
 import type { Configuration } from "webpack";
-import type { ManifestEntry } from "workbox-build";
 
 import { NextPwaContext } from "../../context.js";
 import { buildCustomWorker } from "./build-custom-worker.js";
 import { buildFallbackWorker } from "./build-fallback-worker.js";
 
 export const buildWorkers = (ctx: NextPwaContext) => {
-  const additionalManifestEntries: ManifestEntry[] = [];
   const childCompilationInstances: NonNullable<Configuration["plugins"]> = [];
 
   const customWorker = buildCustomWorker(ctx);
@@ -36,7 +34,7 @@ export const buildWorkers = (ctx: NextPwaContext) => {
         if (
           route &&
           typeof route !== "boolean" &&
-          !additionalManifestEntries.find((entry) => typeof entry !== "string" && entry.url.startsWith(route))
+          !ctx.options.workboxOptions.additionalManifestEntries.find((entry) => typeof entry === "object" && entry.url.startsWith(route))
         ) {
           ctx.options.workboxOptions.additionalManifestEntries.push({
             url: route,

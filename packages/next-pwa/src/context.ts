@@ -71,30 +71,29 @@ export const parseOptions = (
   const publicDir = path.resolve(webpackContext.dir, "public");
 
   if (!additionalManifestEntries) {
-    additionalManifestEntries = fg
-      .sync(
-        [
-          "**/*",
-          "!workbox-*.js",
-          "!workbox-*.js.map",
-          "!worker-*.js",
-          "!worker-*.js.map",
-          "!fallback-*.js",
-          "!fallback-*.js.map",
-          "!swe-worker-*.js",
-          "!swe-worker-*.js.map",
-          `!${sw.replace(/^\/+/, "")}`,
-          `!${sw.replace(/^\/+/, "")}.map`,
-          ...publicExcludes,
-        ],
-        {
-          cwd: publicDir,
-        },
-      )
-      .map((f) => ({
-        url: path.posix.join(nextConfig.basePath, f),
-        revision: getFileHash(path.resolve(publicDir, f)),
-      }));
+    const publicDirScan = fg.sync(
+      [
+        "**/*",
+        "!workbox-*.js",
+        "!workbox-*.js.map",
+        "!worker-*.js",
+        "!worker-*.js.map",
+        "!fallback-*.js",
+        "!fallback-*.js.map",
+        "!swe-worker-*.js",
+        "!swe-worker-*.js.map",
+        `!${sw.replace(/^\/+/, "")}`,
+        `!${sw.replace(/^\/+/, "")}.map`,
+        ...publicExcludes,
+      ],
+      {
+        cwd: publicDir,
+      },
+    );
+    additionalManifestEntries = publicDirScan.map((f) => ({
+      url: path.posix.join(nextConfig.basePath, f),
+      revision: getFileHash(path.resolve(publicDir, f)),
+    }));
   }
 
   if (cacheStartUrl) {
@@ -183,7 +182,9 @@ export const parseOptions = (
               const asset = (compilation as any).assetsInfo.get(key);
               m.revision = asset ? asset.contenthash || webpackContext.buildId : webpackContext.buildId;
             }
+
             m.url = m.url.replace(/\[/g, "%5B").replace(/\]/g, "%5D");
+
             return m;
           });
           return { manifest, warnings: [] };
