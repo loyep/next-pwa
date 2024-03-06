@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "latest",
-    "next": "14.0.4",
+    "next": "14.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sharp": "0.33.1"
+    "sharp": "0.33.2"
   },
   "devDependencies": {
-    "@types/node": "20.10.6",
-    "@types/react": "18.2.46",
-    "@types/react-dom": "18.2.18",
+    "@types/node": "20.11.24",
+    "@types/react": "18.2.63",
+    "@types/react-dom": "18.2.20",
     "typescript": "5.3.3"
   }
 }
